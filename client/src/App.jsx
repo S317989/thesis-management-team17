@@ -1,36 +1,25 @@
-import TestAPI from './APIs/TestAPI';
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Button from 'react-bootstrap/Button';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Header from './Components/Header'
+import Home from './Pages/Home'
+import LoginPage from './Pages/LoginPage'
 
 function App() {
-
-  const handleTestGet = () => {
-    TestAPI.getTest()
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  };
-
-  const handleTestPost = () => {
-    TestAPI.postTest()
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  }
-
   return (
     <>
-      <p>New App</p>
-      <Button type="submit" size="lg" variant="outline-primary" className="float-end" id="login-button"
-        onClick={handleTestGet}>
-        Get
-      </Button>
+      <BrowserRouter>
+        <div className="App">
+          <Header />
 
-      <Button type="submit" size="lg" variant="outline-primary" className="float-end" id="login-button"
-        onClick={handleTestPost}>
-        Post
-      </Button>    </>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </>
   )
 }
 
