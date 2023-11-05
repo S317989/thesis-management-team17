@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-keycloak/web": "^3.4.0",
     "bootstrap": "^5.3.2",
     "happy-dom": "^12.10.3",
     "react": "^18.2.0",

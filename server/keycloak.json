@@ -1,0 +1,5 @@
+{
+    "realm": "thesis-management-auth",
+    "url": "http://localhost:8080/auth",
+    "clientId": "thesis-management"
+}
