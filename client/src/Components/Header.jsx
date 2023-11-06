@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas, Button } from 'react-bootstrap';
-import { useKeycloak } from "@react-keycloak/web";
+import { OAuthError, useAuth0 } from "@auth0/auth0-react";
 
 function Header(props) {
     const navigate = useNavigate();
-    const { keycloak, initialized } = useKeycloak();
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
@@ -25,26 +25,25 @@ function Header(props) {
                     aria-labelledby={`offcanvasNavbarLabel-expand-md`}
                     placement="end">
                     <Offcanvas.Body>
-                        {keycloak.authenticated && (
-                            <Nav className="justify-content-end flex-grow-1 me-auto">
-                                <Button variant="link"
-                                    className={"nav-link"}
-                                    onClick={() => navigate("/Login")}>Login</Button>
-                            </Nav>
-                        )}
-
-                        {!!keycloak.authenticated && (
-                            <Nav className="justify-content-end flex-grow-1 me-auto">
-                                <Button variant="link"
-                                    className={"nav-link"}
-                                    onClick={() => keycloak.logout()}>Logout ({keycloak.tokenParsed.preferred_username}) </Button>
-                            </Nav>
-                        )}
+                        {
+                            !isAuthenticated ?
+                                <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <Button variant="link"
+                                        className={"nav-link"}
+                                        onClick={() => loginWithRedirect()}>Login</Button>
+                                </Nav>
+                                :
+                                <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <Button variant="link"
+                                        className={"nav-link"}
+                                        onClick={() => logout({ logoutParams: { returnTo: window.location.origin + "/home" } })}>Logout</Button>
+                                </Nav>
+                        }
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
 
             </Container>
-        </Navbar>
+        </Navbar >
     );
 }
 

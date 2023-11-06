@@ -1,11 +1,17 @@
-import { useKeycloak } from "@react-keycloak/web";
+import React, { useEffect } from "react";
+import { Outlet, Navigate } from "react-router-dom";
+import { useOktaAuth } from '@okta/okta-react';
 
-const ProtectedRoute = ({ children }) => {
-    const { keycloak } = useKeycloak();
+function ProtectedRoute(redirect) {
+    const { authState } = useOktaAuth();
 
-    const isLoggedIn = keycloak.authenticated;
+    if (!authState) {
+        return <div>Loading...</div>;
+    }
 
-    return isLoggedIn ? children : null;
-};
+    return (
+        authState.isAuthenticated ? <Outlet /> : <Navigate to="/" />
+    );
+}
 
 export default ProtectedRoute;

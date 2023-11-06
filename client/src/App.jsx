@@ -1,60 +1,42 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import Header from './Components/Header'
 import Home from './Pages/Home'
-import LoginPage from './Pages/LoginPage'
 import SecurePageTest from './Pages/SecurePageTest';
+import { Security } from '@okta/okta-react';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, } from 'react-router-dom';
 import ProtectedRoute from './Components/ProtectedRoute';
-import { ReactKeycloakProvider } from "@react-keycloak/web";
-import ConfigAPI from './APIs/ConfigAPI';
 
 
 function App() {
-  const [keycloakConfig, setKeycloakConfig] = useState({
-    realm: "", url: "", clientId: ""
+  const navigate = useNavigate();
+
+  const oktaAuth = new OktaAuth({
+    issuer: 'https://thesis-management.us.auth0.com/oauth2/default',
+    clientId: 'ovNQAlfSV9jnDBRiumuJmeBN7edsgAZk',
+    redirectUri: window.location.origin + '/'
   });
 
-  useEffect(() => {
-    ConfigAPI.getConfig().then(async (config) => {
-      let conf = await config.json();
-      setKeycloakConfig({
-        realm: conf.realm,
-        url: conf.url,
-        clientId: conf.clientId,
-      });
-    });
-  }, []);
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
+  };
 
 
   return (
     <>
-      {keycloakConfig ? (
-        <ReactKeycloakProvider authClient={keycloakConfig}>
-          <BrowserRouter>
-            <div className="App">
-              <Header />
-
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route
-                  path="/secure-test"
-                  element={
-                    <ProtectedRoute>
-                      <SecurePageTest />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </ReactKeycloakProvider>
-      )
-        : <div> Loading... </div>
-      }
+      <div className="App">
+        <Header />
+        <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/secure-test" element={<SecurePageTest />} />
+            </Route>
+          </Routes>
+        </Security>
+      </div>
     </>
   )
 }
