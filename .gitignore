@@ -1,3 +1,2 @@
-client/coverage/*
-server/coverage/*
-```
+client/coverage/
+server/coverage/
