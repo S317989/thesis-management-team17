@@ -1,0 +1,103 @@
+CREATE TABLE Person (
+    Id INTEGER NOT NULL,
+    Surname TEXT NOT NULL,
+    Name TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    Role TEXT NOT NULL,
+    CoSupervisor TEXT CHECK (CoSupervisor IN ('Academic', 'NonAcademic')),
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE ResearchGroup (
+    Id INTEGER NOT NULL,
+    Name TEXT NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Department (
+    Cod_Department INTEGER NOT NULL,
+    Name TEXT NOT NULL,
+    PRIMARY KEY (Cod_Department)
+);
+
+CREATE TABLE Degree (
+    Cod_Degree INTEGER NOT NULL,
+    Title TEXT NOT NULL,
+    PRIMARY KEY (Cod_Degree)
+);
+
+CREATE TABLE Course (
+    Cod_Course INTEGER NOT NULL,
+    Title TEXT NOT NULL,
+    PRIMARY KEY (Cod_Course)
+);
+
+CREATE TABLE Career (
+    Student_Id INTEGER NOT NULL,
+    Cod_Course INTEGER NOT NULL,
+    Title_Course TEXT NOT NULL,
+    CFU INTEGER NOT NULL,
+    Grade INTEGER NOT NULL,
+    Date DATE NOT NULL,
+
+    FOREIGN KEY (Student_Id) REFERENCES Student(Id),
+    FOREIGN KEY (Cod_Course) REFERENCES Course(Cod_Course),
+    FOREIGN KEY (Title_Course) REFERENCES Course(Title),
+    PRIMARY KEY (Student_Id, Cod_Course, Title_Course)
+);
+
+CREATE TABLE Student (
+    Id INTEGER NOT NULL,
+    Gender TEXT CHECK (Gender IN ('Male', 'Female')) NOT NULL,
+    Nationality TEXT NOT NULL,
+    Cod_Degree INTEGER NOT NULL,
+    Enrollment_Year INTEGER NOT NULL,
+    FOREIGN KEY (Id) REFERENCES Person(Id),
+    FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Teacher (
+    Id INTEGER NOT NULL,
+    Cod_Group INTEGER NOT NULL,
+    Cod_Department INTEGER NOT NULL,
+    FOREIGN KEY (Id) REFERENCES Person(Id),
+    FOREIGN KEY (Cod_Group) REFERENCES ResearchGroup(Id),
+    FOREIGN KEY (Cod_Department) REFERENCES Department(Cod_Department),
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Thesis (
+    Title TEXT NOT NULL,
+    Supervisor INTEGER NOT NULL,
+    CoSupervisor INTEGER NOT NULL,
+    Keywords TEXT NOT NULL,
+    Type TEXT NOT NULL,
+    Groups INTEGER NOT NULL,
+    Description TEXT NOT NULL,
+    RequiredKnowledge TEXT NOT NULL,
+    Notes TEXT NOT NULL,
+    Expiration DATE NOT NULL,
+    Level TEXT NOT NULL,
+    CDS TEXT NOT NULL,
+    FOREIGN KEY (Supervisor) REFERENCES Professor(Id),
+    FOREIGN KEY (CoSupervisor) REFERENCES Person(Id),
+    FOREIGN KEY (Groups) REFERENCES ResearchGroup(Id)
+    PRIMARY KEY (Title, Supervisor, CoSupervisor, Groups)
+);
+
+CREATE TABLE ThesisProposal (
+    Id_Student INTEGER NOT NULL,
+    Title_Thesis TEXT NOT NULL,
+    Supervisor INTEGER NOT NULL,
+    CoSupervisor INTEGER NOT NULL,
+    Groups INTEGER NOT NULL,
+    Status TEXT CHECK (Status IN ('Pending', 'Accepted', 'Rejected')) NOT NULL,
+    Progress TEXT CHECK (Progress IN ('Active', 'Suspended', 'Archived')) NOT NULL,
+    FOREIGN KEY (Id_Student) REFERENCES Student(Id),
+    FOREIGN KEY (Title_Thesis) REFERENCES Thesis(Title),
+    FOREIGN KEY (Supervisor) REFERENCES Thesis(Supervisor),
+    FOREIGN KEY (CoSupervisor) REFERENCES Thesis(CoSupervisor),
+    FOREIGN KEY (Groups) REFERENCES Thesis(Groups),
+    PRIMARY KEY (Id_Student, Title_Thesis, Supervisor, CoSupervisor, Groups)
+);

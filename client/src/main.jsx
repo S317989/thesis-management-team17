@@ -8,8 +8,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Auth0Provider
-        domain="thesis-management.us.auth0.com"
-        clientId="ovNQAlfSV9jnDBRiumuJmeBN7edsgAZk"
+        domain="thesis-management-team17.eu.auth0.com"
+        clientId="fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS"
         authorizationParams={{
           redirect_uri: window.location.origin + "/secure-test"
         }}>
