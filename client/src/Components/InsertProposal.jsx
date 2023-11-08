@@ -8,6 +8,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { useEffect, useState } from 'react';
 import CloseButton from 'react-bootstrap/CloseButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Radio, RadioGroup} from 'react-radio-group'
 
 const uid = (function() {
     let id = 0;
@@ -26,7 +28,7 @@ function FilterDropDown(props) {
 
   const getFilteredItems = (query, items) => {
     if (!query) return items;
-    return items.filter((sup) => sup.includes(query)); // Adjust the filtering logic as needed
+    return items.filter((el) => el.includes(query)); // Adjust the filtering logic as needed
   };
 
   const handleQueryChange = (e) => {
@@ -66,7 +68,15 @@ function FilterDropDown(props) {
           <h4>No email found</h4>
         ) : (
           filtered.map((item) => ( //gestire il parametro item.email, da prelevare dal database
-            <Dropdown.Item key={item} onClick={() => props.setSup(item)}>
+            <Dropdown.Item key={item} onClick={() => {
+              if(props.csvList){ //caso lista co supervisor
+                if(!props.csvList.find((el)=>el===item)){
+                let newList=[...props.csvList, item];
+                props.setFun(newList);
+                }
+              } else{
+              props.setFun(item)}
+              }}>
               {item}
             </Dropdown.Item> 
           ))
@@ -81,7 +91,17 @@ function FilterDropDown(props) {
   
 
 function InsertProposal(props){
-
+    /*
+        keywords: lista di elementi, input + list group
+        type: come sopra
+        supervisor + cosupervisor: dropdown + ricerca ottimizzata
+        group predefinito,retrieve from db
+        description testo
+        notes: testo
+        expiration date dayjs install
+        level scelta doppia
+        cds seleziona da lista degree table con nome e id per chiave
+    */
 
     const [validated, setValidated] = useState(false);
     const [cosuper, setCosuper]= useState("");
@@ -90,8 +110,12 @@ function InsertProposal(props){
     const [keylist, setKeylist]= useState([]);
     const [type, setType]=useState('');
     const [typeList, setTypeList]= useState([]);
-    const [sup, setSup]=useState('');
-    const itemList=['email1', 'email2', 'email3'];
+    const [sup, setSup]=useState('No supervisor selected'); //dove salvo il supervisor
+    const itemList=['email1', 'email2', 'email3']; //temporaneo
+    const tempcsv=['csv1', 'csv2', 'csv3']; //temporaneo
+    const tempcds=['gestionale', 'informatica', 'elettronica', 'ambientale'];
+    const [date,setDate]=useState('');
+    const [level, setLevel]=useState('');
 
 
     const handleSubmit = (event) => {
@@ -121,44 +145,24 @@ return(
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
-            <FilterDropDown title="Search supervisor's email" itemList={itemList} setSup={setSup} />
-
+            <FilterDropDown title="Search supervisor's email" itemList={itemList} setFun={setSup} />
+            <label>{sup}</label>
             {
                 csvList.length==0 ?
-                <h4>No co-supervisors added</h4>
+                <h4>No co-supervisor added</h4>
                 :
                 <ListGroup>
                 {
-                    csvList.map((e)=> <ListGroup.Item key={e.id} >{e.username}<CloseButton onClick={()=>{
+                    csvList.map((e)=> <ListGroup.Item key={e} >{e}<CloseButton onClick={()=>{
                         let newList= csvList.filter((obj) => obj.id !== e.id);
                         setCsvList(newList);
                     }} /></ListGroup.Item>)
                 }
                 </ListGroup>
             }
-            <InputGroup className="mb-3">
-            <Form.Control
-            placeholder="Co-supervisor's username"
-            aria-label="Co supervisor's username"
-            aria-describedby="basic-addon2"
-            value={cosuper}
-            onChange={(e)=>setCosuper(e.target.value)}
-            />
-            <Button variant="outline-secondary" id="button-addon2" onClick={()=>{
-                if(cosuper!==''){
-                let newObj={id: uid(), username: cosuper}; //add the client side id
-                let list=[...csvList, newObj]; //supervisor accademici e non distinzione ancora TO DO
-                setCsvList(list);
-                setCosuper('');
+            <FilterDropDown title="Search co-supervisor's email" itemList={tempcsv} csvList={csvList} setFun={setCsvList} />
 
-                } else {
-                    //tooltip non puoi inserire username vuoto
-                    console.log("non puoi inserire username stringa vuota")
-                }
-            }} >
-            Add co-supervisor
-            </Button>
-            </InputGroup>
+           
             {
                 keylist.length==0 ?
                 <h4>No keywords added</h4>
@@ -233,36 +237,46 @@ return(
             </InputGroup>
         </Row>
         <Row className="mb-3">
-            <Form.Group as={Col} md="6" controlId="validationCustom03">
-            <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="City" required />
-            <Form.Control.Feedback type="invalid">
-                Please provide a valid city.
-            </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationCustom04">
-            <Form.Label>State</Form.Label>
-            <Form.Control type="text" placeholder="State" required />
-            <Form.Control.Feedback type="invalid">
-                Please provide a valid state.
-            </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationCustom05">
-            <Form.Label>Zip</Form.Label>
-            <Form.Control type="text" placeholder="Zip" required />
-            <Form.Control.Feedback type="invalid">
-                Please provide a valid zip.
-            </Form.Control.Feedback>
-            </Form.Group>
-        </Row>
-        <Form.Group className="mb-3">
-            <Form.Check
-            required
-            label="Agree to terms and conditions"
-            feedback="You must agree before submitting."
-            feedbackType="invalid"
+            <FloatingLabel controlId="floatingTextarea2" label="Description">
+            <Form.Control
+              as="textarea"
+              placeholder="Description"
+              style={{ height: '100px' }}
             />
-        </Form.Group>
+          </FloatingLabel>
+          <FloatingLabel controlId="floatingTextarea2" label="Notes">
+            <Form.Control
+              as="textarea"
+              placeholder="Notes"
+              style={{ height: '100px' }}
+            />
+          </FloatingLabel>
+          <label>Set expiration date</label>
+          <input type='date' onChange={(e)=>setDate(dayjs(e.target.value).format('DD-MM-YYYY'))}  />
+          <label>Choose level</label>
+          <RadioGroup name="level" onChange={(e) =>setLevel(e)}>
+            <div className="radio-button-background">
+                <Radio value="BSc" className="radio-button" />BSc
+            </div>
+              <div className="radio-button-background">
+                <Radio value="MSc" className="radio-button" />MSc
+            </div>
+            </RadioGroup>
+           </Row>
+           <Row>
+            <label>Select a CdS</label>
+           <Form.Select aria-label="Select a CdS">
+           
+            {
+              tempcds ?
+              tempcds.map((item)=><option key={item}>{item}</option>)
+              :
+              <h4>No CdS available</h4>
+            }
+            
+            
+          </Form.Select>
+           </Row>
         <Button type="submit">Submit form</Button>
         </Form>
         
