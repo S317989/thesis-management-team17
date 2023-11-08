@@ -10,6 +10,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Auth0Provider
         domain="thesis-management-team17.eu.auth0.com"
         clientId="fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS"
+        useRefreshTokens={true}
+        cacheLocation='memory'
         authorizationParams={{
           redirect_uri: window.location.origin + "/secure-test"
         }}>

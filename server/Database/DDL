@@ -1,4 +1,4 @@
-CREATE TABLE Person (
+CREATE TABLE User (
     Id INTEGER NOT NULL,
     Surname TEXT NOT NULL,
     Name TEXT NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE Student (
     Nationality TEXT NOT NULL,
     Cod_Degree INTEGER NOT NULL,
     Enrollment_Year INTEGER NOT NULL,
-    FOREIGN KEY (Id) REFERENCES Person(Id),
+    FOREIGN KEY (Id) REFERENCES User(Id),
     FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
     PRIMARY KEY (Id)
 );
@@ -61,7 +61,7 @@ CREATE TABLE Teacher (
     Id INTEGER NOT NULL,
     Cod_Group INTEGER NOT NULL,
     Cod_Department INTEGER NOT NULL,
-    FOREIGN KEY (Id) REFERENCES Person(Id),
+    FOREIGN KEY (Id) REFERENCES User(Id),
     FOREIGN KEY (Cod_Group) REFERENCES ResearchGroup(Id),
     FOREIGN KEY (Cod_Department) REFERENCES Department(Cod_Department),
     PRIMARY KEY (Id)
@@ -81,7 +81,7 @@ CREATE TABLE Thesis (
     Level TEXT NOT NULL,
     CDS TEXT NOT NULL,
     FOREIGN KEY (Supervisor) REFERENCES Professor(Id),
-    FOREIGN KEY (CoSupervisor) REFERENCES Person(Id),
+    FOREIGN KEY (CoSupervisor) REFERENCES User(Id),
     FOREIGN KEY (Groups) REFERENCES ResearchGroup(Id)
     PRIMARY KEY (Title, Supervisor, CoSupervisor, Groups)
 );

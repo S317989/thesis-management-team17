@@ -5,6 +5,33 @@ const cors = require('cors');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
+const UserDAO = require('./Models/User');
+
+// Set up passport
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        UserDAO.authentication(username)
+            .then(user => {
+                return done(null, user);
+            }).catch(err => {
+                return done(null, false, { message: err.message });
+            });
+    }
+));
+
+/** Serialize User in order to store the id in the session*/
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    UserDAO.getUserById(id)
+        .then(user => {
+            done(null, user);
+        }).catch(err => {
+            done(err, null);
+        });
+});
 
 // Init express
 const app = express();

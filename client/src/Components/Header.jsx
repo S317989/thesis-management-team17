@@ -4,7 +4,19 @@ import { OAuthError, useAuth0 } from "@auth0/auth0-react";
 
 function Header(props) {
     const navigate = useNavigate();
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, logout, isAuthenticated, isLoading, accessToken } = useAuth0();
+
+    const handleLogin = async () => {
+        try {
+            await loginWithRedirect();
+
+        } catch (error) {
+            console.log(error);
+            if (error instanceof OAuthError) {
+                console.log(error.message);
+            }
+        }
+    };
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
@@ -12,6 +24,11 @@ function Header(props) {
                 <Navbar.Brand onClick={() => navigate("/")}>
                     Thesis Management
                 </Navbar.Brand>
+
+                <Nav className="me-auto">
+                    <Link className={"nav-link"}
+                        to={("/")}>Home</Link>
+                </Nav>
 
                 <Nav className="me-auto">
                     <Link className={"nav-link"}
@@ -26,17 +43,17 @@ function Header(props) {
                     placement="end">
                     <Offcanvas.Body>
                         {
-                            !isAuthenticated ?
+                            isLoading || !isAuthenticated ?
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
                                     <Button variant="link"
                                         className={"nav-link"}
-                                        onClick={() => loginWithRedirect()}>Login</Button>
+                                        onClick={handleLogin}>Login</Button>
                                 </Nav>
                                 :
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
                                     <Button variant="link"
                                         className={"nav-link"}
-                                        onClick={() => logout({ logoutParams: { returnTo: window.location.origin + "/home" } })}>Logout</Button>
+                                        onClick={() => logout({ logoutParams: { returnTo: window.location.origin + "/" } })}>Logout</Button>
                                 </Nav>
                         }
                     </Offcanvas.Body>
