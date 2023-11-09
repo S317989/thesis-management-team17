@@ -1,287 +1,358 @@
-import {Container, DropdownItem} from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { useEffect, useState } from 'react';
-import CloseButton from 'react-bootstrap/CloseButton';
-import Dropdown from 'react-bootstrap/Dropdown';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { Radio, RadioGroup} from 'react-radio-group'
+import React, { useState } from 'react';
+import Grid from '@mui/material/Grid';
+import {Box} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import RadioGroup from '@mui/material/RadioGroup';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Radio from '@mui/material/Radio';
+import CloseIcon from '@mui/icons-material/Close';
+import InputAdornment from '@mui/material/InputAdornment';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import Autocomplete from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
+import List from '@mui/material/List';
+import { DatePicker } from '@mui/x-date-pickers'
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import AddIcon from '@mui/icons-material/Add';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import {FormControl, InputLabel, Input, FormControlLabel, FormLabel} from '@mui/material';
 
-const uid = (function() {
-    let id = 0;
-    return function() {
-        id++;
-        return id;
-    }
+
+
+
+const uid = (function () {
+  let id = 0;
+  return function () {
+    id++;
+    return id;
+  };
 })();
 
+function InsertProposal(props) {
+  const [validated, setValidated] = useState(false);
+  const [title, setTitle] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [cosuper, setCosuper] = useState('');
+  const [csvList, setCsvList] = useState([]);
+  const [keyword, setKeyword] = useState('');
+  const [keylist, setKeylist] = useState([]);
+  const [cds,setCds]=useState('');
+  const [type, setType] = useState('');
+  const [typeList, setTypeList] = useState([]);
+  const [sup, setSup] = useState('');
+  const itemList = ['email1', 'email2', 'email3']; //supervisor list
+  const tempcsv = ['csv1', 'csv2', 'csv3'];
+  const tempcds = ['gestionale', 'informatica', 'elettronica', 'ambientale'];
+  const [date, setDate] = useState('');
+  const [level, setLevel] = useState('');
+  const [notes, setNotes] = useState('');
+  const [desc, setDesc] = useState('');
+  const [know, setKnow] = useState(''); // required knowledge
 
-function FilterDropDown(props) {
-  const title = props.title;
-  const itemList = props.itemList; //temporaneo per la prova, sostituire con DB
-  const [query, setQuery] = useState('');
-  const [filtered, setFiltered] = useState(itemList);
 
-  const getFilteredItems = (query, items) => {
-    if (!query) return items;
-    return items.filter((el) => el.includes(query)); // Adjust the filtering logic as needed
-  };
+  const handleSelection=(e)=>{
+    //e  is input value
+    setSup(e);
+    console.log(e);
+  }
 
-  const handleQueryChange = (e) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
-    const updatedFiltered = getFilteredItems(newQuery, itemList);
-    setFiltered(updatedFiltered);
-  };
+  const handleDelete=(item, list)=>{
+    let newList=list.filter((e)=>e!=item);
+    return newList;
+  }
+  
 
-  const clearQuery = () => {
-    setQuery('');
-    setFiltered(itemList);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    // Add your validation logic here and update the state
+    if (keylist.length === 0) {
+      setTitleError('Keywords are required');
+      setValidated(false);
+    } else {
+      setTitleError('');
+    }
+
+    if (csvList.length === 0) {
+      // Update state and error message for co-supervisor
+      setCsvList([]);
+      // Handle other validation and error messages as needed
+
+      setValidated(false);
+    }
+
+    if (typeList.length === 0) {
+      // Update state and error message for type
+      setTypeList([]);
+      // Handle other validation and error messages as needed
+
+      setValidated(false);
+    }
+
+    if (sup === '') {
+      // Update state and error message for supervisor
+      setSup('No supervisor selected');
+      // Handle other validation and error messages as needed
+
+      setValidated(false);
+    }
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
+
+    setValidated(true);
   };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        {title}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.ItemText>
-          <div>
-            <input
-              type="text"
-              placeholder="Search supervisor email to add"
-              value={query}
-              onChange={handleQueryChange}
-            />
-            {query && (
-              <button onClick={clearQuery} className="clear-button">
-                X
-              </button>
-            )}
-          </div>
-        </Dropdown.ItemText>
-        {filtered.length === 0 ? (
-          <h4>No email found</h4>
-        ) : (
-          filtered.map((item) => ( //gestire il parametro item.email, da prelevare dal database
-            <Dropdown.Item key={item} onClick={() => {
-              if(props.csvList){ //caso lista co supervisor
-                if(!props.csvList.find((el)=>el===item)){
-                let newList=[...props.csvList, item];
-                props.setFun(newList);
-                }
-              } else{
-              props.setFun(item)}
-              }}>
-              {item}
-            </Dropdown.Item> 
-          ))
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+    <Container className="main-container">
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        style={{ minHeight: '100vh' }}
+      >
+        <Box>
+          <Typography style={{ marginTop: '3rem' }} variant="h5" component="div">
+            Insert Proposal
+          </Typography>
+        </Box>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Insert Title*"
+                variant="filled"
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                id="Select a supervisor"
+                clearOnEscape
+                options={itemList}
+                onChange={(event, newValue) => {
+                  setSup(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select a supervisor*" variant="standard" />
+                )}
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div">
+                Co-Supervisors list
+              </Typography>
+              <List dense>
+                {csvList.length !== 0 ? (
+                  csvList.map((item) => (
+                    <ListItem key={item}>
+                      {item}
+                      <IconButton
+                        edge="end"
+                        onClick={() => {
+                          const newList = handleDelete(item, csvList);
+                          setCsvList(newList);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Typography>No co-supervisors added</Typography>
+                )}
+              </List>
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                id="Select co-supervisors"
+                clearOnEscape
+                options={tempcsv}
+                onChange={(event, newValue) => {
+                  if (newValue !== null && !csvList.includes(newValue)) {
+                    const newList = [...csvList, newValue];
+                    setCsvList(newList);
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Add supervisors*" variant="standard" />
+                )}
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div">
+                Keywords list
+              </Typography>
+              <List dense>
+                {keylist.length !== 0 ? (
+                  keylist.map((item) => (
+                    <ListItem key={item}>
+                      {item}
+                      <IconButton
+                        edge="end"
+                        onClick={() => {
+                          const newList = handleDelete(item, keylist);
+                          setKeylist(newList);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Typography>No keywords added</Typography>
+                )}
+              </List>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Add keywords*"
+                onChange={(e) => setKeyword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      onClick={() => {
+                        if (keyword !== '' && !keylist.includes(keyword)) {
+                          const newList = [...keylist, keyword];
+                          setKeylist(newList);
+                          setKeyword('');
+                        }
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  ),
+                }}
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div">
+                Type list
+              </Typography>
+              <List dense>
+                {typeList.length !== 0 ? (
+                  typeList.map((item) => (
+                    <ListItem key={item}>
+                      {item}
+                      <IconButton
+                        edge="end"
+                        onClick={() => {
+                          const newList = handleDelete(item, typeList);
+                          setTypeList(newList);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Typography>No type added</Typography>
+                )}
+              </List>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Add type*"
+                onChange={(e) => setType(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      onClick={() => {
+                        if (type !== '' && !typeList.includes(type)) {
+                          const newList = [...typeList, type];
+                          setTypeList(newList);
+                          setType('');
+                        }
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  ),
+                }}
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Autocomplete
+                id="Select a CdS"
+                clearOnEscape
+                options={tempcds}
+                onChange={(event, newValue) => {
+                  setCds(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select a CdS*" variant="standard" />
+                )}
+                sx={{ margin: '8px 0' }} 
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+              <TextField
+                fullWidth
+                label="Required knowledge*"
+                multiline
+                rows={4}
+                variant="filled"
+                onChange={(e) => setKnow(e.target.value)}
+                sx={{ margin: '8px 0' }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel id="demo-radio-buttons-group-label">Level*</FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="BSc"
+                name="radio-buttons-group"
+                row
+                onChange={(e) => setLevel(e.target.value)}
+              >
+                <FormControlLabel value="BSc" control={<Radio />} label="BSc" />
+                <FormControlLabel value="MSc" control={<Radio />} label="MSc" />
+              </RadioGroup>
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+              <FormLabel id="date-label">Expiration Date*</FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  defaultValue={dayjs()}
+                  minDate={dayjs().add(1, 'day')}
+                  disablePast
+                  views={['year', 'month', 'day']}
+                  onChange={(e) => setDate(dayjs(e.target.value).format('DD-MM-YYYY'))}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary">
+                Submit form
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Container>
   );
-}
+  }  
 
-
-
-  
-
-function InsertProposal(props){
-    /*
-        keywords: lista di elementi, input + list group
-        type: come sopra
-        supervisor + cosupervisor: dropdown + ricerca ottimizzata
-        group predefinito,retrieve from db
-        description testo
-        notes: testo
-        expiration date dayjs install
-        level scelta doppia
-        cds seleziona da lista degree table con nome e id per chiave
-    */
-
-    const [validated, setValidated] = useState(false);
-    const [cosuper, setCosuper]= useState("");
-    const [csvList, setCsvList]= useState([]);
-    const [keyword, setKeyword]= useState('');
-    const [keylist, setKeylist]= useState([]);
-    const [type, setType]=useState('');
-    const [typeList, setTypeList]= useState([]);
-    const [sup, setSup]=useState('No supervisor selected'); //dove salvo il supervisor
-    const itemList=['email1', 'email2', 'email3']; //temporaneo
-    const tempcsv=['csv1', 'csv2', 'csv3']; //temporaneo
-    const tempcds=['gestionale', 'informatica', 'elettronica', 'ambientale'];
-    const [date,setDate]=useState('');
-    const [level, setLevel]=useState('');
-
-
-    const handleSubmit = (event) => {
-            const form = event.currentTarget;
-            if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-            }
-
-            setValidated(true);
-    };
-
-
-return(
-        <>
-        <h1>Add new proposal</h1>
-    
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Row className="mb-3">
-            <Form.Group as={Col} md="4" controlId="validationCustom01">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-                required
-                type="text"
-                placeholder="Title"
-                defaultValue=""
-            />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <FilterDropDown title="Search supervisor's email" itemList={itemList} setFun={setSup} />
-            <label>{sup}</label>
-            {
-                csvList.length==0 ?
-                <h4>No co-supervisor added</h4>
-                :
-                <ListGroup>
-                {
-                    csvList.map((e)=> <ListGroup.Item key={e} >{e}<CloseButton onClick={()=>{
-                        let newList= csvList.filter((obj) => obj.id !== e.id);
-                        setCsvList(newList);
-                    }} /></ListGroup.Item>)
-                }
-                </ListGroup>
-            }
-            <FilterDropDown title="Search co-supervisor's email" itemList={tempcsv} csvList={csvList} setFun={setCsvList} />
-
-           
-            {
-                keylist.length==0 ?
-                <h4>No keywords added</h4>
-                :
-                <ListGroup>
-                {
-                    keylist.map((e)=> <ListGroup.Item key={e.id} >{e.name}<CloseButton onClick={()=>{
-                        let newList= keylist.filter((obj) => obj.id !== e.id);
-                        setKeylist(newList);
-                    }} /></ListGroup.Item>)
-                }
-                </ListGroup>
-            }
-            <InputGroup className="mb-3">
-            <Form.Control
-            placeholder="Keyword"
-            aria-label="Keyword"
-            aria-describedby="basic-addon2"
-            value={keyword}
-            onChange={(e)=>setKeyword(e.target.value)}
-            />
-            <Button variant="outline-secondary" id="button-addon2" onClick={()=>{
-                if(keyword!==''){
-                let newObj={id: uid(), name: keyword}; //add the client side id
-                let list=[...keylist, newObj]; //supervisor accademici e non distinzione ancora TO DO
-                setKeylist(list);
-                setKeyword('');
-
-                } else {
-                    //tooltip non puoi inserire vuota error
-                    console.log("non puoi inserire una keyword vuota")
-                }
-            }} >
-            Add keyword
-            </Button>
-            </InputGroup>
-            {
-                keylist.length==0 ?
-                <h4>No types added</h4>
-                :
-                <ListGroup>
-                {
-                    typeList.map((e)=> <ListGroup.Item key={e.id} >{e.name}<CloseButton onClick={()=>{
-                        let newList= typeList.filter((obj) => obj.id !== e.id);
-                        setTypeList(newList);
-                    }} /></ListGroup.Item>)
-                }
-                </ListGroup>
-            }
-            <InputGroup className="mb-3">
-            <Form.Control
-            placeholder="Type"
-            aria-label="Type"
-            aria-describedby="basic-addon2"
-            value={type}
-            onChange={(e)=>setType(e.target.value)}
-            />
-            <Button variant="outline-secondary" id="button-addon2" onClick={()=>{
-                if(type!==''){
-                let newObj={id: uid(), name: type}; //add the client side id
-                let list=[...typeList, newObj]; //supervisor accademici e non distinzione ancora TO DO
-                setTypeList(list);
-                setType('');
-
-                } else {
-                    //tooltip non puoi inserire vuota error
-                    console.log("non puoi inserire un type vuoto")
-                }
-            }} >
-            Add a type
-            </Button>
-            </InputGroup>
-        </Row>
-        <Row className="mb-3">
-            <FloatingLabel controlId="floatingTextarea2" label="Description">
-            <Form.Control
-              as="textarea"
-              placeholder="Description"
-              style={{ height: '100px' }}
-            />
-          </FloatingLabel>
-          <FloatingLabel controlId="floatingTextarea2" label="Notes">
-            <Form.Control
-              as="textarea"
-              placeholder="Notes"
-              style={{ height: '100px' }}
-            />
-          </FloatingLabel>
-          <label>Set expiration date</label>
-          <input type='date' onChange={(e)=>setDate(dayjs(e.target.value).format('DD-MM-YYYY'))}  />
-          <label>Choose level</label>
-          <RadioGroup name="level" onChange={(e) =>setLevel(e)}>
-            <div className="radio-button-background">
-                <Radio value="BSc" className="radio-button" />BSc
-            </div>
-              <div className="radio-button-background">
-                <Radio value="MSc" className="radio-button" />MSc
-            </div>
-            </RadioGroup>
-           </Row>
-           <Row>
-            <label>Select a CdS</label>
-           <Form.Select aria-label="Select a CdS">
-           
-            {
-              tempcds ?
-              tempcds.map((item)=><option key={item}>{item}</option>)
-              :
-              <h4>No CdS available</h4>
-            }
-            
-            
-          </Form.Select>
-           </Row>
-        <Button type="submit">Submit form</Button>
-        </Form>
-        
-        </>
-    );
-
-}
 export default InsertProposal;

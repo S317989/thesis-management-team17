@@ -9,4 +9,9 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: './setup.js',
   },
+  resolve: {
+    alias: {
+      '@mui/styled-engine': '@mui/styled-engine-sc',
+    },
+},
 })
