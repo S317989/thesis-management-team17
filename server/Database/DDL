@@ -4,6 +4,7 @@ CREATE TABLE User (
     Name TEXT NOT NULL,
     Email TEXT NOT NULL,
     Role TEXT NOT NULL,
+    AccessToken TEXT,
     CoSupervisor TEXT CHECK (CoSupervisor IN ('Academic', 'NonAcademic')),
     PRIMARY KEY (Id)
 );

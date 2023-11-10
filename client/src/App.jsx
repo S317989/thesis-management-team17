@@ -1,44 +1,44 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Login from './Pages/Login'
 import Header from './Components/Header'
 import Home from './Pages/Home'
 import SecurePageTest from './Pages/SecurePageTest';
-import { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, } from 'react-router-dom';
-import { UserContext } from "./Contexts.js";
+import { Route, Routes } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { UserContext } from './Contexts.js';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
-import { useAuth0 } from "@auth0/auth0-react";
-
 
 function App() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
+    AuthenticationAPI.getSessionAPI().then(async response => {
+      const data = await response.json();
 
-    const getUserMetadata = async () => {
-      let accessToken = await getAccessTokenSilently();
-
-      console.log(accessToken);
-    };
-
-    getUserMetadata();
-
-  }, [getAccessTokenSilently]);
+      if (response.status === 200) {
+        setUser(data);
+      }
+    }).catch(error => {
+      console.log("sas" + error.message);
+    })
+  }, []);
 
   return (
     <>
-      <UserContext.Provider value={{ user, setUser }}>
-        <div className="App">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/secure-test" element={<SecurePageTest />} />
-          </Routes>
-        </div>
-      </UserContext.Provider>
+      {
+        <UserContext.Provider value={{ user, setUser }}>
+          <div className="App">
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/secure-test" element={<SecurePageTest />} />
+              <Route path="Login" element={<Login />} />
+            </Routes>
+          </div>
+        </UserContext.Provider>
+      }
     </>
   )
 }

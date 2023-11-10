@@ -5,6 +5,12 @@ apiRouter.use('/test', require('./RouterTest'));
 
 apiRouter.use('/auth', require('./RouterAuth'));
 
-apiRouter.use('/config', require('./RouterConfig'));
+const checkAuthentication = (req, res, next) => {
+    req.isAuthenticated() ? next() : res.status(401).json({ errorMessage: 'Unauthorized' });
+}
+
+apiRouter.use((req, res, next) => {
+    checkAuthentication(req, res, next);
+});
 
 module.exports = apiRouter;

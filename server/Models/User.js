@@ -13,7 +13,7 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
 });
 
 module.exports = {
-    authentication: function (username) {
+    authentication: function (username, password) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM User WHERE Email = ?';
             db.get(sql, [username], (err, row) => {
@@ -24,8 +24,7 @@ module.exports = {
 
                 if (row === undefined) reject({ status: 404, message: 'User not found' });
                 else {
-                    const user = { id: row.id, username: row.username, role: row.role };
-                    resolve(user);
+                    resolve({ id: row.Id, email: row.Email });
                 }
             });
         }
@@ -44,33 +43,12 @@ module.exports = {
 
                     if (row === undefined) return reject({ status: 404, message: 'User not found' });
                     else
-                        return resolve({ id: row.id, username: row.username, role: row.role });
+                        return resolve({ id: row.Id, email: row.Email });
                 });
             } catch (e) {
                 return reject({ status: 500, message: 'Author not found' });
             }
         });
-    }
-    ,
+    },
 
-    getUsers: function () {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT Id, Email FROM User';
-            db.all(sql, [], (err, rows) => {
-                if (err)
-                    return reject({
-                        status: 500, message: 'Internal Server Error'
-                    });
-                else {
-                    if (rows === undefined) return reject({ status: 404, message: 'Users not found' });
-                    else {
-                        let users = rows.map((row) => {
-                            return { id: row.id, username: row.username };
-                        });
-                        resolve({ status: 200, users: users });
-                    }
-                }
-            });
-        });
-    }
 }

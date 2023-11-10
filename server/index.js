@@ -6,11 +6,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const UserDAO = require('./Models/User');
+const path = require('path');
 
 // Set up passport
 passport.use(new LocalStrategy(
     function (username, password, done) {
-        UserDAO.authentication(username)
+        UserDAO.authentication(username, password)
             .then(user => {
                 return done(null, user);
             }).catch(err => {
@@ -52,10 +53,8 @@ app.use(session({
     saveUninitialized: false
 }));
 
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use("/api", require("./Router/RouterAPI"));
 
