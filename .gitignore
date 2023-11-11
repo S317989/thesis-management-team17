@@ -1,2 +1,7 @@
-client/coverage/lcov-report/index.html
-server/coverage/lcov-report/index.html
+# dependencies
+node_modules/
+
+# misc
+.DS_Store
+Thumbs.db
+Desktop.ini
