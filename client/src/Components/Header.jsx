@@ -9,21 +9,6 @@ function Header(props) {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
-    const handleLogoutSubmit = (event) => {
-        event.preventDefault();
-
-        AuthenticationAPI.logoutAPI().then(async response => {
-            const data = await response.json();
-
-            if (response.status === 200) {
-                setUser(null);
-                navigate("/");
-            }
-        }).catch(error => {
-            console.log(error.message);
-        })
-    }
-
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
             <Container fluid>
@@ -49,18 +34,19 @@ function Header(props) {
                     placement="end">
                     <Offcanvas.Body>
                         {
-                            !user ?
+                            <>
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
                                     <Button variant="link"
                                         className={"nav-link"}
-                                        onClick={() => navigate("/Login")}>Login</Button>
+                                        href="http://localhost:3000/login">Login</Button>
                                 </Nav>
-                                :
+
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
                                     <Button variant="link"
                                         className={"nav-link"}
-                                        onClick={handleLogoutSubmit}>Logout</Button>
+                                        href="http://localhost:3000/logout">Logout</Button>
                                 </Nav>
+                            </>
                         }
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

@@ -3,7 +3,7 @@
 const passport = require('passport');
 
 module.exports = {
-    login: function (req, res) {
+    /*login: function (req, res) {
         passport.authenticate('local', (err, user, info) => {
             if (err) return res.status(500).json({ message: err.message });
             else if (!user) return res.status(401).json({ message: info.message });
@@ -13,7 +13,7 @@ module.exports = {
             }
             );
         })(req, res);
-    },
+    },*/
 
     session: (req, res) => {
         req.isAuthenticated() ? res.status(200).json({

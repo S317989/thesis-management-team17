@@ -1,9 +1,12 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import TestAPI from '../APIs/TestAPI';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 
 function Home() {
+
     const handleTestGet = () => {
         TestAPI.getTest()
             .then(res => res.json())

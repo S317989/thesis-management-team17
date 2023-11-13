@@ -5,7 +5,7 @@ import Login from './Pages/Login'
 import Header from './Components/Header'
 import Home from './Pages/Home'
 import SecurePageTest from './Pages/SecurePageTest';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
@@ -13,7 +13,7 @@ import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 function App() {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     AuthenticationAPI.getSessionAPI().then(async response => {
       const data = await response.json();
 
@@ -23,7 +23,7 @@ function App() {
     }).catch(error => {
       console.log("sas" + error.message);
     })
-  }, []);
+  }, []);*/
 
   return (
     <>

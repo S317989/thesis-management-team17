@@ -1,10 +1,11 @@
 import { Alert, Button, Form } from "react-bootstrap";
 import { useContext, useState } from "react";
 import { UserContext } from "../Contexts.js";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
 
 function LoginForm() {
+    const navigate = useNavigate()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { user, setUser } = useContext(UserContext);
@@ -12,11 +13,9 @@ function LoginForm() {
     const handleLoginSubmit = (event) => {
         event.preventDefault();
 
-        if (!username || !password) {
-            return;
-        }
+        navigate("https://thesis-management-team17.eu.auth0.com/samlp/fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS");
 
-        AuthenticationAPI.loginAPI(username, password)
+        /*AuthenticationAPI.loginAPI(username, password)
             .then(async response => {
                 const data = await response.json();
 
@@ -29,7 +28,7 @@ function LoginForm() {
             })
             .catch(error => {
                 console.log(error.message);
-            });
+            });*/
     }
 
     return (

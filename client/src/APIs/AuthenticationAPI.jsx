@@ -8,7 +8,7 @@ const AuthenticationAPI = {
         })
     },
 
-    loginAPI: function (username, password) {
+    /*loginAPI: function (username, password) {
         return fetch(URL + '/auth/login', {
             method: 'POST',
             headers: {
@@ -17,7 +17,7 @@ const AuthenticationAPI = {
             credentials: "include",
             body: JSON.stringify({ username, password })
         })
-    },
+    },*/
 
     logoutAPI: function () {
         return fetch(URL + '/auth/logout', {
