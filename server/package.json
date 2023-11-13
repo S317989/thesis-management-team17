@@ -1,15 +1,12 @@
 {
   "scripts": {
-    "start": "concurrently \"nodemon index.js\" \"npm run test\"",
-    "test": "jest --passWithNoTests"
+    "start": "concurrently \"nodemon index.js\" \"npm run test:coverage\"",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --runInBand --coverage --colors",
+    "test:unit": "npx jest --runInBand --coverage --coverageDirectory=coverage/coverage_unit --colors"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.2.3",
     "@babel/preset-env": "^7.23.2",
-    "@babel/preset-react": "^7.22.15",
-    "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.5.1",
     "body-parser": "^1.20.2",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
@@ -19,32 +16,16 @@
     "express-validator": "^7.0.1",
     "fs": "^0.0.1-security",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-extended": "^4.0.2",
+    "npx": "^10.2.2",
     "passport": "^0.6.0",
     "passport-auth0": "^1.4.4",
     "passport-local": "^1.0.0",
     "passport-saml": "^3.2.4",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "supertest": "^6.3.3"
   },
   "jest": {
-    "testEnvironment": "jsdom",
-    "moduleNameMapper": {
-      "^.+\\.svg$": "jest-svg-transformer",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    "setupFilesAfterEnv": [
-      "<rootDir>/setupTests.js"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text-summary",
-      "text"
-    ]
+    "testTimeout": 30000
   }
 }

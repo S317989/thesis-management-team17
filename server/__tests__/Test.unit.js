@@ -1,6 +1,8 @@
-// Write jest test
-describe('Test', () => {
-    test('should render', () => {
-        expect(true).toBe(true);
+import "jest-extended";
+import { Request } from "supertest";
+
+describe("Test", () => {
+    it("Test", async () => {
+        expect(1).toBe(1);
     });
 });
