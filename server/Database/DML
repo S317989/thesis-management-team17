@@ -1,0 +1,33 @@
+INSERT INTO User VALUES
+    (317989, 'Student'),
+    (301316, 'Student'),
+    (319976, 'Student'),
+    (308344, 'Student'),
+    (314140, 'Student'),
+    (319572, 'Student'),
+    (12571, 'Professor'),
+    (23817, 'Professor'),
+    (78912, 'Professor'),
+    (54723, 'Professor'),
+    (96970, 'Professor');
+
+INSERT INTO Degree VALUES (1, 'Computer Engineering');
+
+INSERT INTO Student VALUES 
+    (317989, 'Gaudino', 'Andrea', 'Male', 'Italian', 's317989@studenti.polito.it', 1, 2022),
+    (301316, 'Negin', 'Negin', 'Female', 'Iranian', 's301316@studenti.polito.it', 1, 2022),
+    (319976, 'Mahrous', 'Mahmoud', 'Male', 'Egyptian', 's319976@studenti.polito.it', 1, 2022),
+    (308344, 'Sanfrancesco', 'Federico', 'Male', 'Italian', 's308344@studenti.polito.it', 1, 2022),
+    (314140, 'Irmak', 'Gizem', 'Female', 'Turkish', 's314140@studenti.polito.it', 1, 2022),
+    (319572, 'Di Paolo', 'Domenico', 'Male', 'Italian', 's319572@studenti.polito.it', 1, 2022);
+
+INSERT INTO ResearchGroup VALUES (1, 'Computer Engineering Group'), (2, 'Electronic Group');
+
+INSERT INTO Department VALUES (1, 'Computer Engineering Dep'), (2, 'Electronic Dep');
+
+INSERT INTO Teacher VALUES
+    (12571, 'Rossi', 'Mario', 'd12571@polito.it', 1, 1),
+    (23817, 'Bianchi', 'Luca', 'd23817@polito.it', 2, 2),
+    (78912, 'Verdi', 'Giuseppe', 'd78912@polito.it', 1, 1),
+    (54723, 'Gialli', 'Giovanni', 'd54723@polito.it', 2, 2),
+    (96970, 'Neri', 'Paolo', 'd96970@polito.it', 1, 1);

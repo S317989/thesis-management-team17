@@ -5,6 +5,7 @@
  * */
 
 const sqlite = require('sqlite3');
+const { get } = require('../Router/RouterTest');
 
 // Open the database connection
 const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
@@ -13,27 +14,9 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
 });
 
 module.exports = {
-    authentication: function (username, password) {
+    getStudentInfos: function (id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM User WHERE Email = ?';
-            db.get(sql, [username], (err, row) => {
-                if (err)
-                    reject({
-                        status: 500, message: 'Internal Server Error'
-                    });
-
-                if (row === undefined) reject({ status: 404, message: 'User not found' });
-                else {
-                    resolve({ id: row.Id, email: row.Email });
-                }
-            });
-        }
-        );
-    },
-
-    getUserById: function (id) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM User WHERE Id = ?';
+            const sql = 'SELECT * FROM Student WHERE Id = ?';
             try {
                 db.get(sql, [id], (err, row) => {
                     if (err)
@@ -41,14 +24,84 @@ module.exports = {
                             status: 500, message: 'Internal Server Error'
                         });
 
-                    if (row === undefined) return reject({ status: 404, message: 'User not found' });
-                    else
-                        return resolve({ id: row.Id, email: row.Email });
+                    if (row === undefined) return reject({ status: 404, message: 'Student not found' });
+                    else {
+                        const studentInfos = {
+                            id: row.Id,
+                            surname: row.Surname,
+                            name: row.Name,
+                            gender: row.Gender,
+                            nationality: row.Nationality,
+                            email: row.Email,
+                            cod_degree: row.Cod_Degree,
+                            enrollment_year: row.Enrollment_Year,
+                            role: 'Student'
+                        };
+
+                        return resolve(studentInfos);
+                    }
                 });
             } catch (e) {
-                return reject({ status: 500, message: 'Author not found' });
+                return reject({ status: 500, message: 'Error during student info retrieving' });
             }
-        });
+        })
     },
 
-}
+    getTeacherInfos: function (id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM Teacher WHERE Id = ?';
+            try {
+                db.get(sql, [id], (err, row) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    if (row === undefined) return reject({ status: 404, message: 'Teacher not found' });
+                    else {
+                        const teacherInfos = {
+                            id: row.Id,
+                            surname: row.Surname,
+                            name: row.Name,
+                            email: row.Email,
+                            cod_group: row.Cod_Group,
+                            cod_department: row.Cod_Department,
+                            role: 'Teacher'
+                        };
+
+                        return resolve(teacherInfos);
+                    }
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during teacher infos retrieving' });
+            }
+        })
+    },
+
+    getUserById: function (id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM User WHERE Id = ?';
+            try {
+                db.get(sql, [id], async (err, row) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    if (row === undefined) return reject({ status: 404, message: 'User not found' });
+                    else {
+                        const userInfos =
+                            row.Role === 'Student'
+                                ? await this.getStudentInfos(row.Id)
+                                : await this.getTeacherInfos(row.Id);
+
+                        console.log(userInfos);
+                        resolve(userInfos);
+                    }
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during user infos retrieving' });
+            }
+        });
+    }
+};

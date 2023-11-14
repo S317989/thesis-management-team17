@@ -3,10 +3,8 @@ const authRouter = express.Router();
 
 const authController = require('../Controllers/AuthenticationController');
 
-//authRouter.post('/login', authController.login);
+/** Get(/login) and Get(/login/callback) are in index.js due to some problem with routes */
 
 authRouter.get('/session', authController.session);
-
-authRouter.delete('/logout', authController.logout);
 
 module.exports = authRouter;

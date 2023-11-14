@@ -3,27 +3,35 @@
 const passport = require('passport');
 
 module.exports = {
-    /*login: function (req, res) {
-        passport.authenticate('local', (err, user, info) => {
-            if (err) return res.status(500).json({ message: err.message });
-            else if (!user) return res.status(401).json({ message: info.message });
-            else req.login(user, (err) => {
-                if (err) res.status(500).json({ message: err.message });
-                else res.status(200).json(user);
-            }
-            );
-        })(req, res);
-    },*/
+    /** Get(/login) and Get(/login/callback) are in index.js due to some problem with routes */
 
     session: (req, res) => {
-        req.isAuthenticated() ? res.status(200).json({
-            id: req.user.id, username: req.user.email
-        }) : res.status(401).json({ errorMessage: 'Unauthorized' });
+        if (req.isAuthenticated()) {
+            if (req.user.role === 'Student') {
+                res.status(200).json({
+                    id: req.user.id,
+                    email: req.user.email,
+                    role: req.user.role,
+                    name: req.user.name,
+                    surname: req.user.surname,
+                    gender: req.user.gender,
+                    nationality: req.user.nationality,
+                    cod_degree: req.user.cod_degree,
+                    enrollment_year: req.user.enrollment_year,
+                });
+            } else {
+                res.status(200).json({
+                    id: req.user.id,
+                    email: req.user.email,
+                    role: req.user.role,
+                    name: req.user.name,
+                    surname: req.user.surname,
+                    cod_group: req.user.cod_group,
+                    cod_department: req.user.cod_department,
+                });
+            }
+        } else {
+            res.status(401).json({ errorMessage: 'Unauthorized' });
+        }
     },
-
-    logout: (req, res) => {
-        req.isAuthenticated() ? req.logout(() => {
-            res.status(200).json({ message: 'Logout successful' });
-        }) : res.status(401).json({ message: 'Forbidden' });
-    }
 }

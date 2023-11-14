@@ -8,22 +8,24 @@ import SecurePageTest from './Pages/SecurePageTest';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
+import { jwtDecode } from 'jwt-decode';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
 
-  /*useEffect(() => {
-    AuthenticationAPI.getSessionAPI().then(async response => {
-      const data = await response.json();
-
+  useEffect(() => {
+    AuthenticationAPI.getSessionAPI().then(response => {
       if (response.status === 200) {
-        setUser(data);
-      }
-    }).catch(error => {
-      console.log("sas" + error.message);
-    })
-  }, []);*/
+        response.json().then(data => {
+          console.log("App info: ", data);
+          setUser(data);
+        });
+      } else
+        setUser(null);
+
+    });
+  }, []);
 
   return (
     <>
