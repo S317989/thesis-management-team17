@@ -20,13 +20,14 @@ module.exports = {
         });
     },
 
-    getActiveThesisProposals: function () {
+    getThesisProposals: function (Progress) {
         return new Promise((resolve, reject) => {
             try {
                 db.all(`SELECT *
                         FROM Thesis_Proposal AS TP, Thesis_Applications AS TA
                         WHERE TP.Id = TA.Th_Proposal_Id
-                        AND TA.Progress = "Active"`,
+                        AND TA.Progress = ?`,
+                    [Progress],
                     (err, rows) => {
                         if (err) reject(err);
                         console.log('data loaded', rows);

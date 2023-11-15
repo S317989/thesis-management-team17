@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 function SecurePageTest() {
 
     const testApplyForThesis = () => {
-        fetch('http://localhost:3000/api/thesis/active-proposals', {
+        fetch('http://localhost:3000/api/thesis/archived-proposals', {
             method: 'GET',
             credentials: 'include',
         })
