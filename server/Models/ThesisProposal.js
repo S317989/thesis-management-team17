@@ -10,21 +10,21 @@ const sqlite = require('sqlite3');
 // Open the database connection
 const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
     if (err) console.error(err.message);
-    console.log('User DAO ready.');
+    console.log('Thesis proposal DAO ready.');
 });
 
 // create new service
-exports.createThesisProposal = (title, supervisor, cosup, groups, keywords) => {
+exports.createThesisProposal = (title, supervisor, cosup, groups, keywords, type, description, knowledge, notes, expiration, level, cds) => {
   
     return new Promise((resolve, reject) => {
-      const sql = 'INSERT INTO Services(Name, AverageServiceTime) VALUES(?, ?)';  
+      const sql = 'INSERT INTO Thesis_Proposal(Title, Supervisor, CoSupervisors, Groups, Keywords, Type, Description, Required_Knowledge, Notes, Expiration, Level, CDS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';  
       // 
-      db.run(sql, [name, ast], function (err) {
+      db.run(sql, [title, supervisor, cosup, groups, keywords, type, description, knowledge, notes, expiration, level, cds], function (err) {
         if (err) {
           reject(err);
           return;
         }
-        resolve(this.lastID); //returns last id element
+        resolve(this.lastID); //returns last id element created
       });
     });
   };
