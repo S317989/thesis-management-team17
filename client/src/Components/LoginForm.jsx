@@ -1,35 +1,57 @@
 import { Alert, Button, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../Contexts.js";
+import { Navigate, useNavigate } from "react-router-dom";
+import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
 
 function LoginForm() {
-    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { user, setUser } = useContext(UserContext);
 
-    const handleLoginSubmit = (e) => {
-        // TODO
-    };
+    const handleLoginSubmit = (event) => {
+        event.preventDefault();
+
+        navigate("https://thesis-management-team17.eu.auth0.com/samlp/fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS");
+
+        /*AuthenticationAPI.loginAPI(username, password)
+            .then(async response => {
+                const data = await response.json();
+
+                if (response.status === 200) {
+                    setUser(data);
+                }
+                else {
+                    console.log(data.message);
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            });*/
+    }
 
     return (
-        <Form>
-            {(errorMessage.length) ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
-
-            <Form.Group className="mb-3" controlId="formGroupUsername">
-                <Form.Label column="lg">Username</Form.Label>
-                <Form.Control size="lg" type="text" placeholder="Enter username"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)} autoFocus />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupPassword">
-                <Form.Label column="lg">Password</Form.Label>
-                <Form.Control size="lg" type="password" placeholder="Password" value={password}
-                    onChange={e => setPassword(e.target.value)} />
-            </Form.Group>
-            <Button type="submit" size="lg" variant="outline-primary" className="float-end" id="login-button"
-                onClick={handleLoginSubmit}>
-                Login
-            </Button>
-        </Form>
+        user
+            ? <Navigate to="/" />
+            : <Form>
+                <Form.Group className="mb-3" controlId="formGroupEmail">
+                    <Form.Label column="lg">Username</Form.Label>
+                    <Form.Control size="lg" type="text" placeholder="Enter username" value={username}
+                        onChange={e => setUsername(e.target.value)} autoFocus
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGroupPassword">
+                    <Form.Label column="lg">Password</Form.Label>
+                    <Form.Control size="lg" type="password" placeholder="Password" value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                </Form.Group>
+                <Button type="submit" size="lg" variant="outline-primary" className="float-end" id="login-button"
+                    onClick={handleLoginSubmit}>
+                    Login
+                </Button>
+            </Form >
     )
 }
 
