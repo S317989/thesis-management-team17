@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import ProposalList from './ProposalList';
 import SearchAPI from '../APIs/SearchAPI';
+import { UserContext } from '../Contexts.js'; 
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [proposals, setProposals] = useState([]);
   const [showProposals, setShowProposals] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     // Simulate an API call to retrieve all proposals
@@ -18,18 +21,22 @@ const Search = () => {
     e.preventDefault();
     // Simulate an API call to search for proposals
     setLoading(true);
-    SearchAPI.searchProposals(searchTerm)
-      .then((proposals) => {
-        setProposals(proposals);
-        setShowProposals(true);
-      })
-      .finally(() => setLoading(false));
+    SearchAPI.searchProposals(user.id, searchTerm)
+  .then((proposals) => {
+    setProposals(proposals);
+    setShowProposals(true);
+  })
+  .catch((error) => {
+    console.error("Error fetching proposals:", error);
+  })
+  .finally(() => setLoading(false));
+
   };
 
   const fetchAllProposals = () => {
     // Simulate an API call to retrieve all proposals
     setLoading(true);
-    SearchAPI.getAllProposals()
+    SearchAPI.getAllProposals(user.id)
       .then((proposals) => {
         setProposals(proposals);
         setShowProposals(true);

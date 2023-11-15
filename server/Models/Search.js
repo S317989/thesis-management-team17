@@ -5,13 +5,14 @@
  * */
 
 const sqlite = require("sqlite3");
-const dayjs = require('dayjs'); 
+//const dayjs = require('dayjs'); 
 
-// Open the database connection
-const db = new sqlite.Database("./QueueManagement.sqlite", (err) => {
-  if (err) console.error(err.message);
-  console.log("Search DAO ready.");
+/// Open the database connection
+const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
+    if (err) console.error(err.message);
+    console.log('Search DAO ready.');
 });
+
 
 module.exports = {
    
