@@ -5,8 +5,8 @@ import { useLocation } from 'react-router-dom';
 function SecurePageTest() {
 
     const testApplyForThesis = () => {
-        fetch('http://localhost:3000/api/thesis/apply', {
-            method: 'POST',
+        fetch('http://localhost:3000/api/thesis/active-proposals', {
+            method: 'GET',
             credentials: 'include',
         })
             .then(response => {
