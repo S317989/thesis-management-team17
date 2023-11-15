@@ -40,12 +40,13 @@ function InsertProposal(props) {
   const [sup, setSup] = useState('');
   const [levelerror, setLevelerror] = useState(false);
   const [descerror, setDescerror] = useState(false);
-
+  const [formerror, setFormerror]=useState(false);
   const itemList = ['email1', 'email2', 'email3']; //supervisor list
   const tempcsv = ['csv1', 'csv2', 'csv3'];
   const tempcds = ['gestionale', 'informatica', 'elettronica', 'ambientale'];
   const [date, setDate] = useState('');
   const [level, setLevel] = useState('BSc');
+  const [success, setSuccess]=useState(false);
   const [notes, setNotes] = useState('');
   const [desc, setDesc] = useState('');
   const [know, setKnow] = useState(''); // required knowledge
@@ -60,7 +61,7 @@ function InsertProposal(props) {
     return newList;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let isFormValid = true;
 
@@ -84,7 +85,7 @@ function InsertProposal(props) {
       setKeyerror(true);
       isFormValid = false;
     }
-    if (!cds) {
+    if (cds.length==0) {
       setCdserror(true);
       isFormValid = false;
     }
@@ -100,26 +101,65 @@ function InsertProposal(props) {
     // Check if the form is valid before proceeding
     if (!isFormValid) {
       // If the form is not valid, stop the submission
+      setFormerror(true);
       return;
     }
 
-    // Reset the form fields
-    setTitle('');
-    setCosuper('');
-    setSup('');
-    setNotes('');
-    setDesc('');
-    setKnow('');
-    setType('');
-    setTypeList([]);
-    setKeylist([]);
-    setKeyword('');
-    setCsvList([]);
-    setDate(dayjs());
-    setCds([]);
+    
+  try {
+    // Make the API call
+    const response = await ProposalAPI.newThesisProposal(
+      title,
+      sup,
+      cosuper,
+      'groups', // assuming groups is a variable in your component
+      keylist,
+      type,
+      desc,
+      know,
+      notes,
+      date,
+      level,
+      cds
+    );
+
+    if (response.ok) {
+      console.log('Proposal submitted successfully');
+      // Reset the form fields
+      setTitle('');
+      setCosuper('');
+      setSup('');
+      setNotes('');
+      setDesc('');
+      setKnow('');
+      setType('');
+      setTypeList([]);
+      setKeylist([]);
+      setKeyword('');
+      setCsvList([]);
+      setDate(dayjs());
+      setCds([]);
+      setSuccess(true);
+    } else {
+      console.error('Error submitting proposal:', response.status);
+      // Handle error, e.g., show an error message
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle unexpected errors
+  }
   };
 
   return (
+    <>
+    { success?
+    <>
+      <Typography>Form submitted correctly</Typography>
+     <Button variant="contained" onClick={()=>setSuccess(false)} color="secondary">
+     Submit another proposal
+     </Button>
+    </>
+    :
     <Container className="main-container">
       <Grid
         container
@@ -374,15 +414,19 @@ function InsertProposal(props) {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
-                Submit form
-              </Button>
-            </Grid>
+            <Grid item xs={12} justifyContent='center' alignItems='center' style={{ display: 'flex', flexDirection: 'column' }}>
+            <Button type="submit" variant="contained" style={{marginBottom: '2em'}} onClick={()=>handleSubmit()} color="primary">
+              Submit form
+            </Button>
+            {formerror ? <label style={{ color: 'red', marginTop: '8px' }}>Try again, required fields are missing</label> : ''}
+          </Grid>
+
           </Grid>
         </form>
       </Grid>
     </Container>
+  }
+  </>
   );
 }
 
