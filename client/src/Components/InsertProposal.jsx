@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import Button from '@mui/material/Button';
@@ -16,66 +16,54 @@ import Typography from '@mui/material/Typography';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import List from '@mui/material/List';
-import { DatePicker } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers';
 import ListItem from '@mui/material/ListItem';
 
 import AddIcon from '@mui/icons-material/Add';
 
-import {FormControl, InputLabel, Input, FormControlLabel, FormLabel} from '@mui/material';
-
-
-
+import { FormControlLabel, FormLabel } from '@mui/material';
 
 function InsertProposal(props) {
-  
   const [title, setTitle] = useState('');
   const [titleError, setTitleError] = useState(false);
   const [cosuper, setCosuper] = useState('');
-  const [keyerror, setKeyerror]=useState(false);
+  const [keyerror, setKeyerror] = useState(false);
   const [csvList, setCsvList] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [keylist, setKeylist] = useState([]);
-  const [cds,setCds]=useState('');
-  const [typerror, setTyperror]=useState(false);
+  const [cds, setCds] = useState([]);
+  const [typerror, setTyperror] = useState(false);
   const [type, setType] = useState('');
   const [typeList, setTypeList] = useState([]);
-  const [superror, setSuperror]=useState(false);
-  const [cdserror,setCdserror]=useState(false);
+  const [superror, setSuperror] = useState(false);
+  const [cdserror, setCdserror] = useState(false);
   const [sup, setSup] = useState('');
-  const [levelerror, setLevelerror]=useState(false);
-  const [descerror, setDescerror]=useState(false);
+  const [levelerror, setLevelerror] = useState(false);
+  const [descerror, setDescerror] = useState(false);
 
   const itemList = ['email1', 'email2', 'email3']; //supervisor list
   const tempcsv = ['csv1', 'csv2', 'csv3'];
   const tempcds = ['gestionale', 'informatica', 'elettronica', 'ambientale'];
   const [date, setDate] = useState('');
-  const [level, setLevel] = useState('');
+  const [level, setLevel] = useState('BSc');
   const [notes, setNotes] = useState('');
   const [desc, setDesc] = useState('');
   const [know, setKnow] = useState(''); // required knowledge
 
-
   const handleTagsChange = (event, values) => {
     setCsvList(values);
-    console.log(values)
+    // console.log(values)
   };
 
-  const handleSelection=(e)=>{
-    //e  is input value
-    setSup(e);
-    console.log(e);
-  }
-
-  const handleDelete=(item, list)=>{
-    let newList=list.filter((e)=>e!=item);
+  const handleDelete = (item, list) => {
+    let newList = list.filter((e) => e !== item);
     return newList;
-  }
-  
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let isFormValid = true;
-  
+
     // Validate title
     if (title.trim() === '') {
       setTitleError(true);
@@ -85,38 +73,36 @@ function InsertProposal(props) {
     }
     if (!sup) {
       setSuperror(true);
-      isFormValid=false;
+      isFormValid = false;
     }
-    if(typeList.length==0){
+    if (typeList.length === 0) {
       setTyperror(true);
-      isFormValid=false;
+      isFormValid = false;
     }
-    
-    if (keylist.length==0){
+
+    if (keylist.length === 0) {
       setKeyerror(true);
-      isFormValid=false;
+      isFormValid = false;
     }
-    if(!cds){
+    if (!cds) {
       setCdserror(true);
-      isFormValid=false;
+      isFormValid = false;
     }
-    if(!desc){
+    if (!desc) {
       setDescerror(true);
-      isFormValid=false;
-    }  
-    if(!level){
-      setLevelerror(true);
-      isFormValid=false;
+      isFormValid = false;
     }
-   
+    if (!level) {
+      setLevelerror(true);
+      isFormValid = false;
+    }
+
     // Check if the form is valid before proceeding
     if (!isFormValid) {
       // If the form is not valid, stop the submission
       return;
     }
-  
-   
-  
+
     // Reset the form fields
     setTitle('');
     setCosuper('');
@@ -130,8 +116,7 @@ function InsertProposal(props) {
     setKeyword('');
     setCsvList([]);
     setDate(dayjs());
-    setCds('');
-    
+    setCds([]);
   };
 
   return (
@@ -150,8 +135,9 @@ function InsertProposal(props) {
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField error={titleError}
-                helperText={titleError && "Title is required"}
+              <TextField
+                error={titleError}
+                helperText={titleError && 'Title is required'}
                 fullWidth
                 label="Insert Title*"
                 variant="filled"
@@ -159,44 +145,48 @@ function InsertProposal(props) {
                   setTitle(e.target.value);
                   setTitleError(false); // Clear the error when the user starts typing
                 }}
-                sx={{ margin: '8px 0' }} 
+                sx={{ margin: '8px 0' }}
               />
             </Grid>
             <Grid item xs={12}>
               <Autocomplete
-              
                 id="Select a supervisor"
                 clearOnEscape
                 options={itemList}
-                onChange={(event, newValue) => { //required
+                onChange={(event, newValue) => {
                   setSup(newValue);
-                  setSuperror(false);//clear error input
+                  setSuperror(false); //clear error input
                 }}
                 renderInput={(params) => (
-                  <TextField error={superror} helperText='Supervisor required' {...params} label="Select a supervisor*" variant="standard" />
+                  <TextField
+                    error={superror}
+                    helperText={superror?"Supervisor required":''}
+                    {...params}
+                    label="Select a supervisor*"
+                    variant="standard"
+                  />
                 )}
-                
-                sx={{ margin: '8px 0' }} 
+                sx={{ margin: '8px 0' }}
               />
             </Grid>
             <Grid item xs={12}>
-        <Autocomplete
-          multiple
-          id="tags-standard"
-          options={tempcsv}
-          getOptionLabel={(option) => option}
-          onChange={handleTagsChange}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              label="Add co-supervisors"
-              placeholder="Co-supervisors"
-            />
-          )}
-        />
-              </Grid>
-              <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                id="tags-standard"
+                options={tempcsv}
+                getOptionLabel={(option) => option}
+                onChange={handleTagsChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Add co-supervisors"
+                    placeholder="Co-supervisors"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Typography variant="h6" component="div">
                 Keywords list
               </Typography>
@@ -226,9 +216,10 @@ function InsertProposal(props) {
                 fullWidth
                 label="Add keywords*"
                 error={keyerror}
-                helperText='At least one keyword required'
-                onChange={(e) => { setKeyword(e.target.value)
-                setKeyerror(false);
+                helperText={keyerror?"At least one keyword required": ''}
+                onChange={(e) => {
+                  setKeyword(e.target.value);
+                  setKeyerror(false);
                 }}
                 InputProps={{
                   endAdornment: (
@@ -245,7 +236,7 @@ function InsertProposal(props) {
                     </IconButton>
                   ),
                 }}
-                sx={{ margin: '8px 0' }} 
+                sx={{ margin: '8px 0' }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -278,9 +269,9 @@ function InsertProposal(props) {
                 fullWidth
                 label="Add type*"
                 error={typerror}
-                helperText='At least one type required'
+                helperText={typerror?"At least one type required":''}
                 onChange={(e) => {
-                  setType(e.target.value)
+                  setType(e.target.value);
                   setTyperror(false);
                 }}
                 InputProps={{
@@ -298,28 +289,33 @@ function InsertProposal(props) {
                     </IconButton>
                   ),
                 }}
-                sx={{ margin: '8px 0' }} 
+                sx={{ margin: '8px 0' }}
               />
             </Grid>
-            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Grid item xs={12}>
               <Autocomplete
-                id="Select a CdS"
-                clearOnEscape
+                multiple
+                id="tags-standard"
                 options={tempcds}
-                onChange={(event, newValue) => {
-                  setCds(newValue);
-                }}
+                getOptionLabel={(option) => option}
+                onChange={(event, values) => setCds(values)}
                 renderInput={(params) => (
-                  <TextField {...params} error={cdserror} helperText='Must select a cds' label="Select a CdS*" variant="standard" />
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    error={cdserror}
+                    helperText={cdserror?"Must select at least one cds":''}
+                    label="Select CdS*"
+                    placeholder="CdS"
+                  />
                 )}
-                sx={{ margin: '8px 0' }} 
               />
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
               <TextField
                 fullWidth
                 error={descerror}
-                helperText='Description required'
+                helperText={descerror?"Description required":''}
                 label="Description*"
                 multiline
                 rows={4}
@@ -330,14 +326,12 @@ function InsertProposal(props) {
               <TextField
                 fullWidth
                 label="Required knowledge"
-                
                 multiline
                 rows={4}
                 variant="filled"
                 onChange={(e) => setKnow(e.target.value)}
                 sx={{ margin: '8px 0' }}
               />
-           
               <TextField
                 fullWidth
                 label="Notes"
@@ -347,8 +341,8 @@ function InsertProposal(props) {
                 onChange={(e) => setNotes(e.target.value)}
                 sx={{ margin: '8px 0' }}
               />
-              </Grid>
-            <Grid item xs={12} justifyContent="center" alignItems="center" >
+            </Grid>
+            <Grid item xs={12} justifyContent="center" alignItems="center">
               <FormLabel id="demo-radio-buttons-group-label">Level*</FormLabel>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
@@ -362,7 +356,11 @@ function InsertProposal(props) {
                 <FormControlLabel value="BSc" control={<Radio />} label="BSc" />
                 <FormControlLabel value="MSc" control={<Radio />} label="MSc" />
               </RadioGroup>
-              {levelerror && <Typography variant="caption" color="error">Must select a level</Typography>}
+              {levelerror && (
+                <Typography variant="caption" color="error">
+                  Must select a level
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column' }}>
               <FormLabel id="date-label">Expiration Date*</FormLabel>
@@ -377,7 +375,7 @@ function InsertProposal(props) {
               </LocalizationProvider>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" onSubmit={()=>handleSubmit()} color="primary">
+              <Button type="submit" variant="contained" color="primary">
                 Submit form
               </Button>
             </Grid>
@@ -386,6 +384,6 @@ function InsertProposal(props) {
       </Grid>
     </Container>
   );
-  }  
+}
 
 export default InsertProposal;
