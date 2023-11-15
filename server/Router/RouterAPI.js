@@ -4,6 +4,7 @@ const apiRouter = express.Router();
 apiRouter.use('/test', require('./RouterTest'));
 
 apiRouter.use('/auth', require('./RouterAuth'));
+apiRouter.use('/thesis', require('./RouterThesis'));
 
 // All the routes will be protected by the checkAuthentication middleware
 const checkAuthentication = (req, res, next) => {
