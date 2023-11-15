@@ -5,7 +5,7 @@ const searchDAO = require("../Models/Search");
 module.exports = {
     getAllProposals: function(req, res) {
 
-        const { userId } = req.params;
+        const { userId } = req.body;
 
         searchDAO.getAllProposals(userId).then((proposals) =>  {
 
@@ -17,8 +17,8 @@ module.exports = {
 
     searchProposals: function(req, res) {
 
-        const { userId } = req.params;
-        const { searchTerm } = req.body; 
+        const { userId, searchTerm } = req.body; 
+
         searchDAO.searchProposals(userId, searchTerm).then((proposals) =>  {
             
             return res.status(200).json(proposals);

@@ -1,14 +1,14 @@
 const URL = 'http://localhost:3000/api';
 
 const SearchAPI = {
-    getAllProposals: function () {
-        return fetch(URL + `/proposals/${userId}`, {
+    getAllProposals: function (userId) {
+        return fetch(URL + `/proposals`, {
             method: 'GET',
             credentials: "include"
         })
     },
-    searchProposals: function (searchTerm) {
-        return fetch(URL + `/proposals/search/${userId}`, {
+    searchProposals: function (userId,searchTerm) {
+        return fetch(URL + `/proposals/search`, {
             method: 'POST',
             credentials: "include",
             headers: {
