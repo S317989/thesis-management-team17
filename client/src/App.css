@@ -2,3 +2,19 @@
   text-align: center;
   /** background-color: rgba(var(--bs-dark-rgb)); */
 }
+.align-left{
+  text-align: left;
+  }
+  
+  
+  .custom-border {
+    border: 2px solid black; 
+    padding: 10px; 
+  }
+  
+  .centered-badge {
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    
+  }

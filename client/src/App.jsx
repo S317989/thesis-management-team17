@@ -10,8 +10,22 @@ import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
 import { jwtDecode } from 'jwt-decode';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
+import SearchArchive from './Pages/Search-Archive';
+import Archive from './custom classes/archive';
+import Application from './custom classes/application';
+import {ApplyForProposal} from './Pages/Apply-for-proposal';
 
 function App() {
+  const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
+  const arc2 = new Archive(1, "title2", "descrladj hbfldhfbs dlfhbl; gihbfp gilwhb gouehr ewygouweyrgoeruy goeryg eoryuigeoryui geiuhwfglie ugbliurego lwrubgyolrwituygb truyg orty gouirygolw irugy orwliuyg orlwuiy or rtgvp wiiption2", "applicabnt", "stat")
+  const arc3 = new Archive(2, "title3", "description3", "applicabnt", "stat")
+  const arc4 = new Archive(3, "title4", "description4", "applicabnt", "stat")
+
+  const [archive, setArchive] = useState([arc1, arc2, arc3, arc4])
+
+  const app1 = new Application (0,"title", "keywords", "refrences", "supervisor", "researchGroup", "thesisTypes", "requiredKnowledge", "deadline", "discription")
+  
+  const [application, setApplication] = useState(app1)
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -37,6 +51,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/secure-test" element={<SecurePageTest />} />
               <Route path="Login" element={<Login />} />
+              <Route path="sa" element={<SearchArchive  archive= {archive}  />}/>
+              <Route path="/application" element={<ApplyForProposal  application= {application}   />} />
+         
             </Routes>
           </div>
         </UserContext.Provider>

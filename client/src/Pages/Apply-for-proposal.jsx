@@ -16,7 +16,7 @@ function ApplyForProposal(props){
      <Table  title={props.application.title} supervisor={props.application.supervisor} thesisType={props.application.thesisType} description={props.application.description} researchGroup = {props.application.researchGroup} keywords={props.application.keywords } refrences={props.application.refrences} requiredKnowledge={props.application.requiredKnowledge} deadline={props.application.deadline}></Table>     
       </Col>
       <Col xs={4} md={4}>
-        <Badges badgeStatus={props.badgeStatus}></Badges> <Search></Search>
+        <Badges badgeStatus={props.badgeStatus}></Badges> 
       </Col>
     </Row>
     <ApplicationButton></ApplicationButton>

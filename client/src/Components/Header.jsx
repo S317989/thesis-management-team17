@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Nav, Navbar, Offcanvas, Button } from 'react-bootstrap';
+import { Container, Nav, Navbar, Offcanvas, Button, Form } from 'react-bootstrap';
 import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../Contexts.js";
@@ -48,6 +48,15 @@ function Header(props) {
                                         href="http://localhost:3000/logout">Logout</Button>
                                 </Nav>
                         }
+                        <Form className="d-flex">
+                  <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                  />
+                        <Button variant="outline-success">Search</Button>
+                    </Form>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
 
