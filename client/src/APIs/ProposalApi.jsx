@@ -29,3 +29,5 @@ const ProposalAPI = {
     });
   },
 };
+
+export default ProposalAPI;

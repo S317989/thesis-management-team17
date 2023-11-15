@@ -22,7 +22,7 @@ function Header(props) {
                             <Button variant="link"
                                 className={"nav-link"}
                                 onClick={() => navigate("/Login")}>Login</Button>
-                            <Button variant='link' onClick={()=>navigate("/add-proposal")}>Insert Proposal</Button>
+                            <Button variant='link' onClick={()=>navigate("/proposal")}>Insert Proposal</Button>
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

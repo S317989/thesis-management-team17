@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import List from '@mui/material/List';
 import { DatePicker } from '@mui/x-date-pickers';
 import ListItem from '@mui/material/ListItem';
+import ProposalAPI from '../APIs/ProposalApi';
 
 import AddIcon from '@mui/icons-material/Add';
 
@@ -43,7 +44,10 @@ function InsertProposal(props) {
   const [formerror, setFormerror]=useState(false);
   const itemList = ['email1', 'email2', 'email3']; //supervisor list
   const tempcsv = ['csv1', 'csv2', 'csv3'];
-  const tempcds = ['gestionale', 'informatica', 'elettronica', 'ambientale'];
+
+  const degrees = props.degreeList;
+  const tempcds = degrees ? degrees.map((e)=>e.degree) : [];
+
   const [date, setDate] = useState('');
   const [level, setLevel] = useState('BSc');
   const [success, setSuccess]=useState(false);
@@ -122,7 +126,7 @@ function InsertProposal(props) {
       level,
       cds
     );
-
+      console.log(response)
     if (response.ok) {
       console.log('Proposal submitted successfully');
       // Reset the form fields
@@ -341,7 +345,7 @@ function InsertProposal(props) {
                 onChange={(event, values) => setCds(values)}
                 renderInput={(params) => (
                   <TextField
-                    {...params}
+                    {...params} //prendo solo il nome del corso oggetto degree
                     variant="standard"
                     error={cdserror}
                     helperText={cdserror?"Must select at least one cds":''}
@@ -415,7 +419,7 @@ function InsertProposal(props) {
               </LocalizationProvider>
             </Grid>
             <Grid item xs={12} justifyContent='center' alignItems='center' style={{ display: 'flex', flexDirection: 'column' }}>
-            <Button type="submit" variant="contained" style={{marginBottom: '2em'}} onClick={()=>handleSubmit()} color="primary">
+            <Button type="submit" variant="contained" style={{marginBottom: '2em'}} onClick={(e)=>handleSubmit(e)} color="primary">
               Submit form
             </Button>
             {formerror ? <label style={{ color: 'red', marginTop: '8px' }}>Try again, required fields are missing</label> : ''}
