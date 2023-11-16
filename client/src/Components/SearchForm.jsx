@@ -72,9 +72,6 @@ const Search = () => {
             </Button>
           </Col>
           <Col sm={2}>
-            <Button onClick={fetchAllProposals} className="w-100" variant="secondary">
-              Refresh
-            </Button>
           </Col>
         </Row>
       </Form>
