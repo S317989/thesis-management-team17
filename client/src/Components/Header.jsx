@@ -31,7 +31,7 @@ function Header(props) {
                 <Nav className="me-auto">
                     <Link className={"nav-link"}
                         to={("/proposals")}>Search Page</Link>
-                </Nav> 
+                </Nav>
 
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
 
