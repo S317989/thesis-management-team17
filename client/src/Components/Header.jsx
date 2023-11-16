@@ -27,6 +27,11 @@ function Header(props) {
                         to={("/secure-test")}>Secure Page</Link>
                 </Nav>
 
+                <Nav className="me-auto">
+                    <Link className={"nav-link"}
+                        to={("/proposals")}>Search Page</Link>
+                </Nav> 
+
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
 
                 <Navbar.Offcanvas

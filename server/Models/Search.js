@@ -19,16 +19,18 @@ module.exports = {
     getAllProposals: function(userId) {
             return new Promise((resolve, reject) => {
                 const sql = `
-                    SELECT tp.Title, tp.Supervisor
-                    FROM Thesis_Proposal tp
-                    JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
-                    JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
-                    WHERE s.Id = ?
+                SELECT tp.Title, t.Name || ' ' || t.Surname AS Supervisor
+                FROM Thesis_Proposal tp
+                JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
+                JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
+                JOIN Teacher t ON t.Id = tp.Supervisor 
+                WHERE s.Id = ?;
                 `;    
                 db.all(sql, [userId], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
+                        //console.log("ROws", rows);
                         resolve(rows);
                     }
                 });
@@ -36,32 +38,36 @@ module.exports = {
         },
 
         searchProposals: function(userId, searchTerm) {
+            console.log(userId);
             return new Promise((resolve, reject) => {
                 const sql = `
-                    SELECT tp.Title, tp.Supervisor
-                    FROM Thesis_Proposal tp
-                    JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
-                    JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
-                    WHERE s.Id = ? AND (
-                        tp.Title LIKE '%' || ? || '%'
-                        OR tp.Supervisor LIKE '%' || ? || '%'
-                        OR tp.Keywords LIKE '%' || ? || '%'
-                        OR tp.Type LIKE '%' || ? || '%'
-                        OR tp.Description LIKE '%' || ? || '%'
-                        OR tp.Required_Knowledge LIKE '%' || ? || '%'
-                        OR tp.Notes LIKE '%' || ? || '%'
-                        OR tp.Expiration LIKE '%' || ? || '%'
-                        OR tp.Level LIKE '%' || ? || '%'
-                        OR tp.CDS LIKE '%' || ? || '%'
-                    )
+                SELECT tp.Title, t.Name || ' ' || t.Surname AS Supervisor, tp.Keywords, tp.Type, tp.Description, tp.Required_Knowledge, tp.Notes, tp.Expiration, tp.Level 
+                FROM Thesis_Proposal tp
+                JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
+                JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
+                JOIN Teacher t ON t.Id = tp.Supervisor 
+                WHERE s.Id = ? AND (
+                                        tp.Title LIKE '%' || ? || '%'
+                                        OR t.Name || ' ' || t.Surname LIKE '%' || ? || '%'
+                                        OR tp.Keywords LIKE '%' || ? || '%'
+                                        OR tp.Type LIKE '%' || ? || '%'
+                                        OR tp.Description LIKE '%' || ? || '%'
+                                        OR tp.Required_Knowledge LIKE '%' || ? || '%'
+                                        OR tp.Notes LIKE '%' || ? || '%'
+                                        OR tp.Expiration LIKE '%' || ? || '%'
+                                        OR tp.Level LIKE '%' || ? || '%'
+                                    )
+                
+                
                 `;
     
-                const params = Array(10).fill(`%${searchTerm}%`);
+                const params = Array(9).fill(`%${searchTerm}%`);
     
                 db.all(sql, [userId, ...params], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
+                        console.log("ROws", rows);
                         resolve(rows);
                     }
                 });

@@ -1,9 +1,15 @@
 // src/components/ProposalList.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProposalItem from './ProposalItem';
 import { Container, Table } from 'react-bootstrap';
 
-const ProposalList = ({ proposals }) => {
+const ProposalList = (props) => {
+  const proposals = props.proposals;
+
+  useEffect(() => {
+    console.log(proposals);
+  }, [proposals]);
+
   return (
     <Container>
       <Table striped bordered hover size="sm">
@@ -15,8 +21,8 @@ const ProposalList = ({ proposals }) => {
           </tr>
         </thead>
         <tbody>
-          {proposals.map((proposal) => (
-            <ProposalItem key={proposal.id} proposal={proposal} />
+          {proposals.map((proposal, index) => (
+            <ProposalItem key={index} proposal={proposal} />
           ))}
         </tbody>
       </Table>

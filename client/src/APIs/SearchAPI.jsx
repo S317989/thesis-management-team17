@@ -1,20 +1,33 @@
-const URL = 'http://localhost:3000/api';
+const parentURL = 'http://localhost:3000/api';
 
 const SearchAPI = {
     getAllProposals: function (userId) {
-        return fetch(URL + `/proposals`, {
+        const url = new URL(parentURL + '/proposals/retrieve-all/' + userId);
+
+        url.searchParams.append('userID', userId);
+
+        return fetch(url, {
             method: 'GET',
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
     },
     searchProposals: function (userId,searchTerm) {
-        return fetch(URL + `/proposals/search`, {
-            method: 'POST',
+        const url = new URL(parentURL + '/proposals/search/' + userId + "/" + searchTerm);
+
+        url.searchParams.append('userID', userId);
+        url.searchParams.append('searchTerm', searchTerm);
+
+
+        console.log("Inside API");
+        return fetch(url, {
+            method: 'GET',
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ searchTerm }),
         })
     }
 };

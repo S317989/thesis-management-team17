@@ -2,28 +2,24 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import ProposalList from './ProposalList';
 import SearchAPI from '../APIs/SearchAPI';
-import { UserContext } from '../Contexts.js'; 
+import { UserContext } from '../Contexts'; 
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [proposals, setProposals] = useState([]);
   const [showProposals, setShowProposals] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const { user, setUser } = useContext(UserContext);
-
-  useEffect(() => {
-    // Simulate an API call to retrieve all proposals
-    fetchAllProposals();
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  const { user } = useContext(UserContext);
 
   const handleSearch = (e) => {
     e.preventDefault();
     // Simulate an API call to search for proposals
     setLoading(true);
     SearchAPI.searchProposals(user.id, searchTerm)
-  .then((proposals) => {
-    setProposals(proposals);
+  .then(async (response) => {
+
+    const data = await response.json()
+    setProposals(data);
     setShowProposals(true);
   })
   .catch((error) => {
@@ -33,18 +29,31 @@ const Search = () => {
 
   };
 
-  const fetchAllProposals = () => {
+  const fetchAllProposals =  () => {
     // Simulate an API call to retrieve all proposals
     setLoading(true);
     SearchAPI.getAllProposals(user.id)
-      .then((proposals) => {
-        setProposals(proposals);
+      .then(async (response) => {
+
+        const data = await response.json();
+
+        setProposals(data);
+        setLoading(false);
         setShowProposals(true);
       })
       .finally(() => setLoading(false));
   };
 
+  useEffect(() => {
+    if(user){
+      fetchAllProposals();
+    }
+  }, [user])
+
+
   return (
+   
+    user ?
     <Container>
       <h1 className="mt-4">Thesis Proposal Search</h1>
       <Form onSubmit={handleSearch} className="mb-4">
@@ -70,12 +79,14 @@ const Search = () => {
         </Row>
       </Form>
 
-      {loading ? (
+      {!proposals ? (
         <p>Retrieving all proposals...</p>
       ) : (
-        showProposals && <ProposalList proposals={proposals} />
+        <ProposalList proposals={proposals} />
       )}
     </Container>
+    : null
+      
   );
 };
 

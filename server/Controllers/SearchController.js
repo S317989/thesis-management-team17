@@ -4,11 +4,9 @@ const searchDAO = require("../Models/Search");
 
 module.exports = {
     getAllProposals: function(req, res) {
-
-        const { userId } = req.body;
+        const  userId  = req.params.userID;
 
         searchDAO.getAllProposals(userId).then((proposals) =>  {
-
             return res.status(200).json(proposals);
         }).catch((err) => {
             return res.status(err.status).json({message: err.message}).end()
@@ -17,8 +15,11 @@ module.exports = {
 
     searchProposals: function(req, res) {
 
-        const { userId, searchTerm } = req.body; 
+        console.log("inside controller");
+        const userId  = req.params.userID; 
+        const searchTerm = req.params.searchTerm;
 
+        
         searchDAO.searchProposals(userId, searchTerm).then((proposals) =>  {
             
             return res.status(200).json(proposals);

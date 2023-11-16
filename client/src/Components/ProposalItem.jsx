@@ -1,11 +1,17 @@
 // src/components/ProposalItem.js
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const ProposalItem = ({ proposal }) => {
+const ProposalItem = (props) => {
+  const proposal = props.proposal;
+
+  useEffect(() => {
+    console.log("Item", proposal);
+  }, [])
   return (
+
     <tr>
-      <td>{proposal.title}</td>
-      <td>{proposal.supervisor}</td>
+      <td>{proposal.Title}</td>
+      <td>{proposal.Supervisor}</td>
       {/* Add other table cells as needed */}
     </tr>
   );

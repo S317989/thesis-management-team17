@@ -3,9 +3,11 @@ const searchRouter = express.Router();
 
 const searchController = require('../Controllers/SearchController');
 
-searchRouter.get('', searchController.getAllProposals);
+searchRouter.get('/get-all/:userID', searchController.getAllProposals);
 
-searchRouter.post('/search', searchController.searchProposals);
+searchRouter.get('/retrieve-all/:userID', searchController.getAllProposals);
+
+searchRouter.get('/search/:userID/:searchTerm', searchController.searchProposals);
 
 module.exports = searchRouter;
 

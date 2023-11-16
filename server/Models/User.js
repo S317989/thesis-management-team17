@@ -95,7 +95,6 @@ module.exports = {
                                 ? await this.getStudentInfos(row.Id)
                                 : await this.getTeacherInfos(row.Id);
 
-                        console.log(userInfos);
                         resolve(userInfos);
                     }
                 });
