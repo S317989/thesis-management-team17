@@ -13,7 +13,7 @@ import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 import SearchArchive from './Pages/Search-Archive';
 import Archive from './custom classes/archive';
 import Application from './custom classes/application';
-import {ApplyForProposal} from './Pages/Apply-for-proposal';
+import { ApplyForProposal } from './Pages/Apply-for-proposal';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -23,12 +23,15 @@ function App() {
 
   const [archive, setArchive] = useState([arc1, arc2, arc3, arc4])
 
-  const app1 = new Application (0,"title", "keywords", "refrences", "supervisor", "researchGroup", "thesisTypes", "requiredKnowledge", "deadline", "discription")
-  
+  const app1 = new Application(0, "title", "keywords", "refrences", "supervisor", "researchGroup", "thesisTypes", "requiredKnowledge", "deadline", "discription")
+
   const [application, setApplication] = useState(app1)
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+
+
+
     AuthenticationAPI.getSessionAPI().then(response => {
       if (response.status === 200) {
         response.json().then(data => {
@@ -51,9 +54,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/secure-test" element={<SecurePageTest />} />
               <Route path="Login" element={<Login />} />
-              <Route path="sa" element={<SearchArchive  archive= {archive}  />}/>
-              <Route path="/application" element={<ApplyForProposal  application= {application}   />} />
-         
+              <Route path="sa" element={<SearchArchive archive={archive} />} />
+              <Route path="/application" element={<ApplyForProposal application={application} />} />
+              <Route path="/proposal" element={<AddProposal />} />
+
             </Routes>
           </div>
         </UserContext.Provider>

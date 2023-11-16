@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 function Header(props) {
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
@@ -17,17 +16,11 @@ function Header(props) {
                     Thesis Management
                 </Navbar.Brand>
 
-                <Nav className="me-auto">
-                    <Link className={"nav-link"}
-                        to={("/")}>Home</Link>
-                </Nav>
-
-                <Nav className="me-auto">
-                    <Link className={"nav-link"}
-                        to={("/secure-test")}>Secure Page</Link>
-                </Nav>
-
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+
+                <Nav>
+                    <Link className="me-auto" to={("/proposal")}>Insert Proposal</Link>
+                </Nav>
 
                 <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand-md`}
@@ -48,20 +41,10 @@ function Header(props) {
                                         href="http://localhost:3000/logout">Logout</Button>
                                 </Nav>
                         }
-                        <Form className="d-flex">
-                  <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                  />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-
             </Container>
-        </Navbar >
+        </Navbar>
     );
 }
 
