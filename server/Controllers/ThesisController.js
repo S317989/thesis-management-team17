@@ -4,6 +4,7 @@ module.exports = {
     applyForProposal: async function (req, res) {
         try {
             if (req.isAuthenticated() && req.user.role === 'Student') {
+                console.log(req.body);
                 await thesis.applyForProposal(req.body.proposalId, req.user.id);
                 return res.status(200).json({ Message: 'Application Added' });
             }

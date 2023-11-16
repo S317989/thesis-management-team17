@@ -1,73 +1,73 @@
 import '../App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Container, Row, Col, Button, Badge, Stack, Navbar, Form} from 'react-bootstrap'
+import { Container, Row, Col, Button, Badge, Stack, Navbar, Form } from 'react-bootstrap'
 
 
-function ApplyForProposal(props){
+function ApplyForProposal(props) {
 
-  return(
-  <>
-  <Container>
-    <Row className="justify-content-md-center mt-3"> 
-      <Col xs={8} md={8}>
+  return (
+    <>
+      <Container>
+        <Row className="justify-content-md-center mt-3">
+          <Col xs={8} md={8}>
 
-      
 
-     <Table  title={props.application.title} supervisor={props.application.supervisor} thesisType={props.application.thesisType} description={props.application.description} researchGroup = {props.application.researchGroup} keywords={props.application.keywords } refrences={props.application.refrences} requiredKnowledge={props.application.requiredKnowledge} deadline={props.application.deadline}></Table>     
-      </Col>
-      <Col xs={4} md={4}>
-        <Badges badgeStatus={props.badgeStatus}></Badges> 
-      </Col>
-    </Row>
-    <ApplicationButton></ApplicationButton>
-  </Container>
-  </>
+
+            <Table title={props.application.title} supervisor={props.application.supervisor} thesisType={props.application.thesisType} description={props.application.description} researchGroup={props.application.researchGroup} keywords={props.application.keywords} refrences={props.application.refrences} requiredKnowledge={props.application.requiredKnowledge} deadline={props.application.deadline}></Table>
+          </Col>
+          <Col xs={4} md={4}>
+            <Badges badgeStatus={props.badgeStatus}></Badges>
+          </Col>
+        </Row>
+        <ApplicationButton proposalId={"2"}></ApplicationButton>
+      </Container>
+    </>
   );
-  }
+}
 
 function Badges(props) {
 
-  if (props.badgeStatus){
-    return(
+  if (props.badgeStatus) {
+    return (
       <Stack direction="horizontal" gap={2}>
         <Badge className='' bg="secondary">Thesis</Badge>
         <Badge bg="primary">Open</Badge>
       </Stack>
-      );
+    );
   }
 
-  else{
+  else {
     return (
       <Stack direction="horizontal" gap={2}>
         <Badge className='' bg="secondary">Thesis</Badge>
         <Badge bg="danger">Restricted</Badge>
       </Stack>
-  );  
-    }
+    );
   }
-
- 
-
+}
 
 
-function Table(props){
-  return(
+
+
+
+function Table(props) {
+  return (
     <>
-    <Container className='align-left'>
+      <Container className='align-left'>
 
 
 
-    <Row >
+        <Row >
           <Col xs={4} md={3} >
             Title
           </Col>
           <Col xs={8} md={6}>
-            {props.title}       
-         </Col>
+            {props.title}
+          </Col>
         </Row>
 
-      
-      <Row >
+
+        <Row >
           <Col xs={4} md={3} >
             Keywords
           </Col>
@@ -82,8 +82,8 @@ function Table(props){
             Refrences
           </Col>
           <Col xs={8} md={6}>
-            {props.refrences}       
-         </Col>
+            {props.refrences}
+          </Col>
         </Row>
 
 
@@ -92,8 +92,8 @@ function Table(props){
             Supervisor
           </Col>
           <Col xs={8} md={6}>
-            {props.supervisor}       
-         </Col>
+            {props.supervisor}
+          </Col>
         </Row>
 
         <Row>
@@ -101,8 +101,8 @@ function Table(props){
             Research Group
           </Col>
           <Col xs={8} md={6}>
-            {props.researchGroup}       
-         </Col>
+            {props.researchGroup}
+          </Col>
         </Row>
 
 
@@ -111,11 +111,11 @@ function Table(props){
             Thesis Types
           </Col>
           <Col xs={8} md={6}>
-            {props.thesisType}       
-         </Col>
+            {props.thesisType}
+          </Col>
         </Row>
 
-        
+
 
 
         <Row>
@@ -123,8 +123,8 @@ function Table(props){
             Required Knowledge
           </Col>
           <Col xs={8} md={6}>
-            {props.requiredKnowledge}       
-         </Col>
+            {props.requiredKnowledge}
+          </Col>
         </Row>
 
 
@@ -133,8 +133,8 @@ function Table(props){
             Deadline
           </Col>
           <Col xs={8} md={6}>
-            {props.deadline}       
-         </Col>
+            {props.deadline}
+          </Col>
         </Row>
 
         <Row>
@@ -142,18 +142,18 @@ function Table(props){
             Description
           </Col>
           <Col xs={8} md={6}>
-            {props.description}       
-         </Col>
+            {props.description}
+          </Col>
         </Row>
-     
-    </Container>
+
+      </Container>
     </>
   )
 }
 function Search() {
   return (
-<Navbar className="bg-body-tertiary justify-content-between">
-<Form inline>
+    <Navbar className="bg-body-tertiary justify-content-between">
+      <Form inline>
         <Row>
           <Col xs="auto">
             <Form.Control
@@ -172,15 +172,34 @@ function Search() {
 }
 
 function ApplicationButton(props) {
+  const applyForThesis = () => {
+    fetch('http://localhost:3000/api/thesis/apply', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                proposalId: props.proposalId,
+            }),
+        })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+  };
+
   return (
     <div className="d-grid gap-2">
-      <Button variant="primary" size="lg">
-       Send Application
+      <Button variant="primary" size="lg" onClick={applyForThesis}>
+        Send Application
       </Button>
-      
+
     </div>
   );
 }
 
 
-export {ApplyForProposal};
+export { ApplyForProposal };

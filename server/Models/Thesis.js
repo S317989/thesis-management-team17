@@ -9,6 +9,7 @@ module.exports = {
     applyForProposal: function (proposalId, studentId) {
         return new Promise((resolve, reject) => {
             try {
+                console.log(proposalId, studentId);
                 db.run(`INSERT INTO Thesis_Applications (Th_Proposal_Id, Student_Id, Status)
                                        VALUES (?, ?, "Pending")`, [proposalId, studentId], (err) => {
                     if (err) reject(err);

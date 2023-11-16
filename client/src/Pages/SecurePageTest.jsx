@@ -5,9 +5,15 @@ import { useLocation } from 'react-router-dom';
 function SecurePageTest() {
 
     const testApplyForThesis = () => {
-        fetch('http://localhost:3000/api/thesis/archived-proposals', {
-            method: 'GET',
+        fetch('http://localhost:3000/api/thesis/apply', {
+            method: 'POST',
             credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                proposalId: 1,
+            }),
         })
             .then(response => {
                 console.log(response);
