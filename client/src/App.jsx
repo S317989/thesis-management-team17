@@ -11,11 +11,16 @@ import { UserContext } from './Contexts.js';
 import { jwtDecode } from 'jwt-decode';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 import AddProposal from './Pages/AddProposal.jsx'
+import DegreeAPI from './APIs/DegreeApi.jsx';
+import TeacherAPI from './APIs/TeacherAPI.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+
+   
+
     AuthenticationAPI.getSessionAPI().then(response => {
       if (response.status === 200) {
         response.json().then(data => {

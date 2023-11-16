@@ -27,7 +27,6 @@ import { FormControlLabel, FormLabel } from '@mui/material';
 function InsertProposal(props) {
   const [title, setTitle] = useState('');
   const [titleError, setTitleError] = useState(false);
-  const [cosuper, setCosuper] = useState('');
   const [keyerror, setKeyerror] = useState(false);
   const [csvList, setCsvList] = useState([]);
   const [keyword, setKeyword] = useState('');
@@ -42,21 +41,38 @@ function InsertProposal(props) {
   const [levelerror, setLevelerror] = useState(false);
   const [descerror, setDescerror] = useState(false);
   const [formerror, setFormerror]=useState(false);
-  const itemList = ['email1', 'email2', 'email3']; //supervisor list
-  const tempcsv = ['csv1', 'csv2', 'csv3'];
-
-  const degrees = props.degreeList;
-  const tempcds = degrees ? degrees.map((e)=>e.degree) : [];
-
   const [date, setDate] = useState('');
   const [level, setLevel] = useState('BSc');
   const [success, setSuccess]=useState(false);
+  const [grouplist, setGrouplist]=useState([]);
   const [notes, setNotes] = useState('');
   const [desc, setDesc] = useState('');
   const [know, setKnow] = useState(''); // required knowledge
+ 
+  
+  const supervisors = props.teacherList;
+  const svList = supervisors ? supervisors.map((e) =>  `${e.email}, ${e.name}, ${e.surname}, ${e.groupname}`) : []; //supervisor list retrieved from db
+  
+ 
+
+  const cosv = props.csvlist;
+  const tempcsv = cosv ? cosv.map((e) => `${e.email}, ${e.name}, ${e.surname}, ${e.groupname}`) : []; //cosupervisor list retrieved from db
+
+
+  const degrees = props.degreeList;
+  const tempcds = degrees ? degrees.map((e)=>e.degree) : []; //list of courses retrieved by db from CoSupervisor Table
 
   const handleTagsChange = (event, values) => {
-    setCsvList(values);
+
+    let arr=values.map((item)=>{
+      let itemArray=item.split(',');
+      let emailValue=itemArray[0]; //email value
+      let groupValue=itemArray[3]; //groupNAme
+      let newArray=[...grouplist, groupValue];
+      let newEmailArray=[...csvList, emailValue];
+      setGrouplist(newArray);//aggiorno la lista di gruppi
+      setCsvList(newEmailArray); //aggiorno la lista di email dei prof supervisor e cosupervisor
+    })
     // console.log(values)
   };
 
@@ -115,10 +131,10 @@ function InsertProposal(props) {
     const response = await ProposalAPI.newThesisProposal(
       title,
       sup,
-      cosuper,
-      'groups', // assuming groups is a variable in your component
-      keylist,
-      type,
+      csvList.join(','),//trasformo in stringhe concatenate da comma
+      grouplist.join(','),
+      keylist.join(','),
+      type.join(','),
       desc,
       know,
       notes,
@@ -131,7 +147,6 @@ function InsertProposal(props) {
       console.log('Proposal submitted successfully');
       // Reset the form fields
       setTitle('');
-      setCosuper('');
       setSup('');
       setNotes('');
       setDesc('');
@@ -196,9 +211,15 @@ function InsertProposal(props) {
               <Autocomplete
                 id="Select a supervisor"
                 clearOnEscape
-                options={itemList}
+                options={svList}
                 onChange={(event, newValue) => {
-                  setSup(newValue);
+                  let valuesArray = newValue.split(',');
+                  let emailValue = valuesArray[0];
+                  let groupValue= valuesArray[3]; //groupName
+                  let newArray=[...grouplist, groupValue];
+                  setSup(emailValue);//mando solo la mail
+                  setGrouplist(newArray); //aggiorno la lista dei gruppi selezionati
+
                   setSuperror(false); //clear error input
                 }}
                 renderInput={(params) => (
@@ -222,7 +243,7 @@ function InsertProposal(props) {
                 onChange={handleTagsChange}
                 renderInput={(params) => (
                   <TextField
-                    {...params}
+                    {...params} 
                     variant="standard"
                     label="Add co-supervisors"
                     placeholder="Co-supervisors"
@@ -282,6 +303,11 @@ function InsertProposal(props) {
                 }}
                 sx={{ margin: '8px 0' }}
               />
+            </Grid>
+            <Grid>
+              {
+                glist
+              }
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" component="div">

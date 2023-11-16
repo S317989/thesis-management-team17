@@ -1,13 +1,13 @@
 'use strict';
 
-const degree = require('../Models/Degree');
+const teacher = require('../Models/Teacher');
 
 module.exports = {
-  getAllCds: function (req, res) {
-    console.log('ControllerDegree');
+  getAllTeacher: function (req, res) {
+    console.log('TeacherController');
 
-    degree
-      .getAllDegrees()
+    teacher
+      .getAllTeacher()
       .then((result) => {
        
         return res.status(200).json(result);

@@ -1,13 +1,13 @@
 'use strict';
 
-const degree = require('../Models/Degree');
+const rgroup = require('../Models/ResearchGroup');
 
 module.exports = {
-  getAllCds: function (req, res) {
-    console.log('ControllerDegree');
+  getAllGroups: function (req, res) {
+    console.log('Controller Research Group');
 
-    degree
-      .getAllDegrees()
+    rgroup
+      .getAllGroups()
       .then((result) => {
        
         return res.status(200).json(result);

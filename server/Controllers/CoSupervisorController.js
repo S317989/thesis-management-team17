@@ -1,13 +1,13 @@
 'use strict';
 
-const degree = require('../Models/Degree');
+const cosupervisor = require('../Models/CoSupervisor');
 
 module.exports = {
-  getAllCds: function (req, res) {
-    console.log('ControllerDegree');
+  getAllCoSup: function (req, res) {
+    console.log('Controller CoSupervisor');
 
-    degree
-      .getAllDegrees()
+    cosupervisor
+      .getAllCoSupervisor()
       .then((result) => {
        
         return res.status(200).json(result);

@@ -5,9 +5,16 @@ apiRouter.use('/test', require('./RouterTest'));
 
 apiRouter.use('/auth', require('./RouterAuth'));
 
-apiRouter.use('/thesis/newproposal', require('./ProposalRouter'));
+apiRouter.use('/thesis', require('./ProposalRouter'));
 
-apiRouter.use('/degree/get-all', require('./RouterDegree'));
+apiRouter.use('/degree', require('./RouterDegree'));
+
+apiRouter.use('/teacher', require('./RouterTeacher'));
+
+apiRouter.use('/cosupervisor', require('./RouterCoSupervisor'));
+
+apiRouter.use('/groups', require('./RouterResearchGroup'));
+
 
 // All the routes will be protected by the checkAuthentication middleware
 const checkAuthentication = (req, res, next) => {
