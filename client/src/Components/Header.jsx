@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 function Header(props) {
     const navigate = useNavigate();
+    const { user } = useContext(UserContext);
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
@@ -17,6 +18,10 @@ function Header(props) {
                 </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+
+                <Nav>
+                    <Link className="me-auto" to={("/")}>Home</Link>
+                </Nav>
 
                 <Nav>
                     <Link className="me-auto" to={("/proposal")}>Insert Proposal</Link>

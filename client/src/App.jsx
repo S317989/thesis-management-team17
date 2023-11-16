@@ -5,6 +5,7 @@ import Login from './Pages/Login'
 import Header from './Components/Header'
 import Home from './Pages/Home'
 import SecurePageTest from './Pages/SecurePageTest';
+import AddProposal from './Pages/AddProposal';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
@@ -29,9 +30,6 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-
-
-
     AuthenticationAPI.getSessionAPI().then(response => {
       if (response.status === 200) {
         response.json().then(data => {
