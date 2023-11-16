@@ -14,7 +14,8 @@ import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 import SearchArchive from './Pages/Search-Archive';
 import Archive from './custom classes/archive';
 import Application from './custom classes/application';
-import { ApplyForProposal } from './Pages/Apply-for-proposal';
+import {ApplyForProposal} from './Pages/Apply-for-proposal';
+import SearchForm from './Components/SearchForm';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -52,10 +53,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/secure-test" element={<SecurePageTest />} />
               <Route path="Login" element={<Login />} />
-              <Route path="sa" element={<SearchArchive archive={archive} />} />
-              <Route path="/application" element={<ApplyForProposal application={application} />} />
-              <Route path="/proposal" element={<AddProposal />} />
-
+              <Route path="sa" element={<SearchArchive  archive= {archive}  />}/>
+              <Route path="/application" element={<ApplyForProposal  application= {application}   />} />
+              <Route path="/proposals" element={<SearchForm/>} />
+         
             </Routes>
           </div>
         </UserContext.Provider>

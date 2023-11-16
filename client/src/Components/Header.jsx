@@ -28,6 +28,13 @@ function Header(props) {
                     <Link className={"nav-link"} to={("/proposal")}>Insert Proposal</Link>
                 </Nav>
 
+                <Nav className="me-auto">
+                    <Link className={"nav-link"}
+                        to={("/proposals")}>Search Page</Link>
+                </Nav> 
+
+                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+
                 <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand-md`}
                     aria-labelledby={`offcanvasNavbarLabel-expand-md`}
