@@ -19,12 +19,13 @@ function Header(props) {
 
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
 
-                <Nav>
-                    <Link className="me-auto" to={("/")}>Home</Link>
+                <Nav className="me-auto">
+                    <Link className={"nav-link"}
+                        to={("/")}>Home</Link>
                 </Nav>
 
-                <Nav>
-                    <Link className="me-auto" to={("/proposal")}>Insert Proposal</Link>
+                <Nav className="me-auto">
+                    <Link className={"nav-link"} to={("/proposal")}>Insert Proposal</Link>
                 </Nav>
 
                 <Navbar.Offcanvas
