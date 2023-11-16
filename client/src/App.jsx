@@ -1,7 +1,6 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Login from './Pages/Login'
 import Header from './Components/Header'
 import Home from './Pages/Home'
 import SecurePageTest from './Pages/SecurePageTest';
@@ -53,7 +52,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/secure-test" element={<SecurePageTest />} />
-              <Route path="Login" element={<Login />} />
               <Route path="sa" element={<SearchArchive archive={archive} />} />
               <Route path="/application" element={<ApplyForProposal application={application} />} />
               <Route path="/proposals" element={<SearchForm />} />

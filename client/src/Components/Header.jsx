@@ -4,10 +4,13 @@ import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../Contexts.js";
 import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { PersonCircle } from "react-bootstrap-icons";
+
 
 function Header(props) {
     const navigate = useNavigate();
+    const [isHovered, setIsHovered] = useState(false);
     const { user } = useContext(UserContext);
 
     return (
@@ -22,16 +25,28 @@ function Header(props) {
                 <Nav className="me-auto">
                     <Link className={"nav-link"}
                         to={("/")}>Home</Link>
-                </Nav>
 
-                <Nav className="me-auto">
-                    <Link className={"nav-link"} to={("/proposal")}>Insert Proposal</Link>
                 </Nav>
-
-                <Nav className="me-auto">
-                    <Link className={"nav-link"}
-                        to={("/proposals")}>Search Page</Link>
-                </Nav>
+                {
+                    !user ? null :
+                        <>
+                            {
+                                user.role === "Student" ?
+                                    <>
+                                        <Nav className="me-auto">
+                                            <Link className={"nav-link"}
+                                                to={("/proposals")}>Search Page</Link>
+                                        </Nav>
+                                    </>
+                                    :
+                                    <>
+                                        <Nav className="me-auto">
+                                            <Link className={"nav-link"} to={("/proposal")}>Insert Proposal</Link>
+                                        </Nav>
+                                    </>
+                            }
+                        </>
+                }
 
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
 
@@ -43,12 +58,27 @@ function Header(props) {
                         {
                             !user ?
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
+                                        <PersonCircle />
+                                        {
+                                            isHovered ? `Not Authenticated` : null
+                                        }
+                                    </Nav.Link>
                                     <Button variant="link"
                                         className={"nav-link"}
                                         href="http://localhost:3000/login">Login</Button>
                                 </Nav>
                                 :
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
+                                        <PersonCircle />
+                                        {
+                                            !isHovered ? user.id : `Authenticated as ${user.role}`
+                                        }
+                                    </Nav.Link>
+
                                     <Button variant="link"
                                         className={"nav-link"}
                                         href="http://localhost:3000/logout">Logout</Button>

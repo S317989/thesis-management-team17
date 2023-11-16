@@ -2,5 +2,15 @@
     position: sticky !important;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 999 White !important;
+}
+
+.icon-link {
+    display: flex;
+    align-items: center;
+}
+
+.icon-link img {
+    width: 24px;
+    height: 24px;
 }
