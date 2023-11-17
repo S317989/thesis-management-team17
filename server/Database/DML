@@ -31,3 +31,7 @@ INSERT INTO Teacher VALUES
     (78912, 'Verdi', 'Giuseppe', 'd78912@polito.it', 1, 1),
     (54723, 'Gialli', 'Giovanni', 'd54723@polito.it', 2, 2),
     (96970, 'Neri', 'Paolo', 'd96970@polito.it', 1, 1);
+
+
+INSERT INTO Thesis_Applications VALUES 
+    (1, 317989, "Pending", null);
