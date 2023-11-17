@@ -8,7 +8,6 @@ import AddProposal from './Pages/AddProposal';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
-import { jwtDecode } from 'jwt-decode';
 import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
 import SearchArchive from './Pages/Search-Archive';
 import Archive from './custom classes/archive';
