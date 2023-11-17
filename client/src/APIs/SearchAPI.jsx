@@ -14,7 +14,7 @@ const SearchAPI = {
             }
         })
     },
-    searchProposals: function (userId,searchTerm) {
+    searchProposals: function (userId, searchTerm) {
         const url = new URL(parentURL + '/proposals/search/' + userId + "/" + searchTerm);
 
         url.searchParams.append('userID', userId);
@@ -29,7 +29,7 @@ const SearchAPI = {
                 'Content-Type': 'application/json',
             },
         })
-    }
+    },
 };
 
 export default SearchAPI;

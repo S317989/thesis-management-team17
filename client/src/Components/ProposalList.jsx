@@ -6,10 +6,6 @@ import { Container, Table } from 'react-bootstrap';
 const ProposalList = (props) => {
   const proposals = props.proposals;
 
-  useEffect(() => {
-    console.log(proposals);
-  }, [proposals]);
-
   return (
     <Container>
       <Table striped bordered hover size="sm">

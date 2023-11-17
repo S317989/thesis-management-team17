@@ -17,7 +17,6 @@ const Search = () => {
     setLoading(true);
     SearchAPI.searchProposals(user.id, searchTerm)
       .then(async (response) => {
-
         const data = await response.json()
         setProposals(data);
         setShowProposals(true);
@@ -26,7 +25,6 @@ const Search = () => {
         console.error("Error fetching proposals:", error);
       })
       .finally(() => setLoading(false));
-
   };
 
   const fetchAllProposals = () => {
@@ -45,7 +43,9 @@ const Search = () => {
   };
 
   const handleResetSubmit = (e) => {
-
+    e.preventDefault();
+    setSearchTerm('');
+    fetchAllProposals();
   };
 
   useEffect(() => {
