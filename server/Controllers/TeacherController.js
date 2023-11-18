@@ -14,7 +14,7 @@ module.exports = {
       })
       .catch((err) => {
         
-        return res.status(err.status).json({ message: err.message }).end();
+        return res.status(err.status).json({ message: err.message });
       });
   },
 };
