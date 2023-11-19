@@ -7,4 +7,8 @@ const applicationController = require('../Controllers/ApplicationController');
 
 applicationRouter.get('/retrieve-all', applicationController.getAllApplications);
 
+applicationRouter.put('/accept/:id', applicationController.acceptApplication);
+
+applicationRouter.put('/reject/:id', applicationController.rejectApplication);
+
 module.exports = applicationRouter;

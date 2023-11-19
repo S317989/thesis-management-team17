@@ -30,6 +30,7 @@ function App() {
 
   const [application, setApplication] = useState(app1)
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     AuthenticationAPI.getSessionAPI().then(response => {
@@ -41,26 +42,29 @@ function App() {
       } else
         setUser(null);
 
+      setIsLoading(false);
+
     });
   }, []);
 
   return (
     <>
       {
-        <UserContext.Provider value={{ user, setUser }}>
-          <div className="App">
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/secure-test" element={<SecurePageTest />} />
-              <Route path="sa" element={<SearchArchive archive={archive} />} />
-              <Route path="/application" element={<ApplyForProposal application={application} />} />
-              <Route path="/proposals" element={<SearchForm />} />
-              <Route path="/proposal" element={<InsertProposal />} />
-              <Route path="/proposal-page-test" element={<ProposalPageTest />} />
-            </Routes>
-          </div>
-        </UserContext.Provider>
+        isLoading ? <h1>...is loading...</h1> :
+          <UserContext.Provider value={{ user, setUser }}>
+            <div className="App">
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/secure-test" element={<SecurePageTest />} />
+                <Route path="sa" element={<SearchArchive archive={archive} />} />
+                <Route path="/application" element={<ApplyForProposal application={application} />} />
+                <Route path="/proposals" element={<SearchForm />} />
+                <Route path="/proposal" element={<InsertProposal />} />
+                <Route path="/proposal-page-test" element={<ProposalPageTest />} />
+              </Routes>
+            </div>
+          </UserContext.Provider>
       }
     </>
   )

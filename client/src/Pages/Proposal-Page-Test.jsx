@@ -26,17 +26,22 @@ function ProposalPageTest(props) {
     };
 
     useEffect(() => {
-        if (!user || user.role !== 'Teacher') {
-            sweetalert({
-                title: "Access Denied",
-                text: "You do not have permission to access this page.",
-                icon: "error",
-                button: "OK",
-            }).then(() => {
-                window.location.href = "http://localhost:3000/login";
-            });
-        }
+        const checkAuthentication = async () => {
+            if (!user || user.role !== 'Teacher') {
+                sweetalert({
+                    title: "You are not authorized to access this page",
+                    icon: "error",
+                    button: "Ok",
+                }).then(() => {
+                    window.location.href = "http://localhost:3000/login";
+                });
+            }
+        };
+
+        checkAuthentication();
+
     }, [user]);
+
 
     return (
         <Container className="mt-5 text-center">

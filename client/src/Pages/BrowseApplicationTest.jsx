@@ -28,7 +28,7 @@ function BrowseApplicationTest(props) {
                 user.role === 'Teacher' ?
                     <>
                         <h1>Browse Application</h1>
-                        <ApplicationTable applications={applications} />
+                        <ApplicationTable applications={applications} renderApp={renderApplications} />
                     </>
                     : <h1> Please, log in to visualize your Informations </h1>
             }

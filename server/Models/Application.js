@@ -152,4 +152,40 @@ module.exports = {
             }
         })
     },
+
+    acceptApplication: function (applicationId) {
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE Thesis_Applications SET Status = ? WHERE Th_Proposal_id = ?';
+            try {
+                db.run(sql, ['Accepted', applicationId], (err) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    return resolve({ status: 200, message: 'Application accepted' });
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during application accepting' });
+            }
+        })
+    },
+
+    rejectApplication: function (applicationId) {
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE Thesis_Applications SET Status = ? WHERE Th_Proposal_id = ?';
+            try {
+                db.run(sql, ['Rejected', applicationId], (err) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    return resolve({ status: 200, message: 'Application rejected' });
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during application rejecting' });
+            }
+        })
+    }
 }
