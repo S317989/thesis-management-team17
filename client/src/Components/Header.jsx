@@ -41,7 +41,7 @@ function Header(props) {
                                     :
                                     <>
                                         <Nav className="me-auto">
-                                            <Link className={"nav-link"} to={("/proposal")}>Insert Proposal</Link>
+                                            <Link className={"nav-link"} to={("/proposal-page-test")}>Proposal Management</Link>
                                         </Nav>
                                     </>
                             }
