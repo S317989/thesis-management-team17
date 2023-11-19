@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
+import { UserContext } from "../Contexts";
 
 const BrowseProposals = () => {
   // Sample data, replace with actual data fetched from your API
@@ -16,10 +17,30 @@ const BrowseProposals = () => {
   // State to store proposals
   const [proposals, setProposals] = useState([]);
 
+  const { user } = React.useContext(UserContext);
+
   useEffect(() => {
     // Simulate fetching data from your API
     setProposals(proposalsData);
   }, []);
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+        if (!user || user.role !== 'Teacher') {
+            sweetalert({
+                title: "You are not authorized to access this page",
+                icon: "error",
+                button: "Ok",
+            }).then(() => {
+                window.location.href = "http://localhost:3000/login";
+            });
+        }
+    };
+
+    checkAuthentication();
+
+}, [user]);
+
 
   return (
     <Container className="mt-4">

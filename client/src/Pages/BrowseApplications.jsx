@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { UserContext } from "../Contexts";
 
 const BrowseApplications = () => {
   // Sample data, replace with actual data fetched from your API
@@ -44,6 +45,8 @@ const BrowseApplications = () => {
   const [acceptedApplications, setAcceptedApplications] = useState([]);
   const [rejectedApplications, setRejectedApplications] = useState([]);
 
+  const { user } = React.useContext(UserContext);
+
   useEffect(() => {
     // Simulate fetching data from your API
     setPendingApplications(pendingApplicationsData);
@@ -60,6 +63,23 @@ const BrowseApplications = () => {
     // Handle reject action
     console.log(`Reject application with ID ${id}`);
   };
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+        if (!user || user.role !== 'Teacher') {
+            sweetalert({
+                title: "You are not authorized to access this page",
+                icon: "error",
+                button: "Ok",
+            }).then(() => {
+                window.location.href = "http://localhost:3000/login";
+            });
+        }
+    };
+
+    checkAuthentication();
+
+}, [user]);
 
   return (
     <Container className="mt-4">
