@@ -126,3 +126,13 @@ CREATE TABLE Degrees_By_Thesis (
     FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
     PRIMARY KEY (Th_Proposal_Id, Cod_Degree)
 );
+
+CREATE TABLE Thesis_External_Cosupervisors (
+    Id INTEGER NOT NULL,
+    Th_Proposal_Id INTEGER NOT NULL,
+    Surname TEXT NOT NULL,
+    Name TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    FOREIGN KEY (Th_Proposal_Id) REFERENCES Thesis_Proposal(Id),
+    PRIMARY KEY (Id AUTOINCREMENT)
+);
