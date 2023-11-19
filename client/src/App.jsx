@@ -15,6 +15,8 @@ import Application from './custom classes/application';
 import { ApplyForProposal } from './Pages/Apply-for-proposal';
 import SearchForm from './Components/SearchForm';
 import InsertProposal from './Components/InsertProposal.jsx';
+import ProposalPageTest from './Pages/Proposal-Page-Test.jsx';
+import BrowseApplicationTest from './Pages/BrowseApplicationTest.jsx';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -28,6 +30,7 @@ function App() {
 
   const [application, setApplication] = useState(app1)
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     AuthenticationAPI.getSessionAPI().then(response => {
@@ -39,25 +42,29 @@ function App() {
       } else
         setUser(null);
 
+      setIsLoading(false);
+
     });
   }, []);
 
   return (
     <>
       {
-        <UserContext.Provider value={{ user, setUser }}>
-          <div className="App">
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/secure-test" element={<SecurePageTest />} />
-              <Route path="sa" element={<SearchArchive archive={archive} />} />
-              <Route path="/application" element={<ApplyForProposal application={application} />} />
-              <Route path="/proposals" element={<SearchForm />} />
-              <Route path="/proposal" element={<InsertProposal />} />
-            </Routes>
-          </div>
-        </UserContext.Provider>
+        isLoading ? <h1>...is loading...</h1> :
+          <UserContext.Provider value={{ user, setUser }}>
+            <div className="App">
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/secure-test" element={<SecurePageTest />} />
+                <Route path="sa" element={<SearchArchive archive={archive} />} />
+                <Route path="/application" element={<ApplyForProposal application={application} />} />
+                <Route path="/proposals" element={<SearchForm />} />
+                <Route path="/proposal" element={<InsertProposal />} />
+                <Route path="/proposal-page-test" element={<ProposalPageTest />} />
+              </Routes>
+            </div>
+          </UserContext.Provider>
       }
     </>
   )

@@ -5,7 +5,10 @@ apiRouter.use('/test', require('./RouterTest'));
 
 apiRouter.use('/proposals', require('./RouterSearch'));
 
+apiRouter.use('/application', require('./RouterApplication'));
+
 apiRouter.use('/auth', require('./RouterAuth'));
+
 apiRouter.use('/thesis', require('./RouterThesis'));
 
 apiRouter.use('/thesis', require('./ProposalRouter'));
