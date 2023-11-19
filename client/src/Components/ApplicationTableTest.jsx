@@ -20,68 +20,6 @@ const ApplicationTableTest = (props) => {
         setShowModal(false);
     };
 
-    const handleAcceptApplication = (e, applicationId) => {
-        e.stopPropagation();
-
-        if (applications.find(application => application.proposal_id === applicationId).status === "Accepted") {
-            sweetalert({
-                title: "Application already accepted",
-                icon: "warning",
-                button: "Ok",
-            });
-        } else {
-            ApplicationAPI.acceptApplication(applicationId)
-                .then(async response => {
-                    if (response.status === 200) {
-                        sweetalert({
-                            title: "Application accepted",
-                            icon: "success",
-                            button: "Ok",
-                        });
-                    } else {
-                        sweetalert({
-                            title: response.message,
-                            icon: "error",
-                            button: "Ok",
-                        });
-                    }
-                });
-            renderApp();
-        }
-
-    };
-
-    const handleRejectApplication = (e, applicationId) => {
-        e.stopPropagation();
-
-        if (applications.find(application => application.proposal_id === applicationId).status === "Rejected") {
-            sweetalert({
-                title: "Application already rejected",
-                icon: "warning",
-                button: "Ok",
-            });
-        } else {
-            ApplicationAPI.rejectApplication(applicationId)
-                .then(async response => {
-                    if (response.status === 200) {
-                        sweetalert({
-                            title: "Application rejected",
-                            icon: "success",
-                            button: "Ok",
-                        });
-                    } else {
-                        sweetalert({
-                            title: response.message,
-                            icon: "error",
-                            button: "Ok",
-                        });
-                    }
-                });
-            renderApp();
-        }
-
-    };
-
     return (
         applications.length === 0 ?
             <h1>No Applications</h1>
@@ -95,7 +33,6 @@ const ApplicationTableTest = (props) => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,12 +43,6 @@ const ApplicationTableTest = (props) => {
                                 <td>{application.student_name}</td>
                                 <td>{application.student_email}</td>
                                 <td>{application.status}</td>
-                                <td>
-                                    <div>
-                                        <Button variant='primary' onClick={(e) => handleAcceptApplication(e, application.proposal_id)}>Accept</Button>
-                                        <Button variant='danger' onClick={(e) => handleRejectApplication(e, application.proposal_id)}>Reject</Button>
-                                    </div>
-                                </td>
                             </tr>
                         ))}
                     </tbody>

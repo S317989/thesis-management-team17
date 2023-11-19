@@ -36,6 +36,8 @@ function Header(props) {
                                         <Nav className="me-auto">
                                             <Link className={"nav-link"}
                                                 to={("/proposals")}>Search Page</Link>
+                                            <Link className={"nav-link"}
+                                                to={("/student-application")}>My Applications</Link>
                                         </Nav>
                                     </>
                                     :

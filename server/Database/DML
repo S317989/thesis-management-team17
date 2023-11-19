@@ -11,9 +11,9 @@ INSERT INTO User VALUES
     (54723, 'Professor'),
     (96970, 'Professor');
 
-INSERT INTO Degree VALUES (1, 'Computer Engineering');
+INSERT INTO Degree VALUES(1, 'Computer Engineering');
 
-INSERT INTO Student VALUES 
+INSERT INTO Student VALUES
     (317989, 'Gaudino', 'Andrea', 'Male', 'Italian', 's317989@studenti.polito.it', 1, 2022),
     (301316, 'Negin', 'Negin', 'Female', 'Iranian', 's301316@studenti.polito.it', 1, 2022),
     (319976, 'Mahrous', 'Mahmoud', 'Male', 'Egyptian', 's319976@studenti.polito.it', 1, 2022),
@@ -21,9 +21,9 @@ INSERT INTO Student VALUES
     (314140, 'Irmak', 'Gizem', 'Female', 'Turkish', 's314140@studenti.polito.it', 1, 2022),
     (319572, 'Di Paolo', 'Domenico', 'Male', 'Italian', 's319572@studenti.polito.it', 1, 2022);
 
-INSERT INTO ResearchGroup VALUES (1, 'Computer Engineering Group'), (2, 'Electronic Group');
+INSERT INTO ResearchGroup VALUES(1, 'Computer Engineering Group'), (2, 'Electronic Group');
 
-INSERT INTO Department VALUES (1, 'Computer Engineering Dep'), (2, 'Electronic Dep');
+INSERT INTO Department VALUES(1, 'Computer Engineering Dep'), (2, 'Electronic Dep');
 
 INSERT INTO Teacher VALUES
     (12571, 'Rossi', 'Mario', 'd12571@polito.it', 1, 1),
@@ -33,5 +33,17 @@ INSERT INTO Teacher VALUES
     (96970, 'Neri', 'Paolo', 'd96970@polito.it', 1, 1);
 
 
-INSERT INTO Thesis_Applications VALUES 
-    (1, 317989, "Pending", null);
+INSERT INTO Thesis_Proposal(Title, Supervisor, Keywords, Type, Description, Required_Knowledge, Notes, Expiration, Level, CDS, Archived)
+VALUES
+    ("Research Project on Artificial Intelligence", 23817, "AI, Machine Learning, Deep Learning", "Research", "In-depth study on the implementation of artificial intelligence algorithms", "Basic knowledge in computer science and mathematics", "Note: Requires a good knowledge of Python", "2023-12-31", "Master", "CDS1", 1),
+    ("Analysis of Neural Network Performance", 78912, "Deep Learning, Performance Analysis, Neural Networks", "Research", "Evaluation of the performance of neural networks in different contexts", "Advanced knowledge of machine learning and statistics", "Note: Experience with TensorFlow is a plus", "2023-12-31", "Ph.D.", "CDS2", 1),
+    ("Development of a Voice Recognition System", 96970, "Speech Recognition, Signal Processing, Natural Language Processing", "Development", "Implementation of an advanced voice recognition system", "Knowledge of programming languages such as Python or Java", "Note: Experience with voice recognition APIs is a plus", "2023-12-31", "Bachelor", "CDS1", 0),
+    ("Study on the Applications of the Internet of Things", 12571, "IoT, Embedded Systems, Connectivity", "Research", "Exploration of applications and challenges in the field of the Internet of Things", "Knowledge of networks and embedded systems", "Note: Requires familiarity with IoT protocols", "2023-12-31", "Master", "CDS2", 0),
+    ("Development of a Mobile Application for Task Management", 54723, "Mobile App Development, UX/UI Design, Project Management", "Development", "Creation of a mobile application for daily task management", "Knowledge of mobile development and UX/UI design", "Note: Experience with React Native is a plus", "2023-12-31", "Bachelor", "CDS1", );
+
+INSERT INTO Thesis_Applications VALUES
+    (1, 317989, "Accepted"),
+    (2, 301316, "Rejected"),
+    (3, 308344, "Pending"),
+    (5, 317989, "Rejected"),
+    (4, 314140, "Accepted");

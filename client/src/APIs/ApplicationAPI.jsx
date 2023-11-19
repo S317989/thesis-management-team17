@@ -20,7 +20,14 @@ const ApplicationAPI = {
             method: 'PUT',
             credentials: "include"
         })
-    }
+    },
+
+    getMyApplications: function (student_id) {
+        return fetch(URL + '/application/retrieve-my-all/' + student_id, {
+            method: 'GET',
+            credentials: "include"
+        })
+    },
 }
 
 export default ApplicationAPI;

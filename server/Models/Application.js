@@ -139,7 +139,6 @@ module.exports = {
                             student_degree: studentDegree.degree,
                             student_year: studentInfos.year,
                             status: element.Status,
-                            progress: element.Progress
                         };
 
                         return application;
@@ -153,39 +152,46 @@ module.exports = {
         })
     },
 
-    acceptApplication: function (applicationId) {
+    getStudentApplications: function (studentId) {
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE Thesis_Applications SET Status = ? WHERE Th_Proposal_id = ?';
+            const sql = 'SELECT * FROM Thesis_Applications WHERE Student_Id = ?';
             try {
-                db.run(sql, ['Accepted', applicationId], (err) => {
+                db.all(sql, [studentId], async (err, rows) => {
                     if (err)
                         return reject({
                             status: 500, message: 'Internal Server Error'
                         });
 
-                    return resolve({ status: 200, message: 'Application accepted' });
+                    if (!rows || rows.length === 0) {
+                        return reject({ status: 404, message: 'Applications not found' });
+                    }
+
+                    const applications = await Promise.all(rows.map(async (element) => {
+                        let proposalInfos = await this.retrieveProposalInfos(element.Th_Proposal_Id);
+
+                        const application = {
+                            proposal_id: element.Th_Proposal_Id,
+                            proposal_title: proposalInfos.title,
+                            proposal_supervisor: proposalInfos.supervisor,
+                            proposal_keywords: proposalInfos.keywords,
+                            proposal_type: proposalInfos.type,
+                            proposal_description: proposalInfos.description,
+                            proposal_requiredKnowledge: proposalInfos.requiredKnowledge,
+                            proposal_notes: proposalInfos.notes,
+                            proposal_expiration: proposalInfos.expiration,
+                            proposal_level: proposalInfos.level,
+                            student_id: element.Student_Id,
+                            status: element.Status,
+                        };
+
+                        return application;
+                    }));
+
+                    return resolve({ status: 200, applications: applications });
                 });
             } catch (e) {
-                return reject({ status: 500, message: 'Error during application accepting' });
+                return reject({ status: 500, message: 'Error during applications retrieving' });
             }
         })
     },
-
-    rejectApplication: function (applicationId) {
-        return new Promise((resolve, reject) => {
-            const sql = 'UPDATE Thesis_Applications SET Status = ? WHERE Th_Proposal_id = ?';
-            try {
-                db.run(sql, ['Rejected', applicationId], (err) => {
-                    if (err)
-                        return reject({
-                            status: 500, message: 'Internal Server Error'
-                        });
-
-                    return resolve({ status: 200, message: 'Application rejected' });
-                });
-            } catch (e) {
-                return reject({ status: 500, message: 'Error during application rejecting' });
-            }
-        })
-    }
 }
