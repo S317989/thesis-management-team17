@@ -56,6 +56,7 @@ function App() {
               <Route path="/application" element={<ApplyForProposal application={application} />} />
               <Route path="/proposals" element={<SearchForm />} />
 
+
               
               <Route path="/proposal" element={<InsertProposal />} />
               <Route path="/browse-applications" element={<BrowseApplications />} />
