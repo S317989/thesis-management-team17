@@ -16,6 +16,7 @@ import { ApplyForProposal } from './Pages/Apply-for-proposal';
 import SearchForm from './Components/SearchForm';
 import InsertProposal from './Components/InsertProposal.jsx';
 import BrowseApplications from './Pages/BrowseApplications.jsx';
+import BrowseProposals from './Pages/BrowseProposals.jsx';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -57,9 +58,11 @@ function App() {
               <Route path="/proposals" element={<SearchForm />} />
 
 
-              
+
               <Route path="/proposal" element={<InsertProposal />} />
               <Route path="/browse-applications" element={<BrowseApplications />} />
+              <Route path="/browse-proposals" element={<BrowseProposals/>} />
+
             </Routes>
           </div>
         </UserContext.Provider>
