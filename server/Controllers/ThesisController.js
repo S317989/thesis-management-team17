@@ -45,5 +45,35 @@ module.exports = {
             console.log(err);
             return res.status(500).json({ errorMessage: err });
         }
-    }
+    },
+
+    acceptThesisApplication: async function (req, res) {
+        try {
+            if (req.isAuthenticated() && req.user.role !== 'Student') {
+                await thesis.acceptThesisApplication(req.body);
+                return res.status(200).json({ message: "application accepted" });
+            }
+            else {
+                return res.status(401).json({ errorMessage: 'Unauthorized' });
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ errorMessage: err });
+        }
+    },
+
+    rejectThesisApplication: async function (req, res) {
+        try {
+            if (req.isAuthenticated() && req.user.role !== 'Student') {
+                await thesis.rejectThesisApplication(req.body);
+                return res.status(200).json({ message: "application rejected successfully!" });
+            }
+            else {
+                return res.status(401).json({ errorMessage: 'Unauthorized' });
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ errorMessage: err });
+        }
+    },
 }

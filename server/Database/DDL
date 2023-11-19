@@ -1,3 +1,5 @@
+-- PREDEFINED TABLES
+
 CREATE TABLE Degree (
     Cod_Degree INTEGER NOT NULL,
     Title_Degree TEXT NOT NULL,
@@ -11,6 +13,7 @@ CREATE TABLE Career (
     CFU INTEGER NOT NULL,
     Grade INTEGER NOT NULL,
     Date DATE NOT NULL,
+
     FOREIGN KEY (Student_Id) REFERENCES Student(Id),
     FOREIGN KEY (Cod_Course) REFERENCES Course(Cod_Course),
     FOREIGN KEY (Title_Course) REFERENCES Course(Title),
@@ -26,7 +29,7 @@ CREATE TABLE Student (
     Email CHAR(320),
     Cod_Degree INTEGER NOT NULL,
     Enrollment_Year INTEGER NOT NULL,
-    FOREIGN KEY (Id) REFERENCES User(Id)
+    --FOREIGN KEY (Id) REFERENCES User(Id), this is coming from outside.
     FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
     PRIMARY KEY (Id)
 );
@@ -38,11 +41,13 @@ CREATE TABLE Teacher (
     Email CHAR(320),
     Cod_Group INTEGER NOT NULL,
     Cod_Department INTEGER NOT NULL,
-    FOREIGN KEY (Id) REFERENCES User(Id),
+    --FOREIGN KEY (Id) REFERENCES User(Id), same, external data
     FOREIGN KEY (Cod_Group) REFERENCES ResearchGroup(Id),
     FOREIGN KEY (Cod_Department) REFERENCES Department(Cod_Department),
     PRIMARY KEY (Id)
 );
+
+-- TABLES SERVING THE PREDEFINED TABLES
 
 CREATE TABLE ResearchGroup (
     Id INTEGER NOT NULL,
@@ -62,9 +67,12 @@ CREATE TABLE Department (
     PRIMARY KEY (Cod_Department)
 );
 
+-- Team-Made Tables
+
+-- for the user table do we need it as the saml will be introduced?
 CREATE TABLE User (
     Id INTEGER NOT NULL,
-    Role TEXT NOT NULL,    
+    Role TEXT NOT NULL,
     PRIMARY KEY (Id)
 );
 
@@ -73,8 +81,6 @@ CREATE TABLE Thesis_Proposal (
     Id INTEGER NOT NULL,
     Title TEXT NOT NULL,
     Supervisor INTEGER NOT NULL,
-    CoSupervisor INTEGER,
-    Groups INTEGER NOT NULL,
     Keywords TEXT NOT NULL,
     Type TEXT NOT NULL,
     Description TEXT NOT NULL,
@@ -83,9 +89,8 @@ CREATE TABLE Thesis_Proposal (
     Expiration DATE NOT NULL,
     Level TEXT NOT NULL,
     CDS TEXT NOT NULL,
+    Archived INTEGER CHECK (Archived IN (0, 1)) NOT NULL DEFAULT 0,
     FOREIGN KEY (Supervisor) REFERENCES Teacher(Id),
-    FOREIGN KEY (CoSupervisor) REFERENCES User(Id),
-    FOREIGN KEY (Groups) REFERENCES ResearchGroup(Id)
     PRIMARY KEY (Id AUTOINCREMENT)
 );
 
@@ -93,7 +98,6 @@ CREATE TABLE Thesis_Applications (
     Th_Proposal_Id INTEGER NOT NULL,
     Student_Id INTEGER NOT NULL,
     Status TEXT CHECK (Status IN ('Pending', 'Accepted', 'Rejected')) NOT NULL,
-    Progress TEXT CHECK (Progress IN ('Active', 'Suspended', 'Archived')) NOT NULL,
     FOREIGN KEY (Th_Proposal_Id) REFERENCES Thesis_Proposal(Id),
     FOREIGN KEY (Student_Id) REFERENCES Student(Id),
     PRIMARY KEY (Th_Proposal_Id, Student_Id)
@@ -121,14 +125,4 @@ CREATE TABLE Degrees_By_Thesis (
     FOREIGN KEY (Th_Proposal_Id) REFERENCES Thesis_Proposal(Id),
     FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
     PRIMARY KEY (Th_Proposal_Id, Cod_Degree)
-);
-
-CREATE TABLE Thesis_External_Cosupervisors (
-    Id INTEGER NOT NULL,
-    Th_Proposal_Id INTEGER NOT NULL,
-    Surname TEXT NOT NULL,
-    Name TEXT NOT NULL,
-    Email TEXT NOT NULL,
-    FOREIGN KEY (Th_Proposal_Id) REFERENCES Thesis_Proposal(Id),
-    PRIMARY KEY (Id AUTOINCREMENT)
 );

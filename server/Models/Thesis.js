@@ -38,5 +38,47 @@ module.exports = {
                 reject(error);
             }
         });
+    },
+
+    acceptThesisApplication: function (params) {
+        return new Promise((resolve, reject) => {
+            try {
+                db.run(`UPDATE Thesis_Applications
+                        SET Status = "Accepted", Progress = "Active"
+                        WHERE Th_Proposal_Id = $proposalId AND Student_Id = $studentId;
+                        
+                        UPDATE Thesis_Applications
+                        SET Status = "Rejected"
+                        WHERE (Th_Proposal_Id = $proposalId AND Student_Id != $studentId) OR (Th_Proposal_Id != $proposalId AND Student_Id = $studentId)`,
+                    {
+                        $proposalId: params.roposalId,
+                        $studentId: params.studentId
+                    }, (err) => {
+                        if (err) reject(err);
+                        resolve();
+                    });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+
+    rejectThesisApplication: function (params) {
+        return new Promise((resolve, reject) => {
+            try {
+                db.run(`UPDATE Thesis_Applications
+                        SET Status = "Accepted", Progress = "Rejected"
+                        WHERE Th_Proposal_Id = $proposalId AND Student_Id = $studentId`,
+                    {
+                        $proposalId: params.roposalId,
+                        $studentId: params.studentId
+                    }, (err) => {
+                        if (err) reject(err);
+                        resolve();
+                    });
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 };
