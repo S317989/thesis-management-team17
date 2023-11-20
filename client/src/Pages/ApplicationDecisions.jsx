@@ -18,6 +18,7 @@ function ApplicationDecisions() {
           if (response.status === 200) {
             const data = await response.json();
             setMyApplications(data.applications);
+            console.log('user' , user.id);
           }
         });
     };
@@ -83,7 +84,64 @@ function ApplicationDecisions() {
                       </Table>
                     </Col>
                   </Row>
-                  {/* Similar tables for Pending and Rejected */}
+                  <Row>
+                    <Col>
+                      <h2>Pending Applications</h2>
+                      <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Supervisor</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {myApplications
+                            .filter((application) => application.status === 'Pending')
+                            .map((application) => (
+                              <tr key={application.proposal_id}>
+                                <td>{application.proposal_title}</td>
+                                <td>{application.proposal_supervisor}</td>
+                                <td>
+                                  <Button variant="primary" onClick={() => handleViewDetails(application)}>
+                                    View Details
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </Table>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h2>Rejected Applications</h2>
+                      <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Supervisor</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {myApplications
+                            .filter((application) => application.status === 'Rejected')
+                            .map((application) => (
+                              <tr key={application.proposal_id}>
+                                <td>{application.proposal_title}</td>
+                                <td>{application.proposal_supervisor}</td>
+                                <td>
+                                  <Button variant="primary" onClick={() => handleViewDetails(application)}>
+                                    View Details
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </Table>
+                    </Col>
+                  </Row>
                 </Container>
   
                 {/* Details Modal */}
