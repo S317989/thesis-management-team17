@@ -15,18 +15,36 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
 
 
 module.exports = {
-
     getAllProposals: function (userId) {
         return new Promise((resolve, reject) => {
             const sql = `
-                SELECT tp.Title, t.Name || ' ' || t.Surname AS Supervisor
-                FROM Thesis_Proposal tp
-                JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
-                JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
-                JOIN Teacher t ON t.Id = tp.Supervisor 
-                WHERE s.Id = ?;
-                `;
-            db.all(sql, [userId], (err, rows) => {
+            SELECT
+                Proposal.Id AS ProposalId,
+                Proposal.Title,
+                Proposal.Supervisor,
+                Proposal.Type,
+                Proposal.Description,
+                Proposal.Required_Knowledge,
+                Proposal.Notes,
+                Proposal.Expiration,
+                Proposal.Level,
+                Proposal.Archived,
+                Proposal_Degrees.Degree_Id,
+                Keyword.Name AS KeywordName,
+                Teacher.Surname AS SupervisorSurname,
+                Teacher.Name AS SupervisorName,
+                Teacher.Email AS SupervisorEmail
+            FROM
+                Proposal
+            JOIN Proposal_Degrees ON Proposal.Id = Proposal_Degrees.Proposal_Id
+            LEFT JOIN Proposal_Keywords ON Proposal.Id = Proposal_Keywords.Proposal_Id
+            LEFT JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id
+            JOIN Teacher ON Proposal.Supervisor = Teacher.Id
+            WHERE Proposal.Archived = 0
+            GROUP BY Proposal.Id;
+            `;
+
+            db.all(sql, (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -39,29 +57,45 @@ module.exports = {
     searchProposals: function (userId, searchTerm) {
         return new Promise((resolve, reject) => {
             const sql = `
-                SELECT tp.Title, t.Name || ' ' || t.Surname AS Supervisor, tp.Keywords, tp.Type, tp.Description, tp.Required_Knowledge, tp.Notes, tp.Expiration, tp.Level 
-                FROM Thesis_Proposal tp
-                JOIN Degrees_By_Thesis dbt ON tp.Id = dbt.Th_Proposal_Id
-                JOIN Student s ON s.Cod_Degree = dbt.Cod_Degree
-                JOIN Teacher t ON t.Id = tp.Supervisor 
-                WHERE s.Id = ? AND (
-                                        tp.Title LIKE '%' || ? || '%'
-                                        OR t.Name || ' ' || t.Surname LIKE '%' || ? || '%'
-                                        OR tp.Keywords LIKE '%' || ? || '%'
-                                        OR tp.Type LIKE '%' || ? || '%'
-                                        OR tp.Description LIKE '%' || ? || '%'
-                                        OR tp.Required_Knowledge LIKE '%' || ? || '%'
-                                        OR tp.Notes LIKE '%' || ? || '%'
-                                        OR tp.Expiration LIKE '%' || ? || '%'
-                                        OR tp.Level LIKE '%' || ? || '%'
-                                    )
-                
-                
+            SELECT
+                Proposal.Id AS ProposalId,
+                Proposal.Title,
+                Proposal.Supervisor,
+                Proposal.Type,
+                Proposal.Description,
+                Proposal.Required_Knowledge,
+                Proposal.Notes,
+                Proposal.Expiration,
+                Proposal.Level,
+                Proposal.Archived,
+                Proposal_Degrees.Degree_Id,
+                Keyword.Name AS KeywordName,
+                Teacher.Surname AS SupervisorSurname,
+                Teacher.Name AS SupervisorName,
+                Teacher.Email AS SupervisorEmail
+            FROM
+                Proposal
+            JOIN Proposal_Degrees ON Proposal.Id = Proposal_Degrees.Proposal_Id
+            LEFT JOIN Proposal_Keywords ON Proposal.Id = Proposal_Keywords.Proposal_Id
+            LEFT JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id
+            JOIN Teacher ON Proposal.Supervisor = Teacher.Id
+            WHERE Proposal.Archived = 0
+            AND (
+                Proposal.Title LIKE ?
+                OR Proposal.Description LIKE ?
+                OR Proposal.Required_Knowledge LIKE ?
+                OR Proposal.Notes LIKE ?
+                OR Keyword.Name LIKE ?
+                OR Teacher.Surname LIKE ?
+                OR Teacher.Name LIKE ?
+                OR Teacher.Email LIKE ?
+                OR Proposal.Type LIKE ?
+            );
                 `;
 
             const params = Array(9).fill(`%${searchTerm}%`);
 
-            db.all(sql, [userId, ...params], (err, rows) => {
+            db.all(sql, [...params], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
