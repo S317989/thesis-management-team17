@@ -15,7 +15,7 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
 module.exports = {
     retrieveKeywordsDetails: function (proposal_id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Proposal_Keywords JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id WHERE Proposal_Keywords.Proposal_Id = ?';
+            const sql = 'SELECT Name FROM Keyword JOIN Proposal_Keywords ON Keyword.Id = Proposal_Keywords.Keyword_Id WHERE Proposal_Keywords.Proposal_Id = ?';
             try {
                 db.all(sql, [proposal_id], (err, rows) => {
                     if (err)
@@ -28,7 +28,7 @@ module.exports = {
                     }
 
                     const keywords = rows.map((element) => {
-                        return element.Keyword;
+                        return element.Name;
                     });
 
                     return resolve(keywords);
@@ -64,7 +64,6 @@ module.exports = {
                             expiration: row.Expiration,
                             level: row.Level,
                             archived: row.Archived,
-                            degree: row.Cod_Degree
                         };
                         return resolve(proposal);
 
@@ -148,10 +147,9 @@ module.exports = {
 
                     const applications = await Promise.all(rows.map(async (element) => {
                         let studentInfos = await this.retrieveStudentInfos(element.Student_Id);
-
                         let studentDegree = await this.retrieveStudentDegree(studentInfos.cod_degree);
-                        let proposalInfos = await this.retrieveProposalInfos(element.Th_Proposal_Id);
-                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Th_Proposal_Id);
+                        let proposalInfos = await this.retrieveProposalInfos(element.Proposal_Id);
+                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Proposal_Id);
 
                         const application = {
                             proposal_id: element.Th_Proposal_Id,
@@ -191,7 +189,7 @@ module.exports = {
 
     getStudentApplications: function (studentId) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Application WHERE Student_Id = ?';
+            const sql = 'SELECT * FROM Application WHERE Student_Id = ? GROUP BY Proposal_Id';
             try {
                 db.all(sql, [studentId], async (err, rows) => {
                     if (err)
@@ -204,11 +202,11 @@ module.exports = {
                     }
 
                     const applications = await Promise.all(rows.map(async (element) => {
-                        let proposalInfos = await this.retrieveProposalInfos(element.Th_Proposal_Id);
-                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Th_Proposal_Id);
+                        let proposalInfos = await this.retrieveProposalInfos(element.Proposal_Id);
+                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Proposal_Id);
 
                         const application = {
-                            proposal_id: element.Th_Proposal_Id,
+                            proposal_id: element.Proposal_Id,
                             proposal_title: proposalInfos.title,
                             proposal_supervisor: proposalInfos.supervisor,
                             proposal_keywords: proposalKeywords,
@@ -219,7 +217,6 @@ module.exports = {
                             proposal_expiration: proposalInfos.expiration,
                             proposal_level: proposalInfos.level,
                             proposal_archived: proposalInfos.archived,
-                            proposal_degree: proposalInfos.degree,
                             student_id: element.Student_Id,
                             status: element.Status,
                             date: element.Date
