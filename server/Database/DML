@@ -86,8 +86,8 @@ INSERT INTO Keyword VALUES
 --Proposal
 INSERT INTO Proposal VALUES
     (1, 'AI Research Project', 12571, 'Research', 'Exploring Artificial Intelligence', 'Machine Learning, Deep Learning', 'Research experience is a plus', '2023-12-14', 'Master', 0, 1),
-    (2, 'Mechanical Engineering Study', 23817, 'Study', 'Investigating Mechanical Engineering', 'Solid mechanics, Fluid dynamics', 'Hands-on experience with CAD software', '2023-11-30', 'Bachelor', 1, 2),
-    (3, 'Mathematical Modeling Project', 78912, 'Research', 'Mathematical Engineering Research', 'Advanced mathematics, Modeling', 'Strong mathematical background required', '2023-12-10', 'Master', 0, 3),
+    (2, 'Mechanical Engineering Study', 23817, 'Study', 'Investigating Mechanical Engineering', 'Solid mechanics, Fluid dynamics', 'Hands-on experience with CAD software', '2023-11-30', 'Bachelor', 0, 2),
+    (3, 'Mathematical Modeling Project', 78912, 'Research', 'Mathematical Engineering Research', 'Advanced mathematics, Modeling', 'Strong mathematical background required', '2023-12-10', 'Master', 1, 3),
     (4, 'Electronics Design Project', 54723, 'Development', 'Electronic Engineering Project', 'Circuit design, PCB layout', 'Experience with embedded systems', '2023-12-05', 'Bachelor', 0, 4),
     (5, 'Data Science Thesis', 96970, 'Research', 'Exploring Data Science', 'Statistics, Machine Learning', 'Programming skills in Python and R', '2024-01-15', 'Master', 0, 2);
 
@@ -136,13 +136,13 @@ INSERT INTO Application(Student_Id, Proposal_Id, Date, Status) VALUES
     (314140, 3, '2023-12-05', 'Accepted'),
     (319572, 1, '2023-12-06', 'Rejected'); 
 
-INSERT INTO Proposal_Internal VALUES
+INSERT INTO Proposal_Internal_Cosupervisor VALUES
     (1, 23817),
     (1, 78912),
     (2, 54723),
     (5, 12571);
 
-INSERT INTO Proposal_External VALUES
+INSERT INTO Proposal_External_Cosupervisor VALUES
     (3, 1),
     (3, 2),
     (4, 2);

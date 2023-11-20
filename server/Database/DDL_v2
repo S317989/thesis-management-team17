@@ -97,9 +97,7 @@ CREATE TABLE Proposal (
     Expiration DATE NOT NULL,
     Level TEXT CHECK (Level IN ('Bachelor', 'Master')) NOT NULL,
     Archived INTEGER CHECK (Archived IN (0, 1)) NOT NULL DEFAULT 0,
-    Cod_Degree INTEGER NOT NULL,
     FOREIGN KEY (Supervisor) REFERENCES Teacher(Id),
-    FOREIGN KEY (Cod_Degree) REFERENCES Degree(Cod_Degree),
     PRIMARY KEY (Id AUTOINCREMENT)
 );
 
@@ -132,13 +130,13 @@ CREATE TABLE Application (
     Student_Id INTEGER NOT NULL,
     Proposal_Id INTEGER NOT NULL,
     Date DATE NOT NULL,
-    Status TEXT CHECK (Status IN ('Pending', 'Accepted', 'Rejected')) NOT NULL,
+    Status TEXT CHECK (Status IN ('Pending', 'Accepted', 'Rejected', 'Canceled')) NOT NULL,
     FOREIGN KEY (Student_Id) REFERENCES Student(Id),
     FOREIGN KEY (Proposal_Id) REFERENCES Proposal(Id),
     PRIMARY KEY (Application_Id AUTOINCREMENT) 
 );
 
-CREATE TABLE Proposal_Internal(
+CREATE TABLE Proposal_Internal_Cosupervisor(
     Proposal_Id INTEGER NOT NULL,
     Co_Supervisor_Id INTEGER NOT NULL,
     FOREIGN KEY (Proposal_Id) REFERENCES Proposal(Id),
@@ -146,7 +144,7 @@ CREATE TABLE Proposal_Internal(
     PRIMARY KEY (Proposal_Id, Co_Supervisor_Id)
 );
 
-CREATE TABLE Proposal_External (
+CREATE TABLE Proposal_External_Cosupervisor(
     Proposal_Id INTEGER NOT NULL,
     Co_Supervisor_Id INTEGER NOT NULL,
     FOREIGN KEY (Proposal_Id) REFERENCES Proposal(Id),
