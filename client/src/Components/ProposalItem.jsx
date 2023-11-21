@@ -7,7 +7,7 @@ const ProposalItem = (props) => {
   return (
     <tr>
       <td>{proposal.Title}</td>
-      <td>{proposal.Supervisor}</td>
+      <td>{proposal.SupervisorName} {' '}{proposal.SupervisorSurname}</td>
       {/* Add other table cells as needed */}
     </tr>
   );
