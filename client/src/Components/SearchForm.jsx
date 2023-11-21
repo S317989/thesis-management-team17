@@ -61,18 +61,15 @@ const Search = () => {
       } else
         fetchAllProposals();
     };
-
     checkAuthentication();
   }, [user])
 
-
   return (
-
-    user ?
+    user ? (
       <Container>
-        <h1 className="mt-4">Thesis Proposal Search</h1>
+        <h2 className="mt-4 mb-4">Thesis Proposal Search</h2>
         <Form onSubmit={handleSearch} className="mb-4">
-          <Row>
+          <Row className="mt-3 mb-3">
             <Col sm={8}>
               <Form.Control
                 type="text"
@@ -81,30 +78,26 @@ const Search = () => {
                 placeholder="Search by title, supervisor, etc."
               />
             </Col>
-            <Col sm={2}>
-              <Button type="submit" className="w-100" style={{ backgroundColor: 'black', color: 'white' }}>
+            <Col sm={4} className="d-flex align-items-start">
+              <Button type="submit" className="primary w-50 me-3" >
                 Search
               </Button>
-
-              <Button type="submit" className="w-100" style={{ backgroundColor: 'black', color: 'white' }} onClick={handleResetSubmit}>
+              <Button type="button" variant="dark" className="w-50" onClick={handleResetSubmit}>
                 Reset
               </Button>
             </Col>
-            <Col sm={2}>
-            </Col>
           </Row>
         </Form>
-
+        
         {!proposals ? (
           <p>Retrieving all proposals...</p>
         ) : (
           <ProposalList proposals={proposals} />
         )}
       </Container>
-      : null
-
+    ) : null
   );
+  
 };
 
 export default Search;
-

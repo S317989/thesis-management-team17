@@ -18,7 +18,6 @@ function ApplicationDecisions() {
           if (response.status === 200) {
             const data = await response.json();
             setMyApplications(data.applications);
-            console.log('user' , user.id);
           }
         });
     };
@@ -42,22 +41,21 @@ function ApplicationDecisions() {
           renderApplications();
         }
       };
-  
       checkAuthentication();
     }, [user]);
   
     return (
       <>
-        {user && user.role === 'Student' ? (
+        {user ? (
           <>
-            <h1>My Applications</h1>
+            <h2 className="mt-4 mb-4">Application Decisions</h2>
   
             {myApplications ? (
               <>
                 <Container>
                   <Row>
                     <Col>
-                      <h2>Accepted Applications</h2>
+                      <h4 className="mt-3 mb-3 text-start">Accepted Application</h4>
                       <Table striped bordered hover>
                         <thead>
                           <tr>
@@ -86,7 +84,7 @@ function ApplicationDecisions() {
                   </Row>
                   <Row>
                     <Col>
-                      <h2>Pending Applications</h2>
+                      <h4 className="mt-3 mb-3 text-start">Pending Application</h4>
                       <Table striped bordered hover>
                         <thead>
                           <tr>
@@ -115,7 +113,7 @@ function ApplicationDecisions() {
                   </Row>
                   <Row>
                     <Col>
-                      <h2>Rejected Applications</h2>
+                      <h4 className="mt-3 mb-3 text-start">Rejected Applications</h4>
                       <Table striped bordered hover>
                         <thead>
                           <tr>
