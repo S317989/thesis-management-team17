@@ -12,7 +12,8 @@ const ProposalList = (props) => {
         <thead>
           <tr>
             <th>Title</th>
-            <th>Supervisor</th>
+            <th>Supervisor Name</th>
+            <th>Supervisor Surname</th>
             {/* Add other table headers as needed */}
           </tr>
         </thead>

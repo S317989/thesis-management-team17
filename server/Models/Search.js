@@ -21,7 +21,8 @@ module.exports = {
             SELECT
                 Proposal.Id AS ProposalId,
                 Proposal.Title,
-                Proposal.Supervisor,
+                Teacher.Name,
+                Teacher.Surname,
                 Proposal.Type,
                 Proposal.Description,
                 Proposal.Required_Knowledge,

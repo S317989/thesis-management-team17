@@ -4,10 +4,15 @@ import React, { useEffect } from 'react';
 const ProposalItem = (props) => {
   const proposal = props.proposal;
 
+  useEffect(() => {
+    console.log(proposal);
+  }, []);
+
   return (
     <tr>
       <td>{proposal.Title}</td>
-      <td>{proposal.Supervisor}</td>
+      <td>{proposal.Name}</td>
+      <td>{proposal.Surname}</td>
       {/* Add other table cells as needed */}
     </tr>
   );

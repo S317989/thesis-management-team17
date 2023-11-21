@@ -6,6 +6,7 @@ import { UserContext } from "../Contexts.js";
 import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
 import { useEffect, useState } from "react";
 import { PersonCircle } from "react-bootstrap-icons";
+import VirtualClockComponent from "./VirtualClockComponent.jsx";
 
 
 function Header(props) {
@@ -60,6 +61,7 @@ function Header(props) {
                         {
                             !user ?
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <VirtualClockComponent />
                                     <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
                                         onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
                                         <PersonCircle />
@@ -73,6 +75,10 @@ function Header(props) {
                                 </Nav>
                                 :
                                 <Nav className="justify-content-end flex-grow-1 me-auto">
+                                    <Nav.Link className="icon-link" style={{ color: "white" }}>
+                                        <VirtualClockComponent />
+                                    </Nav.Link>
+
                                     <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
                                         onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
                                         <PersonCircle />
