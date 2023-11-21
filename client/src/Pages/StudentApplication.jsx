@@ -52,7 +52,9 @@ function StudentApplication() {
                                         <div key={application.proposal_id}>
                                             <p>Proposal ID: {application.proposal_id}</p>
                                             <p>Title: {application.proposal_title}</p>
-                                            <p>Supervisor: {application.proposal_supervisor}</p>
+                                            <p>Supervisor Name: {application.proposal_supervisor_name}</p>
+                                            <p>Supervisor Surname: {application.proposal_supervisor_surname}</p>
+                                            <p>Supervisor Email: {application.proposal_supervisor_email}</p>
                                             <p>Keywords: {application.proposal_keywords}</p>
                                             <p>Type: {application.proposal_type}</p>
                                             <p>Description: {application.proposal_description}</p>

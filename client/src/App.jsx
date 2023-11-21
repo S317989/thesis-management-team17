@@ -40,9 +40,10 @@ function App() {
           console.log("App info: ", data);
           setUser(data);
         });
-      } else
+      } else {
         setUser(null);
-
+        window.location.href = "http://localhost:3000/login";
+      }
       setIsLoading(false);
 
     });
