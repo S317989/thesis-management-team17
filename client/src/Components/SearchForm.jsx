@@ -49,9 +49,20 @@ const Search = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      fetchAllProposals();
-    }
+    const checkAuthentication = async () => {
+      if (!user || user.role !== 'Student') {
+        sweetalert({
+          title: "You are not authorized to access this page",
+          icon: "error",
+          button: "Ok",
+        }).then(() => {
+          window.location.href = "http://localhost:3000/login";
+        });
+      } else
+        fetchAllProposals();
+    };
+
+    checkAuthentication();
   }, [user])
 
 

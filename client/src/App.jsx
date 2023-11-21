@@ -32,6 +32,7 @@ function App() {
 
   const [application, setApplication] = useState(app1)
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     AuthenticationAPI.getSessionAPI().then(response => {
@@ -40,8 +41,11 @@ function App() {
           console.log("App info: ", data);
           setUser(data);
         });
-      } else
+      } else {
         setUser(null);
+        window.location.href = "http://localhost:3000/login";
+      }
+      setIsLoading(false);
 
     });
   }, []);

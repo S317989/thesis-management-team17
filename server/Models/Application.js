@@ -13,30 +13,61 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
 });
 
 module.exports = {
-    retrieveProposalInfos: function (proposalId) {
+    retrieveKeywordsDetails: function (proposal_id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Thesis_Proposal WHERE Id = ?';
+            const sql = 'SELECT Name FROM Keyword JOIN Proposal_Keywords ON Keyword.Id = Proposal_Keywords.Keyword_Id WHERE Proposal_Keywords.Proposal_Id = ?';
             try {
-                db.get(sql, [proposalId], (err, row) => {
+                db.all(sql, [proposal_id], (err, rows) => {
                     if (err)
                         return reject({
                             status: 500, message: 'Internal Server Error'
                         });
+
+                    if (!rows || rows.length === 0) {
+                        return reject({ status: 404, message: 'Keywords not found' });
+                    }
+
+                    const keywords = rows.map((element) => {
+                        return element.Name;
+                    });
+
+                    return resolve(keywords);
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during keywords retrieving' });
+            }
+        })
+    },
+
+    retrieveProposalInfos: function (proposalId) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM Proposal WHERE Id = ?';
+            try {
+                db.get(sql, [proposalId], async (err, row) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    const keywordsInfos = await this.retrieveKeywordsDetails(proposalId);
 
                     if (row === undefined) return reject({ status: 404, message: 'Proposal not found' });
                     else {
                         const proposal = {
                             title: row.Title,
                             supervisor: row.Supervisor,
-                            keywords: row.Keywords,
+                            keywords: keywordsInfos,
                             type: row.Type,
                             description: row.Description,
                             requiredKnowledge: row.Required_Knowledge,
                             notes: row.Notes,
                             expiration: row.Expiration,
-                            level: row.Level
+                            level: row.Level,
+                            archived: row.Archived,
                         };
                         return resolve(proposal);
+
+
                     }
                 });
             } catch (e) {
@@ -83,8 +114,8 @@ module.exports = {
                     if (row === undefined) return reject({ status: 404, message: 'User not found' });
                     else {
                         const user = {
-                            name: row.Name,
                             surname: row.Surname,
+                            name: row.Name,
                             gender: row.Gender,
                             nationality: row.Nationality,
                             email: row.Email,
@@ -100,9 +131,36 @@ module.exports = {
         });
     },
 
+    retrieveTeacherInfos: function (teacherId) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM Teacher WHERE Id = ?';
+
+            try {
+                db.get(sql, [teacherId], (err, row) => {
+                    if (err)
+                        return reject({
+                            status: 500, message: 'Internal Server Error'
+                        });
+
+                    if (row === undefined) return reject({ status: 404, message: 'User not found' });
+                    else {
+                        const user = {
+                            name: row.Name,
+                            surname: row.Surname,
+                            email: row.Email,
+                        }
+                        return resolve(user);
+                    }
+                });
+            } catch (e) {
+                return reject({ status: 500, message: 'Error during user infos retrieving' });
+            }
+        });
+    },
+
     getAllApplications: function () {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Thesis_Applications';
+            const sql = 'SELECT * FROM Application';
             try {
                 db.all(sql, async (err, rows) => {
                     if (err)
@@ -117,19 +175,25 @@ module.exports = {
                     const applications = await Promise.all(rows.map(async (element) => {
                         let studentInfos = await this.retrieveStudentInfos(element.Student_Id);
                         let studentDegree = await this.retrieveStudentDegree(studentInfos.cod_degree);
-                        let proposalInfos = await this.retrieveProposalInfos(element.Th_Proposal_Id);
+                        let proposalInfos = await this.retrieveProposalInfos(element.Proposal_Id);
+                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Proposal_Id);
+                        let teacherInfos = await this.retrieveTeacherInfos(proposalInfos.supervisor);
 
                         const application = {
-                            proposal_id: element.Th_Proposal_Id,
+                            proposal_id: element.Proposal_Id,
                             proposal_title: proposalInfos.title,
-                            proposal_supervisor: proposalInfos.supervisor,
-                            proposal_keywords: proposalInfos.keywords,
+                            proposal_supervisor_name: teacherInfos.name,
+                            proposal_supervisor_surname: teacherInfos.surname,
+                            proposal_supervisor_email: teacherInfos.email,
+                            proposal_keywords: proposalKeywords,
                             proposal_type: proposalInfos.type,
                             proposal_description: proposalInfos.description,
                             proposal_requiredKnowledge: proposalInfos.requiredKnowledge,
                             proposal_notes: proposalInfos.notes,
                             proposal_expiration: proposalInfos.expiration,
                             proposal_level: proposalInfos.level,
+                            proposal_archived: proposalInfos.archived,
+                            proposal_degree: proposalInfos.degree,
                             student_id: element.Student_Id,
                             student_surname: studentInfos.surname,
                             student_name: studentInfos.name,
@@ -139,6 +203,7 @@ module.exports = {
                             student_degree: studentDegree.degree,
                             student_year: studentInfos.year,
                             status: element.Status,
+                            date: element.Date
                         };
 
                         return application;
@@ -154,7 +219,7 @@ module.exports = {
 
     getStudentApplications: function (studentId) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM Thesis_Applications WHERE Student_Id = ?';
+            const sql = 'SELECT * FROM Application WHERE Student_Id = ? GROUP BY Proposal_Id';
             try {
                 db.all(sql, [studentId], async (err, rows) => {
                     if (err)
@@ -167,21 +232,27 @@ module.exports = {
                     }
 
                     const applications = await Promise.all(rows.map(async (element) => {
-                        let proposalInfos = await this.retrieveProposalInfos(element.Th_Proposal_Id);
+                        let proposalInfos = await this.retrieveProposalInfos(element.Proposal_Id);
+                        let proposalKeywords = await this.retrieveKeywordsDetails(element.Proposal_Id);
+                        let teacherInfos = await this.retrieveTeacherInfos(proposalInfos.supervisor);
 
                         const application = {
-                            proposal_id: element.Th_Proposal_Id,
+                            proposal_id: element.Proposal_Id,
                             proposal_title: proposalInfos.title,
-                            proposal_supervisor: proposalInfos.supervisor,
-                            proposal_keywords: proposalInfos.keywords,
+                            proposal_supervisor_name: teacherInfos.name,
+                            proposal_supervisor_surname: teacherInfos.surname,
+                            proposal_supervisor_email: teacherInfos.email,
+                            proposal_keywords: proposalKeywords,
                             proposal_type: proposalInfos.type,
                             proposal_description: proposalInfos.description,
                             proposal_requiredKnowledge: proposalInfos.requiredKnowledge,
                             proposal_notes: proposalInfos.notes,
                             proposal_expiration: proposalInfos.expiration,
                             proposal_level: proposalInfos.level,
+                            proposal_archived: proposalInfos.archived,
                             student_id: element.Student_Id,
                             status: element.Status,
+                            date: element.Date
                         };
 
                         return application;
