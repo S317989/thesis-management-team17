@@ -4,6 +4,7 @@ import ResearchGroupAPI from "../APIs/ResearchGroupAPI";
 import TeacherAPI from "../APIs/TeacherAPI";
 import InsertProposal from "../Components/InsertProposal";
 import { useState, useEffect } from "react";
+import { UserContext } from "../Contexts";
 
 function AddProposal() {
 
@@ -11,6 +12,8 @@ function AddProposal() {
     const [suplist, setSuplist]=useState([]);
     const [csvlist, setCsvlist]=useState([]);
     const [grouplist, setGrouplist]=useState([]);
+
+    const { user } = React.useContext(UserContext);
 
     const getAllDegrees = async () => {
         try {
@@ -99,6 +102,24 @@ function AddProposal() {
         getAllResearchGroups();
         
       }, []);
+
+      useEffect(() => {
+        const checkAuthentication = async () => {
+            if (!user || user.role !== 'Teacher') {
+                sweetalert({
+                    title: "You are not authorized to access this page",
+                    icon: "error",
+                    button: "Ok",
+                }).then(() => {
+                    window.location.href = "http://localhost:3000/login";
+                });
+            }
+        };
+
+        checkAuthentication();
+
+    }, [user]);
+
 
     return(
         <>

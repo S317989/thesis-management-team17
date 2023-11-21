@@ -18,33 +18,33 @@ module.exports = {
     getAllProposals: function (userId) {
         return new Promise((resolve, reject) => {
             const sql = `
-            SELECT
-                Proposal.Id AS ProposalId,
-                Proposal.Title,
-                Proposal.Supervisor,
-                Proposal.Type,
-                Proposal.Description,
-                Proposal.Required_Knowledge,
-                Proposal.Notes,
-                Proposal.Expiration,
-                Proposal.Level,
-                Proposal.Archived,
-                Proposal_Degrees.Degree_Id,
-                Keyword.Name AS KeywordName,
-                Teacher.Surname AS SupervisorSurname,
-                Teacher.Name AS SupervisorName,
-                Teacher.Email AS SupervisorEmail
-            FROM
-                Proposal
-            JOIN Proposal_Degrees ON Proposal.Id = Proposal_Degrees.Proposal_Id
-            LEFT JOIN Proposal_Keywords ON Proposal.Id = Proposal_Keywords.Proposal_Id
-            LEFT JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id
-            JOIN Teacher ON Proposal.Supervisor = Teacher.Id
-            WHERE Proposal.Archived = 0
-            GROUP BY Proposal.Id;
+                SELECT
+                    Proposal.Id AS ProposalId,
+                    Proposal.Title,
+                    Proposal.Supervisor,
+                    Proposal.Type,
+                    Proposal.Description,
+                    Proposal.Required_Knowledge,
+                    Proposal.Notes,
+                    Proposal.Expiration,
+                    Proposal.Level,
+                    Proposal.Archived,
+                    Proposal_Degrees.Degree_Id,
+                    Keyword.Name AS KeywordName,
+                    Teacher.Surname AS SupervisorSurname,
+                    Teacher.Name AS SupervisorName,
+                    Teacher.Email AS SupervisorEmail
+                FROM
+                    Proposal
+                JOIN Proposal_Degrees ON Proposal.Id = Proposal_Degrees.Proposal_Id
+                JOIN Teacher ON Proposal.Supervisor = Teacher.Id
+                JOIN Student ON Proposal_Degrees.Degree_Id = Student.Cod_Degree
+                LEFT JOIN Proposal_Keywords ON Proposal.Id = Proposal_Keywords.Proposal_Id
+                LEFT JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id
+                WHERE Proposal.Archived = 0 and Student.Id= ?
             `;
 
-            db.all(sql, (err, rows) => {
+            db.all(sql, [userId],(err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -74,12 +74,13 @@ module.exports = {
                 Teacher.Name AS SupervisorName,
                 Teacher.Email AS SupervisorEmail
             FROM
-                Proposal
+            Proposal
             JOIN Proposal_Degrees ON Proposal.Id = Proposal_Degrees.Proposal_Id
+            JOIN Teacher ON Proposal.Supervisor = Teacher.Id
+            JOIN Student ON Proposal_Degrees.Degree_Id = Student.Cod_Degree
             LEFT JOIN Proposal_Keywords ON Proposal.Id = Proposal_Keywords.Proposal_Id
             LEFT JOIN Keyword ON Proposal_Keywords.Keyword_Id = Keyword.Id
-            JOIN Teacher ON Proposal.Supervisor = Teacher.Id
-            WHERE Proposal.Archived = 0
+            WHERE Proposal.Archived = 0 and Student.Id= ?
             AND (
                 Proposal.Title LIKE ?
                 OR Proposal.Description LIKE ?
@@ -95,7 +96,7 @@ module.exports = {
 
             const params = Array(9).fill(`%${searchTerm}%`);
 
-            db.all(sql, [...params], (err, rows) => {
+            db.all(sql, [userId, ...params], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {

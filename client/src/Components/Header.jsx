@@ -35,16 +35,29 @@ function Header(props) {
                                     <>
                                         <Nav className="me-auto">
                                             <Link className={"nav-link"}
-                                                to={("/proposals")}>Search Page</Link>
-                                            <Link className={"nav-link"}
-                                                to={("/student-application")}>My Applications</Link>
+                                                to={("/proposals")}>Proposals</Link>
                                         </Nav>
+
+                                        <Nav className="me-auto">
+                                            <Link className={"nav-link"}
+                                                to={("/application-decisions")}>My Applications</Link>
+                                        </Nav>
+
                                     </>
                                     :
                                     <>
                                         <Nav className="me-auto">
-                                            <Link className={"nav-link"} to={("/proposal-page-test")}>Proposal Management</Link>
+                                            <Link className={"nav-link"} to={("/my-proposals")}>My Proposals</Link>
                                         </Nav>
+
+                                        <Nav className="me-auto">
+                                            <Link className={"nav-link"} to={("/browse-proposals")}>All Proposals</Link>
+                                        </Nav>
+
+                                        <Nav className="me-auto">
+                                            <Link className={"nav-link"} to={("/browse-applications")}>Applications</Link>
+                                        </Nav>
+
                                     </>
                             }
                         </>
