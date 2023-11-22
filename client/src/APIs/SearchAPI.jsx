@@ -1,8 +1,8 @@
-const parentURL = 'http://localhost:3000/api';
+const parentURL = 'http://localhost:3000/api/proposals';
 
 const SearchAPI = {
     getAllProposals: function (userId) {
-        const url = new URL(parentURL + '/proposals/retrieve-all/' + userId);
+        const url = new URL(parentURL + '/retrieve-all/' + userId);
 
         url.searchParams.append('userID', userId);
 
@@ -15,7 +15,7 @@ const SearchAPI = {
         })
     },
     searchProposals: function (userId, searchTerm) {
-        const url = new URL(parentURL + '/proposals/search/' + userId + "/" + searchTerm);
+        const url = new URL(parentURL + '/search/' + userId + "/" + searchTerm);
 
         url.searchParams.append('userID', userId);
         url.searchParams.append('searchTerm', searchTerm);
