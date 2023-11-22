@@ -74,16 +74,20 @@ const MyProposals = () => {
 }, [user]);
 
   return (
-    <Container className="mt-4">
-      <Row className="mb-3">
-        <Col className="text-right">
-          <Button variant="primary">Insert Proposal</Button>
-        </Col>
-      </Row>
+    <Container className="mt-5 mb-5">
+      <h2 className="mb-3">My Thesis Proposals</h2>
+      <Row className="mb-3 mt-3">
+      <Col xs={3}>
+        {/* Empty column to take up space */}
+      </Col>
+      <Col xs={9} className="text-end">
+        <Button variant="primary" size='lg' className="mt-3 mb-2">Insert Proposal</Button>
+      </Col>
+    </Row>
       <Row>
         <Col>
-          <h2 className="mb-4">My Active Proposals</h2>
-          <Table striped bordered hover>
+        <h4 className="mt-3 mb-3 text-start">My Active Proposals</h4>
+        <Table striped bordered hover size="sm" className="my-4">
             <thead>
               <tr>
                 <th>Title</th>
@@ -99,13 +103,13 @@ const MyProposals = () => {
                   <td>{proposal.cosupervisors}</td>
                   <td>{proposal.expiration}</td>
                   <td>
-                    <Button variant="info" onClick={() => handleUpdate(proposal.id)}>
+                    <Button variant="info"  className="me-2"  onClick={() => handleUpdate(proposal.id)}>
                       Update
                     </Button>{' '}
-                    <Button variant="danger" onClick={() => handleDelete(proposal.id)}>
+                    <Button variant="danger" className="me-2"  onClick={() => handleDelete(proposal.id)}>
                       Delete
                     </Button>{' '}
-                    <Button variant="warning" onClick={() => handleArchive(proposal.id)}>
+                    <Button variant="warning"  className="me-2"  onClick={() => handleArchive(proposal.id)}>
                       Archive
                     </Button>
                   </td>
@@ -117,14 +121,14 @@ const MyProposals = () => {
       </Row>
       <Row>
         <Col>
-          <h2 className="mb-4">My Archived Proposals</h2>
-          <Table striped bordered hover>
+        <h4 className="mt-3 mb-3 text-start">My Archived Proposals</h4>
+        <Table striped bordered hover className="my-4">
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Cosupervisors</th>
                 <th>Expiration</th>
-                <th>Action</th>
+                {/* <th>Action</th> */}
               </tr>
             </thead>
             <tbody>
@@ -133,11 +137,11 @@ const MyProposals = () => {
                   <td>{proposal.title}</td>
                   <td>{proposal.cosupervisors}</td>
                   <td>{proposal.expiration}</td>
-                  <td>
-                    <Button variant="success" onClick={() => handleActivate(proposal.id)}>
+                  {/* <td>
+                    <Button variant="success" className="me-2" onClick={() => handleActivate(proposal.id)}>
                       Activate
                     </Button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

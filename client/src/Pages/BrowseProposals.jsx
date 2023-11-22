@@ -43,11 +43,11 @@ const BrowseProposals = () => {
 
 
   return (
-    <Container className="mt-4">
-      <h1 className="mb-4">All Thesis Proposals</h1>
+    <Container className="mt-5 mb-5">
+      <h2 className="mb-4">All Thesis Proposals</h2>
       <Row>
         <Col>
-          <Table striped bordered hover size="sm">
+          <Table striped bordered hover className="my-4" size="sm">
             <thead>
               <tr>
                 <th>Title</th>

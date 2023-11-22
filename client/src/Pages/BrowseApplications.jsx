@@ -82,11 +82,12 @@ const BrowseApplications = () => {
 }, [user]);
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-5 mb-5">
+    <h2 className="mb-4">Thesis Applications</h2>
       <Row>
         <Col>
-          <h2>Pending Applications</h2>
-          <Table striped bordered hover>
+        <h4 className="mt-3 mb-2 text-start">Pending Applications</h4>
+        <Table striped bordered hover size="sm" className="my-4">
             <thead>
               <tr>
                 <th>Title</th>
@@ -104,10 +105,10 @@ const BrowseApplications = () => {
                   <td>{application.name}</td>
                   <td>{application.email}</td>
                   <td>
-                    <Button variant="success" onClick={() => handleAccept(application.id)}>
+                    <Button variant="success" className="me-2" onClick={() => handleAccept(application.id)}>
                       Accept
                     </Button>{' '}
-                    <Button variant="danger" onClick={() => handleReject(application.id)}>
+                    <Button variant="danger" className="me-2" onClick={() => handleReject(application.id)}>
                       Reject
                     </Button>
                   </td>
@@ -119,8 +120,8 @@ const BrowseApplications = () => {
       </Row>
       <Row className="mt-4">
         <Col >
-          <h2>Accepted Applications</h2>
-          <Table striped bordered hover size="sm">
+        <h4 className="mt-2 mb-3 text-start">Accepted Applications</h4>
+        <Table striped bordered hover size="sm" className="my-4">
             <thead>
               <tr>
                 <th>Title</th>
@@ -144,8 +145,8 @@ const BrowseApplications = () => {
       </Row>
       <Row className="mt-4">
         <Col>
-          <h2>Rejected Applications</h2>
-          <Table striped bordered hover size="sm">
+        <h4 className="mt-2 mb-3 text-start">Rejected Applications</h4>
+        <Table striped bordered hover size="sm" className="my-4">
             <thead>
               <tr>
                 <th>Title</th>
