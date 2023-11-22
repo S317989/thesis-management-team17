@@ -22,7 +22,7 @@ module.exports = {
 
     executeQuery: function (query, params) {
         return new Promise((resolve, reject) => {
-            db.all(query, params, (err) => {
+            db.run(query, params, (err) => {
                 if (err) {
                     console.error(err);
                     reject(err);

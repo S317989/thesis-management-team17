@@ -7,6 +7,12 @@ module.exports = {
     return await this.getProposalsLinkedData(results);
   },
 
+  getProposal: async function (proposalId) {
+    var results = await db.getData(`SELECT * FROM Proposal
+                                    WHERE Id = ?`, [proposalId]);
+    return await this.getProposalsLinkedData(results);
+  },
+
   searchProposals: async function (searchTerm) {
     var results = await db.getData(
       `SELECT *
@@ -47,7 +53,7 @@ module.exports = {
     return await this.getProposalsLinkedData(results);
   },
 
-  createThesisProposal: async function (data) {
+  createProposal: async function (data) {
 
   },
 

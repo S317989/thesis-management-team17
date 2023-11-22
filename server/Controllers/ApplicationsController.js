@@ -14,9 +14,6 @@ module.exports = {
     },
 
     getStudentApplications: (req, res) => {
-        if (!req.isAuthenticated() || !req.user.role === 'Student')
-            return res.status(401).json({ message: 'Unauthorized' }).end();
-
         applicationsServices.getStudentApplications(req.user.id).then((applications) => {
             return res.status(200).json(applications);
         }).catch((err) => {
@@ -25,30 +22,18 @@ module.exports = {
     },
 
     createApplication: async function (req, res) {
-        try {
-            if (req.isAuthenticated() && req.user.role === 'Student') {
-                console.log(req.body);
-                await applicationsServices.createApplication(req.body.proposalId, req.user.id);
-                return res.status(200).json({ Message: 'Application Added' });
-            }
-            else {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
-            }
-        } catch (err) {
-            console.log(err);
-            return res.status(500).json({ errorMessage: err });
-        }
+        applicationsServices.createApplication(req.body.proposalId, req.user.studentId).then((applicationAdded) => {
+            if (!applicationAdded) return res.status(400).json({ message: "The student has pending or accepted application" });
+            return res.status(200).json({ message: 'application added' });
+        }).catch((err) => {
+            return res.status(500).json({ message: err.message }).end()
+        });
     },
 
     acceptApplication: async function (req, res) {
         try {
-            if (req.isAuthenticated() && req.user.role !== 'Student') {
-                await applicationsServices.acceptApplication(req.body);
-                return res.status(200).json({ message: "application accepted" });
-            }
-            else {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
-            }
+            await applicationsServices.acceptApplication(req.body.proposalId, req.body.studentId);
+            return res.status(200).json({ message: "application accepted" });
         } catch (err) {
             console.log(err);
             return res.status(500).json({ errorMessage: err });
@@ -57,13 +42,8 @@ module.exports = {
 
     rejectApplication: async function (req, res) {
         try {
-            if (req.isAuthenticated() && req.user.role !== 'Student') {
-                await applicationsServices.rejectApplication(req.body);
-                return res.status(200).json({ message: "application rejected successfully!" });
-            }
-            else {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
-            }
+            await applicationsServices.rejectApplication(req.body.proposalId, req.body.studentId);
+            return res.status(200).json({ message: "application rejected successfully!" });
         } catch (err) {
             console.log(err);
             return res.status(500).json({ errorMessage: err });

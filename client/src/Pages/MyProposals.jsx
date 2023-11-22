@@ -33,9 +33,9 @@ const MyProposals = () => {
   const [refreshData, setRefreshData] = useState(true);
 
   useEffect(() => {
-    // Simulate fetching data from your API
     ProposalsAPI.getMyActiveProposals.then(async (res) => {
       data = await res.json();
+      console.log(data);
     }).catch((err) => console.log(err));
     setActiveProposals(activeProposalsData);
     setArchivedProposals(archivedProposalsData);

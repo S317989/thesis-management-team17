@@ -33,6 +33,7 @@ module.exports = {
   },
 
   getAllProposals: function (req, res) {
+    console.log('here');
     proposalsServices.getAllProposals().then((proposals) => {
       return res.status(200).json(proposals);
     }).catch((err) => {

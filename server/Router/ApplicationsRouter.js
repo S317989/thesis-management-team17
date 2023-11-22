@@ -3,10 +3,12 @@ const applicationsController = require('../Controllers/ApplicationsController');
 
 const applicationsRouter = express.Router();
 
-applicationsRouter.get('/retrieve-all', applicationsController.getAllApplications);
-applicationsRouter.get('/retrieve-my-all/', applicationsController.getStudentApplications);
+applicationsRouter.get('/all', applicationsController.getAllApplications);
+applicationsRouter.get('/mine', applicationsController.getStudentApplications);
 applicationsRouter.post('/apply', applicationsController.createApplication);
-applicationsRouter.get('/accept', applicationsController.acceptApplication);
-applicationsRouter.get('/reject', applicationsController.rejectApplication);
+
+//teacher only routes
+applicationsRouter.post('/accept', applicationsController.acceptApplication);
+applicationsRouter.post('/reject', applicationsController.rejectApplication);
 
 module.exports = applicationsRouter;
