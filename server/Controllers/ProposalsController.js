@@ -41,7 +41,8 @@ module.exports = {
   },
 
   searchProposals: function (req, res) {
-    proposalsServices.searchProposals(req.user.id, req.body.searchTerm).then((proposals) => {
+    proposalsServices.searchProposals(req.user.id, req.params.searchTerm).then((proposals) => {
+      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(err.status).json({ message: err.message }).end()

@@ -1,9 +1,9 @@
-const parentURL = 'http://localhost:3000/api';
+const parentURL = 'http://localhost:3000/api/proposals';
 
 const ProposalAPI = {
 
   newThesisProposal: function (title, supervisor, cosup, groups, keywords, type, description, knowledge, notes, expiration, level, cds) {
-    const url = new URL(parentURL + "/thesis/newproposal");
+    const url = new URL(parentURL + "/new-proposal");
 
     console.log("Request received");
     return fetch(url, {
@@ -27,6 +27,25 @@ const ProposalAPI = {
         cds: cds,
       }),
     });
+  },
+
+  getAllProposals: function (userId) {
+    const url = new URL(parentURL + '/retrieve-all');
+
+    return fetch(url, {
+      method: 'GET',
+      credentials: "include"
+    })
+  },
+
+  searchProposals: function (searchTerm) {
+    const url = new URL(parentURL + '/search/' + searchTerm);
+
+    console.log("Inside API");
+    return fetch(url, {
+      method: 'GET',
+      credentials: "include"
+    })
   },
 };
 

@@ -1,5 +1,5 @@
 'use strict';
-import db from "../Database/DAO";
+const db = require("../Database/DAO");
 
 module.exports = {
     retrieveKeywordsDetails: function (proposal_id) {

@@ -18,7 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import List from '@mui/material/List';
 import { DatePicker } from '@mui/x-date-pickers';
 import ListItem from '@mui/material/ListItem';
-import ProposalAPI from '../APIs/ProposalApi';
+import ProposalsAPI from '../APIs/ProposalsApi';
 
 import AddIcon from '@mui/icons-material/Add';
 
@@ -128,7 +128,7 @@ function InsertProposal(props) {
 
     try {
       // Make the API call
-      const response = await ProposalAPI.newThesisProposal(
+      const response = await ProposalsAPI.newThesisProposal(
         title,
         sup,
         csvList.join(','),//trasformo in stringhe concatenate da comma

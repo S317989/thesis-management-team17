@@ -1,17 +1,6 @@
 'use strict';
 
-/**
- * DAO for User table
- * */
-
-const sqlite = require('sqlite3');
-const { get } = require('../Router/RouterTest');
-
-// Open the database connection
-const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
-    if (err) console.error(err.message);
-    console.log('User DAO ready.');
-});
+const db = require("../Database/DAO");
 
 module.exports = {
     getStudentInfos: function (id) {

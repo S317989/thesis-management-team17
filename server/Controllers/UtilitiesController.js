@@ -1,6 +1,6 @@
 'use strict';
 
-import utilitiesServices from '../Services/Utilities'
+const utilitiesServices = require('../Services/Utilities');
 
 module.exports = {
   getAllCoSup: function (req, res) {

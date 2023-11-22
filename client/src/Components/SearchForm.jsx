@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import ProposalList from './ProposalList';
-import SearchAPI from '../APIs/SearchAPI';
+import ProposalsAPI from '../APIs/ProposalsApi';
 import { UserContext } from '../Contexts';
 
 const Search = () => {
@@ -15,9 +15,9 @@ const Search = () => {
     e.preventDefault();
     // Simulate an API call to search for proposals
     setLoading(true);
-    SearchAPI.searchProposals(user.id, searchTerm)
+    ProposalsAPI.searchProposals(searchTerm)
       .then(async (response) => {
-        const data = await response.json()
+        const data = await response.json();
         setProposals(data);
         setShowProposals(true);
       })
@@ -30,7 +30,7 @@ const Search = () => {
   const fetchAllProposals = () => {
     // Simulate an API call to retrieve all proposals
     setLoading(true);
-    SearchAPI.getAllProposals(user.id)
+    ProposalsAPI.getAllProposals(user.id)
       .then(async (response) => {
 
         const data = await response.json();

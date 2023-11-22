@@ -2,8 +2,7 @@
 Tabella External_Supervisor per le info dei supervisor esterni id, name surname, email, cod group
 *************/
 
-import db from "../Database/DAO";
-
+const db = require("../Database/DAO");
 // get all teacher
 exports.getAllCoSupervisor = () => {
     return new Promise((resolve, reject) => {

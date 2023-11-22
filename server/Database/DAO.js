@@ -6,4 +6,4 @@ const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
     console.log('DAO ready.');
 });
 
-export default db;
+module.exports = db;

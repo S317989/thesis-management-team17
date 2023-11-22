@@ -5,7 +5,7 @@ const proposalsRouter = express.Router();
 
 proposalsRouter.post('/new-proposal', proposalsController.newThesisRequest); 
 proposalsRouter.get('/retrieve-all', proposalsController.getAllProposals);
-proposalsRouter.get('/search/', proposalsController.searchProposals);
+proposalsRouter.get('/search/:searchTerm', proposalsController.searchProposals);
 proposalsRouter.get('/active-proposals', proposalsController.getActiveThesisProposals);
 proposalsRouter.get('/archived-proposals', proposalsController.getArchivedThesisProposals);
 
