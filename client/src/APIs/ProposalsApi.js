@@ -1,6 +1,6 @@
 const parentURL = 'http://localhost:3000/api/proposals';
 
-const ProposalAPI = {
+const ProposalsAPI = {
 
   newThesisProposal: function (title, supervisor, cosup, groups, keywords, type, description, knowledge, notes, expiration, level, cds) {
     const url = new URL(parentURL + "/new-proposal");
@@ -47,6 +47,15 @@ const ProposalAPI = {
       credentials: "include"
     })
   },
+
+  getMyActiveProposals: function () {
+    const url = new URL(parentURL + '/active-proposals');
+
+    return fetch(url, {
+      method: 'GET',
+      credentials: "include"
+    })
+  }
 };
 
-export default ProposalAPI;
+export default ProposalsAPI;

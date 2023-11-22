@@ -8,7 +8,7 @@ apiRouter.use('/utilities', require('./UtilitiesRouter'));
 
 // All the routes will be protected by the checkAuthentication middleware
 const checkAuthentication = (req, res, next) => {
-    req.isAuthenticated() ? next() : res.status(401).json({ errorMessage: 'Unauthorized' });
+    // req.isAuthenticated() ? next() : res.status(401).json({ errorMessage: 'Unauthorized' });
 }
 
 apiRouter.use((req, res, next) => {

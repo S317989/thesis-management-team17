@@ -2,30 +2,13 @@
 const db = require("../Database/DAO");
 
 module.exports = {
-    retrieveKeywordsDetails: function (proposal_id) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT Name FROM Keyword JOIN Proposal_Keywords ON Keyword.Id = Proposal_Keywords.Keyword_Id WHERE Proposal_Keywords.Proposal_Id = ?';
-            try {
-                db.all(sql, [proposal_id], (err, rows) => {
-                    if (err)
-                        return reject({
-                            status: 500, message: 'Internal Server Error'
-                        });
-
-                    if (!rows || rows.length === 0) {
-                        return reject({ status: 404, message: 'Keywords not found' });
-                    }
-
-                    const keywords = rows.map((element) => {
-                        return element.Name;
-                    });
-
-                    return resolve(keywords);
-                });
-            } catch (e) {
-                return reject({ status: 500, message: 'Error during keywords retrieving' });
-            }
-        })
+    retrieveKeywordsDetails: async function (proposal_id) {
+        const sql = 'SELECT Name FROM Keyword JOIN Proposal_Keywords ON Keyword.Id = Proposal_Keywords.Keyword_Id WHERE Proposal_Keywords.Proposal_Id = ?';
+        try {
+            await db.getData(sql, [proposal_id]);
+        } catch (e) {
+            return { status: 500, message: 'Error during keywords retrieving' };
+        }
     },
 
     retrieveProposalInfos: function (proposalId) {
@@ -151,7 +134,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM Application';
             try {
-                db.all(sql, async (err, rows) => {
+                db.getData(sql, async (err, rows) => {
                     if (err)
                         return reject({
                             status: 500, message: 'Internal Server Error'
@@ -210,7 +193,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM Application WHERE Student_Id = ? GROUP BY Proposal_Id';
             try {
-                db.all(sql, [studentId], async (err, rows) => {
+                db.getData(sql, [studentId], async (err, rows) => {
                     if (err)
                         return reject({
                             status: 500, message: 'Internal Server Error'

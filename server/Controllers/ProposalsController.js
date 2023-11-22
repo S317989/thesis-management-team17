@@ -33,7 +33,7 @@ module.exports = {
   },
 
   getAllProposals: function (req, res) {
-    proposalsServices.getAllProposals(req.user.id).then((proposals) => {
+    proposalsServices.getAllProposals().then((proposals) => {
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(err.status).json({ message: err.message }).end()
@@ -41,42 +41,31 @@ module.exports = {
   },
 
   searchProposals: function (req, res) {
-    proposalsServices.searchProposals(req.user.id, req.params.searchTerm).then((proposals) => {
+    proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
       console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
-      return res.status(err.status).json({ message: err.message }).end()
+      return res.status(500).json({ message: err.message }).end()
     });
   },
 
-  getActiveThesisProposals: async function (req, res) {
+  getTeacherActiveProposals: async function (req, res) {
     try {
-      if (req.isAuthenticated() && req.user.role !== 'Student') {
-        const result = await proposalsServices.getThesisProposals('Active');
-        return res.status(200).json(result);
-      }
-      else {
-        return res.status(401).json({ errorMessage: 'Unauthorized' });
-      }
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ errorMessage: err });
+      const results = await proposalsServices.getTeacherActiveProposals(req.user.id);
+      res.status(200).json(results);
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
     }
   },
 
-  getArchivedThesisProposals: async function (req, res) {
+  getTeacherArchivedProposals: async function (req, res) {
     try {
-      if (req.isAuthenticated() && req.user.role !== 'Student') {
-        const result = await proposalsServices.getThesisProposals('Archived');
-        return res.status(200).json(result);
-      }
-      else {
-        return res.status(401).json({ errorMessage: 'Unauthorized' });
-      }
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ errorMessage: err });
+      const results = await proposalsServices.getTeacherArchivedProposals(req.user.id);
+      res.status(200).json(results);
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
     }
   },
-
 };

@@ -1,6 +1,6 @@
 const URL = 'http://localhost:3000/api/applications';
 
-const ApplicationAPI = {
+const ApplicationsAPI = {
     getAllApplications: function () {
         return fetch(URL + '/retrieve-all', {
             method: 'GET',
@@ -58,4 +58,4 @@ const ApplicationAPI = {
 
 }
 
-export default ApplicationAPI;
+export default ApplicationsAPI;
