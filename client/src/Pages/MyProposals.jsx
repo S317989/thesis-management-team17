@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import ProposalsAPI from '../APIs/ProposalsApi';
+import { useNavigate } from 'react-router-dom';
 
 const MyProposals = () => {
   // Sample data, replace with actual data fetched from your API
@@ -28,18 +28,15 @@ const MyProposals = () => {
   // State to store proposals
   const [activeProposals, setActiveProposals] = useState([]);
   const [archivedProposals, setArchivedProposals] = useState([]);
+  const navigate = useNavigate();
 
   const { user } = React.useContext(UserContext);
-  const [refreshData, setRefreshData] = useState(true);
 
   useEffect(() => {
-    ProposalsAPI.getMyActiveProposals.then(async (res) => {
-      data = await res.json();
-      console.log(data);
-    }).catch((err) => console.log(err));
+    // Simulate fetching data from your API
     setActiveProposals(activeProposalsData);
     setArchivedProposals(archivedProposalsData);
-  }, [refreshData]);
+  }, []);
 
   const handleUpdate = (id) => {
     // Handle update action
@@ -82,7 +79,7 @@ const MyProposals = () => {
     <Container className="mt-4">
       <Row className="mb-3">
         <Col className="text-right">
-          <Button variant="primary">Insert Proposal</Button>
+          <Button variant="primary" onClick={() => navigate("/proposal-page/add")}>Insert Proposal</Button>
         </Col>
       </Row>
       <Row>
@@ -104,7 +101,7 @@ const MyProposals = () => {
                   <td>{proposal.cosupervisors}</td>
                   <td>{proposal.expiration}</td>
                   <td>
-                    <Button variant="info" onClick={() => handleUpdate(proposal.id)}>
+                    <Button variant="info" onClick={() => navigate(`/proposal-page/${proposal.id}/edit`)}>
                       Update
                     </Button>{' '}
                     <Button variant="danger" onClick={() => handleDelete(proposal.id)}>
@@ -149,7 +146,7 @@ const MyProposals = () => {
           </Table>
         </Col>
       </Row>
-    </Container>
+    </Container >
   );
 };
 

@@ -8,7 +8,7 @@ const ProposalList = (props) => {
 
   return (
     <Container>
-      <Table striped bordered hover size="sm" className="my-4">
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Title</th>

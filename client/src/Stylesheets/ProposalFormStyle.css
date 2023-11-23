@@ -1,0 +1,39 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    margin-top: 3%;
+    width: 70%;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 2%;
+}
+
+.form-section {
+    width: 30%;
+}
+
+.textarea-section {
+    width: 70%;
+}
+
+.button-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+
+.button-group {
+    justify-content: space-evenly;
+    width: 20%;
+}
+
+.insert-proposal-div {
+    width: 5%;
+}

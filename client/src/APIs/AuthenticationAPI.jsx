@@ -1,8 +1,8 @@
-const URL = 'http://localhost:3000/api/auth';
+const URL = 'http://localhost:3000/api';
 
 const AuthenticationAPI = {
     getSessionAPI: function () {
-        return fetch(URL + '/session', {
+        return fetch(URL + '/auth/session', {
             method: 'GET',
             credentials: "include"
         })
@@ -20,7 +20,7 @@ const AuthenticationAPI = {
     },*/
 
     logoutAPI: function () {
-        return fetch(URL + '/logout', {
+        return fetch(URL + '/auth/logout', {
             method: 'DELETE',
             credentials: "include"
         }

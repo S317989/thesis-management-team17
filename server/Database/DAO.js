@@ -20,6 +20,20 @@ module.exports = {
         });
     },
 
+    getOne: function(query, params){
+        return new Promise((resolve, reject) => {
+            db.get(query, params, (err, results) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    console.log(results);
+                    resolve(results);
+                }
+            });
+        });
+    },
+
     executeQuery: function (query, params) {
         return new Promise((resolve, reject) => {
             db.run(query, params, (err) => {

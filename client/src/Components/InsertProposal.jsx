@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -6,11 +6,14 @@ import dayjs from 'dayjs';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
+import CreatableSelect, { useCreatable } from 'react-select/creatable';
 import RadioGroup from '@mui/material/RadioGroup';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Radio from '@mui/material/Radio';
-
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Backdrop from '@mui/material/Backdrop';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 
@@ -18,7 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import List from '@mui/material/List';
 import { DatePicker } from '@mui/x-date-pickers';
 import ListItem from '@mui/material/ListItem';
-import ProposalsAPI from '../APIs/ProposalsApi';
+import ProposalAPI from '../APIs/ProposalApi';
 
 import AddIcon from '@mui/icons-material/Add';
 
@@ -29,8 +32,11 @@ function InsertProposal(props) {
   const [titleError, setTitleError] = useState(false);
   const [keyerror, setKeyerror] = useState(false);
   const [csvList, setCsvList] = useState([]);
-  const [keyword, setKeyword] = useState('');
+  const [keywordList, setKeywordList] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+
   const [keylist, setKeylist] = useState([]);
+  const [exSuplist, setExSuplist] = useState([]);
   const [cds, setCds] = useState([]);
   const [typerror, setTyperror] = useState(false);
   const [type, setType] = useState('');
@@ -42,38 +48,72 @@ function InsertProposal(props) {
   const [descerror, setDescerror] = useState(false);
   const [formerror, setFormerror] = useState(false);
   const [date, setDate] = useState('');
-  const [level, setLevel] = useState('BSc');
+  const [level, setLevel] = useState('Bachelor');
   const [success, setSuccess] = useState(false);
   const [grouplist, setGrouplist] = useState([]);
   const [notes, setNotes] = useState('');
+  const [toAddK, setToAddK] = useState([]); //nuove keyword senza id
   const [desc, setDesc] = useState('');
   const [know, setKnow] = useState(''); // required knowledge
+  const [cosuper, setCosuper] = useState({ name: '', surname: '', email: '' });
+  const [modalerror, setModalerror] = useState([false, false, false]);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const svList = props.teacherList ?? []; //teacher supervisor and co supervisors
 
 
-  const supervisors = props.teacherList;
-  const svList = supervisors ? supervisors.map((e) => `${e.email}, ${e.name}, ${e.surname}, ${e.groupname}`) : []; //supervisor list retrieved from db
+
+  useEffect(() => {
+    if (props.keywordsList) {
+      setKeywordList(props.keywordsList);
+    }
+  }, [props.keywordsList]);
 
 
 
-  const cosv = props.csvlist;
-  const tempcsv = cosv ? cosv.map((e) => `${e.email}, ${e.name}, ${e.surname}, ${e.groupname}`) : []; //cosupervisor list retrieved from db
+
+  const externalList = props.csvlist ?? [];//external co supervisor list retrieved
 
 
-  const degrees = props.degreeList;
-  const tempcds = degrees ? degrees.map((e) => e.degree) : []; //list of courses retrieved by db from CoSupervisor Table
+
+  const tempcds = props.degreeList ?? [];
+  //list of courses retrieved by db from CoSupervisor Table
+
+  const handleCreate = (inputValue) => {
+    let newArray = [...toAddK, inputValue]; //lista di keyword da aggiungere al db
+    setToAddK(newArray);//da fare nel submit finale del form
+  };
 
   const handleTagsChange = (event, values) => {
 
     let arr = values.map((item) => {
       let itemArray = item.split(',');
       let emailValue = itemArray[0]; //email value
-      let groupValue = itemArray[3]; //groupNAme
-      let newArray = [...grouplist, groupValue];
+      if (itemArray[3]) {
+        let groupValue = itemArray[3]; //groupNAme se è accademico
+        let newArray = [...grouplist, groupValue];
+        setGrouplist(newArray);//aggiorno la lista di gruppi
+      }
       let newEmailArray = [...csvList, emailValue];
-      setGrouplist(newArray);//aggiorno la lista di gruppi
+
       setCsvList(newEmailArray); //aggiorno la lista di email dei prof supervisor e cosupervisor
     })
-    // console.log(values)
+    console.log(values)
   };
 
   const handleDelete = (item, list) => {
@@ -81,9 +121,32 @@ function InsertProposal(props) {
     return newList;
   };
 
+  const handleSubmitCoSuper = () => {
+    const newErrors = [
+      cosuper.name.trim() === '',
+      cosuper.surname.trim() === '',
+      cosuper.email.trim() === '',
+    ];
+
+    setModalerror(newErrors);
+
+    if (newErrors.includes(true)) {
+      //handle error empty string not valid
+    }
+    else {
+      handleClose();
+      let newArray = [...exSuplist, cosuper];//adding external cosuper in the list of external ones
+      setExSuplist(newArray); //da aggiungere alla tabella apposita
+      console.log(cosuper, exSuplist);
+      setCosuper({ name: '', surname: '', email: '' }); //clear the object
+
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     let isFormValid = true;
+
 
     // Validate title
     if (title.trim() === '') {
@@ -124,25 +187,24 @@ function InsertProposal(props) {
       setFormerror(true);
       return;
     }
-
+    //csvList, grouplist, cds tabelle a parte
 
     try {
       // Make the API call
-      const response = await ProposalsAPI.newThesisProposal(
+      const response = await ProposalAPI.newThesisProposal(
         title,
         sup,
-        csvList.join(','),//trasformo in stringhe concatenate da comma
-        grouplist.join(','),
         keylist.join(','),
-        type.join(','),
+        typeList.join(','),
         desc,
         know,
         notes,
         date,
-        level,
-        cds
+        level
       );
-      console.log(response)
+      const data = await ProposalAPI.
+
+        console.log(response)
       if (response.ok) {
         console.log('Proposal submitted successfully');
         // Reset the form fields
@@ -153,6 +215,7 @@ function InsertProposal(props) {
         setKnow('');
         setType('');
         setTypeList([]);
+        setGrouplist([]);
         setKeylist([]);
         setKeyword('');
         setCsvList([]);
@@ -238,7 +301,7 @@ function InsertProposal(props) {
                   <Autocomplete
                     multiple
                     id="tags-standard"
-                    options={tempcsv}
+                    options={svList} //supervisor accademici oppure aggiungerne di nuovi esterni
                     getOptionLabel={(option) => option}
                     onChange={handleTagsChange}
                     renderInput={(params) => (
@@ -251,57 +314,77 @@ function InsertProposal(props) {
                     )}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6" component="div">
-                    Keywords list
-                  </Typography>
-                  <List dense>
-                    {keylist.length !== 0 ? (
-                      keylist.map((item) => (
-                        <ListItem key={item}>
-                          {item}
-                          <IconButton
-                            edge="end"
-                            onClick={() => {
-                              const newList = handleDelete(item, keylist);
-                              setKeylist(newList);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItem>
-                      ))
-                    ) : (
-                      <Typography>No keywords added</Typography>
-                    )}
-                  </List>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Add keywords*"
-                    error={keyerror}
-                    helperText={keyerror ? "At least one keyword required" : ''}
-                    onChange={(e) => {
-                      setKeyword(e.target.value);
-                      setKeyerror(false);
+                <div>
+                  <Button onClick={handleOpen}>Add external co-supervisor</Button>
+                  <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    slots={{ backdrop: Backdrop }}
+                    slotProps={{
+                      backdrop: {
+                        timeout: 500,
+                      },
                     }}
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton
-                          onClick={() => {
-                            if (keyword !== '' && !keylist.includes(keyword)) {
-                              const newList = [...keylist, keyword];
-                              setKeylist(newList);
-                              setKeyword('');
-                            }
+                  >
+                    <Fade in={open}>
+                      <Box sx={style}>
+                        <TextField
+                          error={modalerror[0]}
+                          helperText={modalerror[0] && 'Name not valid'}
+                          fullWidth
+                          label="Insert Name*"
+                          variant="filled"
+                          onChange={(e) => {
+                            let newObj = { ...cosuper, name: e.target.value }
+                            setCosuper(newObj);
+
+                            // Clear the error when the user starts typing
                           }}
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      ),
+                          sx={{ margin: '8px 0' }}
+                        />
+                        <TextField
+                          error={modalerror[1]}
+                          helperText={modalerror[1] && 'Surname not valid'}
+                          fullWidth
+                          label="Insert Surname*"
+                          variant="filled"
+                          onChange={(e) => {
+                            let newObj = { ...cosuper, surname: e.target.value }
+                            setCosuper(newObj);
+                          }}
+                          sx={{ margin: '8px 0' }}
+                        />
+                        <TextField
+                          error={modalerror[2]}
+                          helperText={modalerror[2] && 'Email not valid'}
+                          fullWidth
+                          label="Insert Email*"
+                          variant="filled"
+                          onChange={(e) => {
+                            let newObj = { ...cosuper, email: e.target.value }
+                            setCosuper(newObj);
+                          }}
+                          sx={{ margin: '8px 0' }}
+                        />
+                        <Button onClick={() => handleSubmitCoSuper()}>Add</Button>
+                      </Box>
+                    </Fade>
+                  </Modal>
+                </div>
+                <Grid item xs={12}>
+                  <CreatableSelect
+                    isMulti
+                    options={keywordList.filter((option) => !selectedKeywords.includes(option))}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(selectedOptions) => {
+                      let newArray = [...selectedKeywords, selectedOptions];
+                      setSelectedKeywords(newArray)
                     }}
-                    sx={{ margin: '8px 0' }}
+                    onCreateOption={(inputValue) => handleCreate(inputValue)}
+
                   />
                 </Grid>
 
@@ -386,7 +469,10 @@ function InsertProposal(props) {
                     multiline
                     rows={4}
                     variant="filled"
-                    onChange={(e) => setDesc(e.target.value)}
+                    onChange={(e) => {
+                      setDesc(e.target.value);
+                      setDescerror(false);
+                    }}
                     sx={{ margin: '8px 0' }}
                   />
                   <TextField
@@ -412,15 +498,15 @@ function InsertProposal(props) {
                   <FormLabel id="demo-radio-buttons-group-label">Level*</FormLabel>
                   <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="BSc"
+                    defaultValue="Bachelor"
                     error={levelerror ? 'true' : 'false'}
                     name="radio-buttons-group"
                     row
                     onChange={(e) => setLevel(e.target.value)}
                     sx={{ justifyContent: 'center' }}
                   >
-                    <FormControlLabel value="BSc" control={<Radio />} label="BSc" />
-                    <FormControlLabel value="MSc" control={<Radio />} label="MSc" />
+                    <FormControlLabel value="Bachelor" control={<Radio />} label="BSc" />
+                    <FormControlLabel value="Master" control={<Radio />} label="MSc" />
                   </RadioGroup>
                   {levelerror && (
                     <Typography variant="caption" color="error">

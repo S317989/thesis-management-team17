@@ -1,29 +1,17 @@
 import React, { useEffect } from "react";
-import InsertProposal from "../Components/InsertProposal";
+import NewProposalPage from "../Pages/NewProposalPage";
 import BrowseApplicationTest from "./BrowseApplicationTest";
 import { Container, Card } from 'react-bootstrap';
 import ProposalButtonTest from "../Components/ProposalsButtonTest";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
+import ProposalPage from "./ProposalPage";
+import { useNavigate } from "react-router-dom";
 
 function ProposalPageTest(props) {
-    const [activePage, setActivePage] = React.useState(null);
+    const navigate = useNavigate();
     const { user } = React.useContext(UserContext);
 
-    const handleButtonClick = (page) => {
-        setActivePage(page);
-    };
-
-    const renderPageContent = () => {
-        switch (activePage) {
-            case 'InsertProposalTest':
-                return <InsertProposal />;
-            case 'BrowseApplicationTest':
-                return <BrowseApplicationTest />;
-            default:
-                return null;
-        }
-    };
 
     useEffect(() => {
         const checkAuthentication = async () => {
@@ -46,16 +34,8 @@ function ProposalPageTest(props) {
     return (
         <Container className="mt-5 text-center">
             <h1>Choose a Page</h1>
-            <ProposalButtonTest label="Insert Proposal Page" onClick={() => handleButtonClick('InsertProposalTest')} />
-            <ProposalButtonTest label="Browse Application Page" onClick={() => handleButtonClick('BrowseApplicationTest')} />
-
-            {activePage && (
-                <Card className="mt-3">
-                    <Card.Body>
-                        {renderPageContent()}
-                    </Card.Body>
-                </Card>
-            )}
+            <ProposalButtonTest label="New Proposal" onClick={() => navigate("/proposal-page/add")} />
+            <ProposalButtonTest label="Browse Application Page" onClick={() => navigate("/browse-application")} />
         </Container>
     );
 }

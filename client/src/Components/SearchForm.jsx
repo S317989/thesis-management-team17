@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import ProposalList from './ProposalList';
-import ProposalsAPI from '../APIs/ProposalsApi';
+import SearchAPI from '../APIs/SearchAPI';
 import { UserContext } from '../Contexts';
 
 const Search = () => {
@@ -15,9 +15,9 @@ const Search = () => {
     e.preventDefault();
     // Simulate an API call to search for proposals
     setLoading(true);
-    ProposalsAPI.searchProposals(searchTerm)
+    SearchAPI.searchProposals(user.id, searchTerm)
       .then(async (response) => {
-        const data = await response.json();
+        const data = await response.json()
         setProposals(data);
         setShowProposals(true);
       })
@@ -30,7 +30,7 @@ const Search = () => {
   const fetchAllProposals = () => {
     // Simulate an API call to retrieve all proposals
     setLoading(true);
-    ProposalsAPI.getAllProposals(user.id)
+    SearchAPI.getAllProposals(user.id)
       .then(async (response) => {
 
         const data = await response.json();
@@ -61,15 +61,18 @@ const Search = () => {
       } else
         fetchAllProposals();
     };
+
     checkAuthentication();
   }, [user])
 
+
   return (
-    user ? (
+
+    user ?
       <Container>
-        <h2 className="mt-4 mb-4">Thesis Proposal Search</h2>
+        <h1 className="mt-4">Thesis Proposal Search</h1>
         <Form onSubmit={handleSearch} className="mb-4">
-          <Row className="mt-3 mb-3">
+          <Row>
             <Col sm={8}>
               <Form.Control
                 type="text"
@@ -78,26 +81,30 @@ const Search = () => {
                 placeholder="Search by title, supervisor, etc."
               />
             </Col>
-            <Col sm={4} className="d-flex align-items-start">
-              <Button type="submit" className="primary w-50 me-3" >
+            <Col sm={2}>
+              <Button type="submit" className="w-100" style={{ backgroundColor: 'black', color: 'white' }}>
                 Search
               </Button>
-              <Button type="button" variant="dark" className="w-50" onClick={handleResetSubmit}>
+
+              <Button type="submit" className="w-100" style={{ backgroundColor: 'black', color: 'white' }} onClick={handleResetSubmit}>
                 Reset
               </Button>
             </Col>
+            <Col sm={2}>
+            </Col>
           </Row>
         </Form>
-        
+
         {!proposals ? (
           <p>Retrieving all proposals...</p>
         ) : (
           <ProposalList proposals={proposals} />
         )}
       </Container>
-    ) : null
+      : null
+
   );
-  
 };
 
 export default Search;
+

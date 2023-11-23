@@ -1,4 +1,8 @@
-import UtilitiesAPI from "../APIs/UtilitiesAPI";
+import CosupervisorAPI from "../APIs/ExternalSupervisorAPI";
+import DegreeAPI from "../APIs/DegreeAPI";
+import KeywordsAPI from "../APIs/KeywordsAPI";
+import ResearchGroupAPI from "../APIs/ResearchGroupAPI";
+import TeacherAPI from "../APIs/TeacherAPI";
 import InsertProposal from "../Components/InsertProposal";
 import { useState, useEffect } from "react";
 import { UserContext } from "../Contexts";
@@ -9,16 +13,18 @@ function AddProposal() {
   const [suplist, setSuplist] = useState([]);
   const [csvlist, setCsvlist] = useState([]);
   const [grouplist, setGrouplist] = useState([]);
+  const [keywordsList, setKeywordsList] = useState([]);
 
   const { user } = React.useContext(UserContext);
 
   const getAllDegrees = async () => {
     try {
-      const response = await UtilitiesAPI.getListCds();
+      const response = await DegreeAPI.getListCds();
       console.log(response)
       if (response.ok) {
         // Assuming the response contains JSON data
         const cdsList = await response.json();
+        console.log(cdsList)
         setDegrees(cdsList);
 
       } else {
@@ -33,11 +39,12 @@ function AddProposal() {
 
   const getAllResearchGroups = async () => {
     try {
-      const response = await UtilitiesAPI.getAllGroups();
+      const response = await ResearchGroupAPI.getAllGroups();
       console.log(response)
       if (response.ok) {
         // Assuming the response contains JSON data
         const glist = await response.json();
+        console.log(glist)
         setGrouplist(glist);
 
       } else {
@@ -52,11 +59,12 @@ function AddProposal() {
 
   const getAllTeacher = async () => {
     try {
-      const response = await UtilitiesAPI.getListTeacher();
+      const response = await TeacherAPI.getListTeacher();
       console.log(response)
       if (response.ok) {
         // Assuming the response contains JSON data
         const teacherList = await response.json();
+        console.log(teacherList)
         setSuplist(teacherList);
 
       } else {
@@ -71,15 +79,36 @@ function AddProposal() {
 
   const getAllCoSup = async () => {
     try {
-      const response = await UtilitiesAPI.getCoSupList();
+      const response = await CosupervisorAPI.getCoSupList();
       console.log(response)
       if (response.ok) {
         // Assuming the response contains JSON data
         const cosupList = await response.json();
+        console.log(cosupList)
         setCsvlist(cosupList);
 
       } else {
         console.error('Error fetching CoSupervisor list:', response.status);
+        // Handle error, e.g., show an error message
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle unexpected errors
+    }
+  };
+
+  const getAllKeywords = async () => {
+    try {
+      const response = await KeywordsAPI.getKeywordsList();
+      console.log(response)
+      if (response.ok) {
+        // Assuming the response contains JSON data
+        const keywordsList = await response.json();
+        console.log(keywordsList)
+        setKeywordsList(keywordsList);
+
+      } else {
+        console.error('Error fetching Keywords list:', response.status);
         // Handle error, e.g., show an error message
       }
     } catch (error) {
@@ -93,10 +122,13 @@ function AddProposal() {
 
 
     // Call the function to fetch the CDS list when the component mounts
-    getAllTeacher();
+    getAllTeacher(); //academic ones
     getAllDegrees();
-    getAllCoSup();
+    getAllCoSup(); //external supervisors
     getAllResearchGroups();
+    getAllKeywords();
+
+
 
   }, []);
 
@@ -120,7 +152,7 @@ function AddProposal() {
 
   return (
     <>
-      <InsertProposal degreeList={degrees} teacherList={suplist} csvlist={csvlist} grouplist={grouplist} />
+      <InsertProposal degreeList={degrees} teacherList={suplist} csvlist={csvlist} grouplist={grouplist} keywordsList={keywordsList} />
 
     </>
   );

@@ -3,7 +3,7 @@ import { Container, Nav, Navbar, Offcanvas, Button, Form } from 'react-bootstrap
 import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../Contexts.js";
-import AuthenticationAPI from "../APIs/AuthenticationAPI";
+import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
 import { useEffect, useState } from "react";
 import { PersonCircle } from "react-bootstrap-icons";
 
