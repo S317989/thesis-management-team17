@@ -9,7 +9,7 @@ module.exports = {
         applicationsServices.getAllApplications().then((applications) => {
             return res.status(200).json(applications);
         }).catch((err) => {
-            return res.status(err.status).json({ message: err.message }).end()
+            return res.status(500).json({ message: err.message }).end()
         });
     },
 
@@ -17,7 +17,7 @@ module.exports = {
         applicationsServices.getStudentApplications(req.user.id).then((applications) => {
             return res.status(200).json(applications);
         }).catch((err) => {
-            return res.status(err.status).json({ message: err.message }).end()
+            return res.status(500).json({ message: err.message }).end()
         });
     },
 
@@ -35,7 +35,7 @@ module.exports = {
             await applicationsServices.acceptApplication(req.body.proposalId, req.body.studentId);
             return res.status(200).json({ message: "application accepted" });
         } catch (err) {
-            console.log(err);
+            
             return res.status(500).json({ errorMessage: err });
         }
     },
@@ -45,7 +45,7 @@ module.exports = {
             await applicationsServices.rejectApplication(req.body.proposalId, req.body.studentId);
             return res.status(200).json({ message: "application rejected successfully!" });
         } catch (err) {
-            console.log(err);
+            
             return res.status(500).json({ errorMessage: err });
         }
     },

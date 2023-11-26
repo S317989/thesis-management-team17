@@ -30,7 +30,7 @@ module.exports = {
 
     getTeacherInfos: async function (id) {
         try {
-            console.log('here');
+            
             const sql = 'SELECT * FROM Teacher WHERE Id = ?';
             const row = await db.getOne(sql, [id]);
             if (row === undefined) return { status: 404, message: 'Teacher not found' };

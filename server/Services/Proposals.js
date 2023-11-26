@@ -1,7 +1,98 @@
 'use strict';
 const db = require("../Database/DAO");
+const UtilitiesServices = require('../Services/Utilities');
 
 module.exports = {
+  addOrUpdateProposal: async function (data) {
+    console.log(data);
+    await db.executeTransaction(async () => {
+      var proposalId;
+
+      if (data.Id) {
+        // there's an Id meaning we are updating
+        proposalId = data.Id;
+
+        await db.executeQuery(`
+        UPDATE Proposal
+        SET Title=?, Supervisor=?, Type=?, Description=?,
+        Required_Knowledge=?, Notes=?, Expiration=?, Level=?
+        WHERE Id=?`, [data.Title, data.Supervisor, data.Type, data.Description,
+        data.Required_Knowledge, data.Notes, data.Expiration, data.Level, proposalId]);
+
+        // deleting all related data and readding them
+        await db.executeQuery('DELETE FROM Proposal_Internal_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
+        await db.executeQuery('DELETE FROM Proposal_External_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
+        await db.executeQuery('DELETE FROM Proposal_Degrees WHERE Proposal_Id=?', [proposalId]);
+        await db.executeQuery('DELETE FROM Proposal_Groups WHERE Proposal_Id=?', [proposalId]);
+        await db.executeQuery('DELETE FROM Proposal_Keywords WHERE Proposal_Id=?', [proposalId]);
+      }
+      else {
+        // adding new
+        await db.executeQuery(`
+        INSERT INTO Proposal (Title, Supervisor, Type, Description,
+          Required_Knowledge, Notes, Expiration, Level) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [data.Title, data.Supervisor, data.Type, data.Description,
+        data.Required_Knowledge, data.Notes, data.Expiration, data.Level]);
+
+        proposalId = (await db.getOne('SELECT MAX(Id) AS Id FROM Proposal', [])).Id;
+      }
+
+      if (data.cosupervisors && data.cosupervisors.length > 0) {
+        for (const c of data.cosupervisors) {
+          await db.executeQuery(
+            `Insert Into Proposal_Internal_Cosupervisor (Proposal_Id, Co_Supervisor_Id)
+             Values (?, ?)`, [proposalId, c.Id]);
+        };
+      }
+
+      if (data.externalCosupervisors && data.externalCosupervisors.length > 0) {
+        for (const c of data.externalCosupervisors) {
+          await db.executeQuery(
+            `Insert Into Proposal_External_Cosupervisor (Proposal_Id, Co_Supervisor_Id)
+             Values (?, ?)`, [proposalId, c.Id]);
+        };
+      }
+
+      if (data.degrees && data.degrees.length > 0) {
+        for (const d of data.degrees) {
+          await db.executeQuery(
+            `Insert Into Proposal_Degrees (Proposal_Id, Degree_Id)
+             Values (?, ?)`, [proposalId, d.Cod_Degree]);
+        };
+      }
+
+      if (data.groups && data.groups.length > 0) {
+        const uniqueGroupIds = [...new Set(data.groups.map(g => g.Id))];
+        for (const g of uniqueGroupIds) {
+          await db.executeQuery(
+            `Insert Into Proposal_Groups (Proposal_Id, Group_Id)
+             Values (?, ?)`, [proposalId, g]);
+        };
+      }
+
+      if (data.keywords && data.keywords.length > 0) {
+        for (var k of data.keywords) {
+          if (!k.Id) {
+            const newKeyword = await UtilitiesServices.addKeyword(k.Name);
+            k = newKeyword;
+          }
+          await db.executeQuery(
+            `Insert Into Proposal_Keywords (Proposal_Id, Keyword_Id)
+             Values (?, ?)`, [proposalId, k.Id]);
+        };
+      }
+
+    });
+  },
+
+  deleteProposal: async function (proposalId) {
+    await db.executeQuery('DELETE FROM Proposal WHERE Id=?', [proposalId]);
+  },
+
+  archiveProposal: async function (proposalId) {
+    await db.executeQuery('UPDATE Proposal SET Archived=1 WHERE Id=?', [proposalId]);
+  },
+
   getAllProposals: async function () {
     var results = await db.getData(`SELECT * FROM Proposal`, []);
     return await this.getProposalsLinkedData(results);
@@ -59,10 +150,6 @@ module.exports = {
     return await this.getProposalsLinkedData(results);
   },
 
-  createProposal: async function (data) {
-
-  },
-
   getTeacherActiveProposals: async function (teacherId) {
     var results = await db.getData(`SELECT * FROM Proposal
                                     WHERE Archived == 0 AND Expiration >= date('now')
@@ -73,7 +160,7 @@ module.exports = {
 
   getTeacherArchivedProposals: async function (teacherId) {
     var results = await db.getData(`SELECT * FROM Proposal
-                                    WHERE Archived == 1 OR Expiration < date('now')
+                                    WHERE (Archived == 1 OR Expiration < date('now'))
                                     AND Supervisor = ?`, [teacherId]);
 
     return await this.getProposalsLinkedData(results);
@@ -100,7 +187,7 @@ module.exports = {
        AND C.Proposal_Id = ?`, [p.Id]);
 
       p.degrees = await db.getData(
-        `SELECT D.Cod_Degree AS Id, D.Title_Degree AS Title
+        `SELECT D.Cod_Degree, D.Title_Degree
        FROM Proposal_Degrees AS PD, Degree AS D
        WHERE PD.Degree_Id = D.Cod_Degree
        AND PD.Proposal_Id = ?`, [p.Id]);

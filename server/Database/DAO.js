@@ -3,7 +3,7 @@ const sqlite = require('sqlite3');
 // Open the database connection
 const db = new sqlite.Database('./Database/DB.sqlite', (err) => {
     if (err) console.error(err.message);
-    console.log('DAO ready.');
+    
 });
 
 module.exports = {
@@ -20,14 +20,14 @@ module.exports = {
         });
     },
 
-    getOne: function(query, params){
+    getOne: function (query, params) {
         return new Promise((resolve, reject) => {
             db.get(query, params, (err, results) => {
                 if (err) {
                     console.error(err);
                     reject(err);
                 } else {
-                    console.log(results);
+                    
                     resolve(results);
                 }
             });
@@ -45,5 +45,29 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+
+    // Example Call
+    // await db.executeTransaction(async () => {
+        // await db.executeQuery(sql, [params]);
+    // });
+    executeTransaction: function (QueriesFunctionList) {
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run('BEGIN', (err) => {
+                    if (err) reject(err);
+                    QueriesFunctionList().then(() => {
+                        db.run('COMMIT', (err) => {
+                            if (err) reject(err);
+                            resolve()
+                        });
+                    }).catch((error) => {
+                        
+                        db.run('ROLLBACK');
+                        reject(error);
+                    });
+                });
+            });
+        });
+    },
 }

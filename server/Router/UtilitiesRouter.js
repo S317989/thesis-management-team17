@@ -3,9 +3,12 @@ const utilitiesController = require('../Controllers/UtilitiesController');
 
 const utilitiesRouter = express.Router();
 
-utilitiesRouter.get('/cosupervisors', utilitiesController.getAllCoSup); 
 utilitiesRouter.get('/degrees', utilitiesController.getAllCds); 
 utilitiesRouter.get('/groups', utilitiesController.getAllGroups); 
 utilitiesRouter.get('/teachers', utilitiesController.getAllTeacher); 
+utilitiesRouter.get('/external-cosupervisors', utilitiesController.getAllExternalCosupervisors); 
+utilitiesRouter.post('/external-cosupervisors', utilitiesController.addExternalCoSupervisor); 
+utilitiesRouter.get('/keywords', utilitiesController.getAllKeywords); 
+utilitiesRouter.post('/keywords', utilitiesController.addKeyword); 
 
 module.exports = utilitiesRouter;

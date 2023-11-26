@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Contexts";
 import { Button, Container, Modal, Row, Col, Table } from "react-bootstrap";
 import sweetalert from "sweetalert";
-import ApplicationAPI from "../APIs/ApplicationAPI";
+import ApplicationsAPI from "../APIs/ApplicationsAPI";
 
 function ApplicationDecisions() {
     
@@ -13,12 +13,12 @@ function ApplicationDecisions() {
     const [showModal, setShowModal] = useState(false);
   
     const renderApplications = () => {
-      ApplicationAPI.getMyApplications(user.id)
+      ApplicationsAPI.getMyApplications(user.id)
         .then(async (response) => {
           if (response.status === 200) {
             const data = await response.json();
             setMyApplications(data.applications);
-            console.log('user' , user.id);
+            
           }
         });
     };

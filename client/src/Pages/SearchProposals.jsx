@@ -5,7 +5,7 @@ import ProposalsAPI from "../APIs/ProposalsAPI";
 import sweetAlert from "sweetalert";
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 
-const BrowseProposals = () => {
+const SearchProposals = () => {
 
   const [proposals, setProposals] = useState([]);
 
@@ -14,6 +14,8 @@ const BrowseProposals = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await ProposalsAPI.getAllProposals();
+      // const result = await response.json();
+      // 
       setProposals(response.status === 200 ? await response.json() : []);
     }
     fetchData();
@@ -21,7 +23,7 @@ const BrowseProposals = () => {
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      if (!user || user.role !== 'Teacher') {
+      if (!user || user.role !== 'Student') {
         sweetAlert({
           title: "You are not authorized to access this page",
           icon: "error",
@@ -39,10 +41,10 @@ const BrowseProposals = () => {
 
   return (
     <Container className="mt-4">
-      <h1 className="mb-4">All Thesis Proposals</h1>
+      <h1 className="mb-4">Search Thesis Proposals</h1>
       <ProposalsSearchForm proposals={proposals} />
     </Container>
   );
 };
 
-export default BrowseProposals;
+export default SearchProposals;

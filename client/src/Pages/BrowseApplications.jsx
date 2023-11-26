@@ -56,12 +56,12 @@ const BrowseApplications = () => {
 
   const handleAccept = (id) => {
     // Handle accept action
-    console.log(`Accept application with ID ${id}`);
+    
   };
 
   const handleReject = (id) => {
     // Handle reject action
-    console.log(`Reject application with ID ${id}`);
+    
   };
 
   useEffect(() => {

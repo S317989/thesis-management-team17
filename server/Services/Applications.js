@@ -27,7 +27,7 @@ module.exports = {
         //CHECK IF THE STUDENT HAS OTHER APPLICATIONS NOT REJECTED
         const studentApplications = await this.getStudentApplications(studentId);
         for (const a of studentApplications) {
-            console.log(a);
+            
             if (a.Status === 'Pending' || a.Status === 'Accepted' || a.Proposal_Id === proposalId)
                 return 0;
         }
