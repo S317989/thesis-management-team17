@@ -20,20 +20,20 @@ const StudentApplications = () => {
     const [pendingOrActiveApplication, setPendingOrActiveApplication] = useState(null)
     const { user } = React.useContext(UserContext);
 
+    async function fetchData() {
+        const applicationsData = await ApplicationsAPI.getMyApplications();
+        setApplications(applicationsData);
+        setPendingOrActiveApplication(
+            applicationsData.find((p) =>
+                p[ApplicationFields.Status] === ApplicationStatus.Pending ||
+                p[ApplicationFields.Status] === ApplicationStatus.Accepted));
+
+        setAvailableProposals((await ProposalsAPI.getAvailableProposalsForStudent()).filter(p =>
+            !applicationsData.some(a => a[ApplicationFields.Proposal_Id] === p[ProposalFields.Id])
+        ));
+    }
+
     useEffect(() => {
-        async function fetchData() {
-            const applicationsData = await ApplicationsAPI.getMyApplications();
-            setApplications(applicationsData);
-            setPendingOrActiveApplication(
-                applicationsData.find((p) =>
-                    p[ApplicationFields.Status] === ApplicationStatus.Pending ||
-                    p[ApplicationFields.Status] === ApplicationStatus.Accepted));
-
-            setAvailableProposals((await ProposalsAPI.getAvailableProposalsForStudent()).filter(p =>
-                !applicationsData.some(a => a[ApplicationFields.Proposal_Id] === p[ProposalFields.Id])
-            ));
-        }
-
         AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.STUDENT_APPLICATIONS)
             ? fetchData()
             : sweetalert(({
