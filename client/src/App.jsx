@@ -16,6 +16,7 @@ import { Roles } from './APIs/AuthenticationAPI';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let _user = new Promise((resolve, reject) => {
