@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const SamlStrategy = require('passport-saml').Strategy;
 const auth0Strategy = require('passport-auth0');
 const session = require('express-session');
-const UserDAO = require('./Models/User');
+const UsersServices = require('./Services/Users');
 const path = require('path');
 const fs = require('fs');
 
@@ -29,7 +29,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (user, done) {
-    UserDAO.getUserById(user.nickname.substring(1, user.length))
+    UsersServices.getUserById(user.nickname.substring(1, user.length))
         .then(user => {
             done(null, user);
         }).catch(err => {
@@ -88,7 +88,7 @@ app.get('/login/callback', (req, res, next) => {
             req.logIn(user, async function (err) {
                 if (err) { return next(err); }
 
-                const userData = await UserDAO.getUserById(user.nickname.substring(1, user.length));
+                const userData = await UsersServices.getUserById(user.nickname.substring(1, user.length));
 
                 if (userData === undefined)
                     return next(err);
@@ -115,5 +115,5 @@ app.get('/logout', (req, res) => {
 
 // activate the server
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+    
 });
