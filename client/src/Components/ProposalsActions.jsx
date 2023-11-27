@@ -3,6 +3,11 @@ import ProposalsForm from './ProposalsForm';
 import React, { useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
+import { PlusSquareFill } from "react-bootstrap-icons";
+import { PencilFill } from "react-bootstrap-icons";
+import { ArchiveFill } from "react-bootstrap-icons";
+import { Trash3Fill } from "react-bootstrap-icons";
+import { InfoSquareFill } from "react-bootstrap-icons";
 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
@@ -14,9 +19,11 @@ export const ShowProposalsForm = ({
     }
 
     return <>
-        <Button variant="dark" onClick={ShowProposalModal}>
-            {!proposal ? "Add new proposal" : "Show Details"}
-        </Button>{' '}
+      {!proposal ? 
+      <PlusSquareFill onClick={ShowProposalModal} style={{ cursor: 'pointer', fontSize: '40px', color: '#007bff'}}></PlusSquareFill> 
+       : 
+      <InfoSquareFill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'purple'}} onClick={ShowProposalModal}></InfoSquareFill>}
+      
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
@@ -33,6 +40,7 @@ export const ShowProposalsForm = ({
                     }} />
             </Modal.Body>
         </Modal>
+
     </>;
 };
 
@@ -67,9 +75,9 @@ export const Delete = ({ proposalId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="danger" onClick={() => handleDelete()}>
+        <Trash3Fill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'maroon'}} onClick={() => handleDelete()}>
             Delete
-        </Button>{' '}
+        </Trash3Fill>
     </>
 };
 
@@ -103,8 +111,8 @@ export const Archive = ({ proposalId, OnComplete }) => {
     };
 
     return <>
-        <Button variant="warning" onClick={handleArchive}>
+        <ArchiveFill style={{ cursor: 'pointer', fontSize: '20px',  marginRight: '20px', color:'orange'}} onClick={handleArchive}>
             Archive
-        </Button>{' '}
+        </ArchiveFill>
     </>
 };

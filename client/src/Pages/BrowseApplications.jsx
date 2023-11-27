@@ -37,11 +37,15 @@ const BrowseApplications = () => {
   }, [user]);
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 mb-4">
       <Col>
-        <h2>Applications Management</h2>
-        <ApplicationsTable EnableAccept EnableReject
+      <Row className="mt-4 mb-4">
+      <h3>Applications Management</h3>
+      </Row>
+      <Row>
+      <ApplicationsTable EnableAccept EnableReject
           applications={applications} requestRefresh={fetchData} />
+      </Row>
       </Col>
     </Container>
   );
