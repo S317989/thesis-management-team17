@@ -10,8 +10,10 @@ const session = require('express-session');
 const UsersServices = require('./Services/Users');
 const path = require('path');
 const fs = require('fs');
+const { pass } = require('jest-extended');
+const bodyParser = require('body-parser');
 
-passport.use(new auth0Strategy({
+/**passport.use(new auth0Strategy({
     domain: 'thesis-management-team17.eu.auth0.com',
     clientID: 'fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS',
     clientSecret: 'yJX_spk-i03YxHbY_ggTZAjz17Zk3tnNBup3SiLY3RYQn52LkgWq1a6QTaOEcfUa',
@@ -23,8 +25,22 @@ passport.use(new auth0Strategy({
         return done(null, profile);
     }
 ));
+*/
 
-passport.serializeUser(function (user, done) {
+passport.use(new SamlStrategy({
+    entryPoint: 'https://thesis-management-team17.eu.auth0.com/samlp/fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS',
+    callbackUrl: 'http://localhost:3000/login/callback',
+    issuer: 'urn:thesis-management-team17.eu.auth0.com',
+    cert: fs.readFileSync(path.join(__dirname, './cert.pem'), 'utf8'),
+    acceptedClockSkewMs: 30000,
+}, function (profile, done) {
+    return done(null, {
+        email: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+        nickname: profile['http://schemas.auth0.com/nickname'],
+    });
+}));
+
+/*passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
@@ -35,6 +51,15 @@ passport.deserializeUser(function (user, done) {
         }).catch(err => {
             done(err, null);
         });
+});*/
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    console.log("User", user);
+    return done(null, user);
 });
 
 // Init express
@@ -62,11 +87,12 @@ app.use(session({
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
+app.use(passport.authenticate('session'));
 
 app.use("/api", require("./Router/RouterAPI"));
 
-app.get('/login', (req, res, next) => {
+/*app.get('/login', (req, res, next) => {
     !req.isAuthenticated() ?
         passport.authenticate('auth0', function (err, user, info) {
             if (err) return next(err);
@@ -101,6 +127,47 @@ app.get('/login/callback', (req, res, next) => {
         res.status(401).json({ message: 'Forbidden' });
 }
 );
+
+app.get('/logout', (req, res) => {
+    req.isAuthenticated() ?
+        req.logOut(res, function (err) {
+            if (err) { return next(err); }
+
+            const redirectURL = "http://localhost:5173";
+            return res.redirect(redirectURL);
+        })
+        : res.status(401).json({ message: 'Forbidden' });
+});*/
+
+app.get('/login', (req, res, next) => {
+    passport.authenticate('saml', { failureRedirect: '/login', failureFlash: true })(req, res, next);
+});
+
+app.post('/login/callback', bodyParser.urlencoded({ extended: false }), (req, res, next) => {
+    if (!req.isAuthenticated())
+        passport.authenticate('saml', { failureRedirect: '/login', failureFlash: true }, async function (err, user, info) {
+            if (err)
+                return next(err);
+
+            if (!user)
+                return res.redirect('/login');
+
+            const userData = await UsersServices.getUserById(user.nickname.substring(1, user.nickname.length));
+
+            if (userData === undefined)
+                return next(new Error("User data not found"));
+
+            console.log("User data:", userData);
+
+            req.logIn(userData, async function (err) {
+                if (err)
+                    return next(err);
+
+                const redirectURL = "http://localhost:5173";
+                return res.redirect(redirectURL);
+            });
+        })(req, res, next);
+});
 
 app.get('/logout', (req, res) => {
     req.isAuthenticated() ?
