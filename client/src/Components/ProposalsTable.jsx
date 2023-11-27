@@ -26,7 +26,7 @@ const ProposalsTable = ({
           <tr key={proposal[ProposalFields.Id]}>
             <td>{proposal[ProposalFields.Title]}</td>
             <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
-            <td>{proposal[ProposalFields.cosupervisors].map(c => <Badge key={c.Id} bg="secondary">{c.Name + ' ' + c.Surname}</Badge>)}</td>
+            <td>{proposal[ProposalFields.cosupervisors].map(c => <Badge key={c.Id} bg="secondary" style={{ margin: '5px' }}>{c.Name + ' ' + c.Surname}</Badge>)}</td>
             <td>{proposal[ProposalFields.Expiration]}</td>
             <td>
               <ShowProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}

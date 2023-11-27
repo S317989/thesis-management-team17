@@ -11,6 +11,7 @@ import { Pages } from '../APIs/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
 
+
 const MyProposals = () => {
   const navigate = useNavigate();
   const [activeProposals, setActiveProposals] = useState([]);
@@ -53,7 +54,7 @@ const MyProposals = () => {
       <Row>
         <h3>My Active Proposals</h3>
       </Row>
-      <Row>
+      <Row className="mt-4 mb-4">
         <Col xs={12} className="text-end">
           <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
         </Col>
