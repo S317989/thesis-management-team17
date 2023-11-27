@@ -1,4 +1,4 @@
-// src/components/ProposalItem.js
+
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
@@ -7,7 +7,7 @@ import { ShowProposalsForm, Delete, Archive } from './ProposalsActions';
 
 const ProposalsTable = ({ proposals, EnableEditing, EnableArchiving, EnableDeleting, requestRefresh }) => {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover size="sm">
       <thead>
         <tr>
           <th>Title</th>
@@ -22,7 +22,7 @@ const ProposalsTable = ({ proposals, EnableEditing, EnableArchiving, EnableDelet
           <tr key={proposal.Id}>
             <td>{proposal.Title}</td>
             <td>{proposal.Supervisor.Name + ' ' + proposal.Supervisor.Surname}</td>
-            <td>{proposal.cosupervisors.map(c => <Badge key={c.Id} bg="secondary">{c.Name + ' ' + c.Surname}</Badge>)}</td>
+            <td>{proposal.cosupervisors.map(c => <Badge key={c.Id} bg="secondary" style={{ marginRight: '8px', marginBottom: '8px' }}> {c.Name + ' ' + c.Surname} </Badge>)}</td>
             <td>{proposal.Expiration}</td>
             <td>
               <ShowProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}

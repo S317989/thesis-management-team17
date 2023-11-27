@@ -3,6 +3,19 @@ import ProposalsForm from './ProposalsForm';
 import React, { useState, useEffect } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddIcon from '@mui/icons-material/Add';
+import { IconButton , Tooltip} from '@mui/material'
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+import ArchiveRoundedIcon from '@mui/icons-material/ArchiveRounded';
+import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import PageviewRoundedIcon from '@mui/icons-material/PageviewRounded';
+import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 export const ShowProposalsForm = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, OnComplete }) => {
     const [show, setShow] = useState(false);
@@ -10,24 +23,43 @@ export const ShowProposalsForm = ({ proposal, EnableEditing, EnableArchiving, En
         setShow(true);
     }
 
-    return <>
-        <Button variant="dark" onClick={ShowProposalModal}>
-            {!proposal ? "Add new proposal" : "Show Details"}
-        </Button>{' '}
-        <Modal show={show} fullscreen onHide={() => setShow(false)}>
+    return (
+        <>
+          {!proposal && (
+             <Tooltip title="Add New Proposal">
+           <IconButton color="primary" size="large" onClick={ShowProposalModal}>
+          <AddBoxIcon  sx={{ fontSize: 45 }} />
+         </IconButton>
+         </Tooltip>
+          )}
+          {proposal && (
+            <Tooltip title="View & Update">
+            <IconButton color="primary"  onClick={ShowProposalModal}>
+            <BorderColorRoundedIcon/>
+           </IconButton>
+            </Tooltip>
+          )}
+    
+          <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
+              <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <ProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
-                    EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={() => {
-                        if (OnComplete) OnComplete();
-                        setShow(false);
-                    }} />
+              <ProposalsForm
+                EnableEditing={EnableEditing}
+                EnableArchiving={EnableArchiving}
+                EnableDeleting={EnableDeleting}
+                proposal={proposal}
+                OnComplete={() => {
+                  if (OnComplete) OnComplete();
+                  setShow(false);
+                }}
+              />
             </Modal.Body>
-        </Modal>
-    </>;
-};
+          </Modal>
+        </>
+      );
+    };
 
 export const Delete = ({ proposalId, OnComplete }) => {
     const handleDelete = () => {
@@ -60,9 +92,13 @@ export const Delete = ({ proposalId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="danger" onClick={() => handleDelete()}>
-            Delete
-        </Button>{' '}
+      <Tooltip title="Delete">
+    <IconButton color="warning" onClick={() => handleDelete()}>
+            <DeleteRoundedIcon/>
+           </IconButton>
+           </Tooltip>
+           
+      
     </>
 };
 
@@ -96,8 +132,10 @@ export const Archive = ({ proposalId, OnComplete }) => {
     };
 
     return <>
-        <Button variant="warning" onClick={handleArchive}>
-            Archive
-        </Button>{' '}
+        <Tooltip title="Archive">
+      <IconButton color="secondary" onClick={handleArchive}>
+        <ArchiveIcon />
+      </IconButton>
+    </Tooltip>
     </>
 };
