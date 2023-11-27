@@ -20,7 +20,11 @@ const StudentApplications = () => {
             const appliedProposals = await ProposalsAPI.getStudentApplicationsProposals();
             console.log(availableProposals, appliedProposals);
             var uniqueProposals = [...availableProposals, ...appliedProposals];
-            uniqueProposals = [...new Map(array.map(p => [p.Id, p])).values()];
+            uniqueProposals = uniqueProposals.filter((proposal, index, self) =>
+                index === self.findIndex((p) => (
+                    p.Id === proposal.Id
+                ))
+            )
             setProposals(uniqueProposals);
 
             setApplications(await ApplicationsAPI.getMyApplications());
