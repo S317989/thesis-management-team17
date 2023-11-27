@@ -5,7 +5,7 @@ import ProposalsTable from '../Components/ProposalsTable'
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
-import sweetAlert from "sweetalert";
+import sweetalert from "sweetalert";
 
 const MyProposals = () => {
 

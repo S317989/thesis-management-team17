@@ -44,6 +44,7 @@ const StudentApplications = () => {
                 });
             }
         };
+
         checkAuthentication();
     }, [user]);
 
