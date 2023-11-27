@@ -14,6 +14,7 @@ import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
 import SearchProposals from './Pages/SearchProposals'
 import StudentApplications from './Pages/StudentApplications.jsx';
+import { Roles } from './APIs/AuthenticationAPI';
 
 function App() {
   const [user, setUser] = useState(null);

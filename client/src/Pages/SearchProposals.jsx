@@ -4,11 +4,13 @@ import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import sweetAlert from "sweetalert";
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
+import AuthenticationAPI from '../APIs/AuthenticationAPI';
+import { Pages } from '../APIs/AuthenticationAPI';
+import { useNavigate } from 'react-router-dom';
 
 const SearchProposals = () => {
-
+  const navigate = useNavigate();
   const [proposals, setProposals] = useState([]);
-
   const { user } = React.useContext(UserContext);
 
   useEffect(() => {
@@ -16,24 +18,16 @@ const SearchProposals = () => {
       const response = await ProposalsAPI.getAvailableProposalsForStudent();
       setProposals(response.status === 200 ? await response.json() : []);
     }
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      if (!user || user.role !== 'Student') {
-        sweetAlert({
-          title: "You are not authorized to access this page",
-          icon: "error",
-          button: "Ok",
-        }).then(() => {
-          window.location.href = "http://localhost:3000/login";
-        });
-      }
-    };
-
-    checkAuthentication();
-
+    AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.SEARCH_PROPOSALS)
+      ? fetchData()
+      : sweetalert(({
+        title: "You are not authorized to access this page",
+        icon: "error",
+        button: "Ok",
+      })).then(
+        navigate("/")
+      )
   }, [user]);
 
 

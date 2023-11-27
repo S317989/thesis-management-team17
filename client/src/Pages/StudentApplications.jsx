@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
-import sweetAlert from "sweetalert";
+import sweetalert from "sweetalert";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
+import AuthenticationAPI from '../APIs/AuthenticationAPI';
+import { Pages } from '../APIs/AuthenticationAPI';
 
 const StudentApplications = () => {
-
+    const navigate = useNavigate();
     const [applications, setApplications] = useState([]);
     const [proposals, setProposals] = useState([]);
     const [pendingOrActiveProposal, setPendingOrActiveProposal] = useState({})
@@ -29,25 +32,17 @@ const StudentApplications = () => {
 
             setApplications(await ApplicationsAPI.getMyApplications());
         }
-        fetchData();
-    }, []);
 
-    useEffect(() => {
-        const checkAuthentication = async () => {
-            if (!user || user.role !== 'Student') {
-                sweetAlert({
-                    title: "You are not authorized to access this page",
-                    icon: "error",
-                    button: "Ok",
-                }).then(() => {
-                    window.location.href = "http://localhost:3000/login";
-                });
-            }
-        };
-
-        checkAuthentication();
+        AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.STUDENT_APPLICATIONS)
+            ? fetchData()
+            : sweetalert(({
+                title: "You are not authorized to access this page",
+                icon: "error",
+                button: "Ok",
+            })).then(
+                navigate("/")
+            )
     }, [user]);
-
 
     return (
         <Container className="mt-4">
