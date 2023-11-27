@@ -3,7 +3,7 @@ import { Container, Nav, Navbar, Offcanvas, Button, Form } from 'react-bootstrap
 import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../Contexts.js";
-import AuthenticationAPI from "../APIs/AuthenticationAPI.jsx";
+import AuthenticationAPI from "../APIs/AuthenticationAPI";
 import { useEffect, useState } from "react";
 import { PersonCircle } from "react-bootstrap-icons";
 
@@ -35,12 +35,7 @@ function Header(props) {
                                     <>
                                         <Nav className="me-auto">
                                             <Link className={"nav-link"}
-                                                to={("/proposals")}>Proposals</Link>
-                                        </Nav>
-
-                                        <Nav className="me-auto">
-                                            <Link className={"nav-link"}
-                                                to={("/application-decisions")}>My Applications</Link>
+                                                to={("/student-applications")}>Thesis Proposals</Link>
                                         </Nav>
 
                                     </>

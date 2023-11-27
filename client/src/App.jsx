@@ -3,22 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './Components/Header'
 import Home from './Pages/Home'
-import AddProposal from './Pages/AddProposal';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
-import AuthenticationAPI from './APIs/AuthenticationAPI.jsx';
-import SearchArchive from './Pages/Search-Archive';
+import AuthenticationAPI from './APIs/AuthenticationAPI';
 import Archive from './custom classes/archive';
 import Application from './custom classes/application';
-import { ApplyForProposal } from './Pages/Apply-for-proposal';
-import SearchForm from './Components/SearchForm';
-import InsertProposal from './Components/InsertProposal.jsx';
 import BrowseApplications from './Pages/BrowseApplications.jsx';
 import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
-import ApplicationDecisions from './Pages/ApplicationDecisions.jsx';
-import ProposalPage from './Pages/ProposalPage.jsx';
+import SearchProposals from './Pages/SearchProposals'
+import StudentApplications from './Pages/StudentApplications.jsx';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -38,7 +33,7 @@ function App() {
     AuthenticationAPI.getSessionAPI().then(response => {
       if (response.status === 200) {
         response.json().then(data => {
-          console.log("App info: ", data);
+          
           setUser(data);
         });
       } else {
@@ -58,18 +53,11 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="sa" element={<SearchArchive archive={archive} />} />
-              <Route path="/application" element={<ApplyForProposal application={application} />} />
-              <Route path="/proposals" element={<SearchForm />} />
-              <Route path="/application-decisions" element={<ApplicationDecisions />} />
-              <Route path="/proposal-page/add" element={<ProposalPage />} />
-              <Route path="/proposal-page/:page/edit" element={<ProposalPage />} />
-
-
-              <Route path="/proposal" element={<InsertProposal />} />
+              <Route path="/proposals" element={<SearchProposals />} />
               <Route path="/browse-applications" element={<BrowseApplications />} />
               <Route path="/browse-proposals" element={<BrowseProposals />} />
               <Route path="/my-proposals" element={<MyProposals />} />
+              <Route path="/student-applications" element={<StudentApplications />} />
 
             </Routes>
           </div>

@@ -27,7 +27,6 @@ module.exports = {
         //CHECK IF THE STUDENT HAS OTHER APPLICATIONS NOT REJECTED
         const studentApplications = await this.getStudentApplications(studentId);
         for (const a of studentApplications) {
-            console.log(a);
             if (a.Status === 'Pending' || a.Status === 'Accepted' || a.Proposal_Id === proposalId)
                 return 0;
         }
@@ -36,43 +35,30 @@ module.exports = {
         return 1;
     },
 
-    acceptApplication: async function (proposalId, studentId) {
-        await db.executeQuery(`UPDATE Application
-                                SET Status = "Accepted"
-                                WHERE Proposal_Id = $proposalId AND Student_Id = $studentId;`,
-            {
-                $proposalId: proposalId,
-                $studentId: studentId
-            });
-        await db.executeQuery(`UPDATE Application
-                                SET Status = "Rejected"
-                                WHERE Proposal_Id != $proposalId AND Student_Id = $studentId;`,
-            {
-                $proposalId: proposalId,
-                $studentId: studentId
-            });
-        await db.executeQuery(`UPDATE Application
-                                SET Status = "Canceled"
-                                WHERE Proposal_Id = $proposalId AND Student_Id != $studentId;`,
-            {
-                $proposalId: proposalId,
-                $studentId: studentId
-            });
-        await db.executeQuery(`UPDATE Proposal
-                                SET Archived = 1
-                                WHERE Id = $proposalId;`,
-            {
-                $proposalId: proposalId
-            });
+    acceptApplication: async function (applicationId) {
+        await db.executeTransaction(async () => {
+            const { proposalId, studentId } =
+                await db.getOne(`SELECT Proposal_Id, Student_Id FROM Application
+                                 WHERE Application_Id = ?`, [applicationId]);
+            console.log(proposalId, studentId);
+            await db.executeQuery(`UPDATE Application
+                                    SET Status = "Accepted"
+                                    WHERE Application_Id = ?`, [applicationId]);
+            await db.executeQuery(`UPDATE Application
+                                    SET Status = "Rejected"
+                                    WHERE Proposal_Id != ? AND Student_Id = ?`, [proposalId, studentId]);
+            await db.executeQuery(`UPDATE Application
+                                    SET Status = "Canceled"
+                                    WHERE Proposal_Id = ? AND Student_Id != ?`, [proposalId, studentId]);
+            await db.executeQuery(`UPDATE Proposal
+                                    SET Archived = 1
+                                    WHERE Id = ?;`, [proposalId]);
+        });
     },
 
-    rejectApplication: async function (proposalId, studentId) {
+    rejectApplication: async function (applicationId) {
         await db.executeQuery(`UPDATE Application
                         SET Status = "Rejected"
-                        WHERE Proposal_Id = $proposalId AND Student_Id = $studentId`,
-            {
-                $proposalId: proposalId,
-                $studentId: studentId
-            });
+                        WHERE Application_Id = ?`, [applicationId]);
     }
 }

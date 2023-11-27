@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
-import ApplicationAPI from '../APIs/ApplicationAPI';
+import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import sweetalert from 'sweetalert';
 
 const ApplicationTableTest = (props) => {

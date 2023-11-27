@@ -3,63 +3,63 @@ Tabella External_Supervisor per le info dei supervisor esterni id, name surname,
 *************/
 
 const db = require("../Database/DAO");
-// get all teacher
-exports.getAllCoSupervisor = async () => {
-  const sql = 'SELECT Id, Surname, Name, Email, Cod_Group, Name FROM External_Supervisor JOIN ResearchGroup ON ResearchGroup.Id=ExternalSupervisor.Cod_Group';
+
+exports.getAllExternalCoSupervisor = async () => {
+  const sql = 'SELECT * FROM External_Supervisor';
   const rows = await db.getData(sql, []);
-  //serve il codGroup nella tabella di external supervisor perchè il gruppo dei co supervisor aggiunge gruppi alla proposal insieme a quello del supervisor
-  const cosup = rows.map((e) => ({ id: e.Id, surname: e.Surname, name: e.Name, email: e.Email, codGroup: e.Cod_Group, groupname: e.Name }));
-  console.log(cosup);
+
+  return rows;
 };
 
 // get all degrees
-exports.getAllDegrees = () => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM Degree';
-    db.all(sql, [], (err, rows) => {
-      console.log(rows)
-      if (err) {
-        reject(err);
-        return;
-      }
-      const cdsList = rows.map((e) => ({ id: e.Id, degree: e.Title_Degree }));
-      console.log(cdsList)
-      resolve(cdsList);
-    });
-  });
+exports.getAllDegrees = async () => {
+  const sql = 'SELECT * FROM Degree';
+  const cdsList = await db.getData(sql, []);
+
+  return cdsList;
 };
 
-
 // get all groups
-exports.getAllGroups = () => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM ResearchGroup';
-    db.all(sql, [], (err, rows) => {
-      console.log(rows)
-      if (err) {
-        reject(err);
-        return;
-      }
-      const groupList = rows.map((e) => ({ id: e.Id, name: e.Name }));
-      console.log(groupList)
-      resolve(groupList);
-    });
-  });
+exports.getAllGroups = async () => {
+  const sql = 'SELECT * FROM ResearchGroup';
+  const groupList = await db.getData(sql, []);
+
+  return groupList;
 };
 
 // get all teacher
-exports.getAllTeacher = () => {
-  return new Promise((resolve, reject) => { //JOIN per avere il nome del gruppo direttamente dal codice
-    const sql = 'SELECT Id, Surname, Name, Email, Cod_Group, Cod_Department, Name FROM Teacher JOIN ResearchGroup ON Teacher.Cod_Group=ResearchGroup.Id'
-    db.all(sql, [], (err, rows) => {
+exports.getAllTeacher = async () => {
+  const sql = `
+  SELECT T.Id, T.Surname, T.Name, T.Email, T.Cod_Group, T.Cod_Department, G.Name AS GroupName 
+  FROM Teacher AS T
+  JOIN ResearchGroup AS G ON T.Cod_Group=G.Id
+  `
+  const teacherList = await db.getData(sql, []);
 
-      if (err) {
-        reject(err);
-        return;
-      }
-      const teacherList = rows.map((e) => ({ id: e.Id, surname: e.Surname, name: e.Name, email: e.Email, codGroup: e.Cod_Group, codDepartment: e.Cod_Department, groupname: e.Name }));
-      console.log(teacherList)
-      resolve(teacherList);
-    });
+  return teacherList;
+};
+
+exports.getAllKeywords = () => {
+  const sql = 'SELECT * FROM Keyword';
+  const result = db.getData(sql, []);
+  return result;
+};
+
+// better used with a transaction (Like while adding a proposal in proposalServices)
+exports.addKeyword = async (keyword) => {
+  var result;
+  const sql = 'INSERT INTO Keyword (Name) VALUES (?);';
+  await db.executeQuery(sql, [keyword]);
+  result = await db.getOne('SELECT * FROM Keyword WHERE Id = (SELECT MAX(Id) FROM Keyword);', []);
+  return result;
+};
+
+exports.addExternalCoSupervisor = async (data) => {
+  var result;
+  await db.executeTransaction(async () => {
+    const sql = 'INSERT INTO External_Supervisor (Name, Surname, Email) VALUES (?,?,?);';
+    await db.executeQuery(sql, [data.name, data.surname, data.email]);
+    result = await db.getOne('SELECT * FROM External_Supervisor WHERE Id = (SELECT MAX(Id) FROM External_Supervisor);', []);
   });
+  return result;
 };
