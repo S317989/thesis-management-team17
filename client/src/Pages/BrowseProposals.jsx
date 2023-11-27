@@ -40,7 +40,7 @@ const BrowseProposals = () => {
 
   return (
     <Container className="mt-4">
-      <h1 className="mb-4">All Thesis Proposals</h1>
+      <h3 className="mb-4">All Thesis Proposals</h3>
       <ProposalsSearchForm proposals={proposals} />
     </Container>
   );
