@@ -9,9 +9,14 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: './setup.js',
   },
+  server: {
+    host: true,
+    strictPort: true,
+    port: 5173,
+  },
   resolve: {
     alias: {
       '@mui/styled-engine': '@mui/styled-engine-sc',
     },
-},
+  },
 })

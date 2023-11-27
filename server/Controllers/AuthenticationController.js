@@ -1,6 +1,5 @@
 'use strict';
 
-const passport = require('passport');
 
 module.exports = {
     /** Get(/login) and Get(/login/callback) are in index.js due to some problem with routes */
