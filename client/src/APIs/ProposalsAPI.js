@@ -1,84 +1,16 @@
-const parentURL = 'http://localhost:3000/api/proposals';
+const subParentURL = '/proposals';
+import FetchAPIs from "./FetchAPIs";
 
 const ProposalsAPI = {
-  addOrUpdateProposal: function (proposal) {
-    return fetch(parentURL + '/edit', {
-      method: 'POST',
-      credentials: "include",
-      body: JSON.stringify(proposal),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  deleteProposal: function (proposalId) {
-    return fetch(parentURL + '/delete', {
-      method: 'DELETE',
-      credentials: "include",
-      body: JSON.stringify({ proposalId: proposalId }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  archiveProposal: function (proposalId) {
-    return fetch(parentURL + '/archive', {
-      method: 'POST',
-      credentials: "include",
-      body: JSON.stringify({ proposalId: proposalId }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  getAllProposals: function () {
-    const url = new URL(parentURL + '/all');
-    return fetch(url, {
-      method: 'GET',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  getActiveProposals: function () {
-    const url = new URL(parentURL + '/my-active');
-    return fetch(url, {
-      method: 'GET',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  getArchivedProposals: function () {
-    const url = new URL(parentURL + '/my-archived');
-    return fetch(url, {
-      method: 'GET',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  },
-
-  searchProposals: function (searchTerm) {
-    const url = new URL(parentURL + '/search/' + searchTerm);
-    return fetch(url, {
-      method: 'GET',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-  },
-
-
+  addOrUpdateProposal: async (proposal) => await FetchAPIs.post(subParentURL + '/edit', proposal),
+  deleteProposal: async (proposalId) => await FetchAPIs.delete(subParentURL + '/delete', { proposalId: proposalId }),
+  archiveProposal: async (proposalId) => await FetchAPIs.post(subParentURL + '/archive', { proposalId: proposalId }),
+  getAllProposals: async () => await FetchAPIs.get(subParentURL + '/all'),
+  getStudentApplicationsProposals: async () => await FetchAPIs.get(subParentURL + '/studentApplicationsProposals'),
+  getAvailableProposalsForStudent: async () => await FetchAPIs.get(subParentURL + '/availableForStudent'),
+  getActiveProposals: async () => await FetchAPIs.get(subParentURL + '/my-active'),
+  getArchivedProposals: async () => await FetchAPIs.get(subParentURL + '/my-archived'),
+  searchProposals: async (searchTerm) => await FetchAPIs.get(subParentURL + '/search/' + searchTerm),
 };
 
 export default ProposalsAPI;

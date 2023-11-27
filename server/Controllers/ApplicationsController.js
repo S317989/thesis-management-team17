@@ -32,7 +32,7 @@ module.exports = {
 
     acceptApplication: async function (req, res) {
         try {
-            await applicationsServices.acceptApplication(req.body.proposalId, req.body.studentId);
+            await applicationsServices.acceptApplication(req.body.applicationId);
             return res.status(200).json({ message: "application accepted" });
         } catch (err) {
             
@@ -42,7 +42,7 @@ module.exports = {
 
     rejectApplication: async function (req, res) {
         try {
-            await applicationsServices.rejectApplication(req.body.proposalId, req.body.studentId);
+            await applicationsServices.rejectApplication(req.body.applicationId);
             return res.status(200).json({ message: "application rejected successfully!" });
         } catch (err) {
             

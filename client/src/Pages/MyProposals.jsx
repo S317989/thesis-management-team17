@@ -5,6 +5,7 @@ import ProposalsTable from '../Components/ProposalsTable'
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
+import sweetAlert from "sweetalert";
 
 const MyProposals = () => {
 
@@ -16,10 +17,13 @@ const MyProposals = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const activeProposalsResponse = await ProposalsAPI.getActiveProposals();
-      const archivedProposalsResponse = await ProposalsAPI.getArchivedProposals();
-      setActiveProposals(activeProposalsResponse.status === 200 ? await activeProposalsResponse.json() : []);
-      setArchivedProposals(archivedProposalsResponse.status === 200 ? await archivedProposalsResponse.json() : []);
+      // const activeProposalsResponse = await ProposalsAPI.getActiveProposals();
+      // const archivedProposalsResponse = await ProposalsAPI.getArchivedProposals();
+      // setActiveProposals(activeProposalsResponse.status === 200 ? await activeProposalsResponse.json() : []);
+      // setArchivedProposals(archivedProposalsResponse.status === 200 ? await archivedProposalsResponse.json() : []);
+
+      setActiveProposals(await ProposalsAPI.getActiveProposals() || []);
+      setArchivedProposals(await ProposalsAPI.getArchivedProposals() || []);
     }
     fetchData();
   }, [refresh]);
@@ -49,7 +53,7 @@ const MyProposals = () => {
     <Container className="mt-4">
       <Row className="mb-3">
         <Col className="text-right">
-          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing/>
+          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
         </Col>
       </Row>
       <Row>

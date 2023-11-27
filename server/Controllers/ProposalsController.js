@@ -38,7 +38,26 @@ module.exports = {
 
   getAllProposals: function (req, res) {
     proposalsServices.getAllProposals().then((proposals) => {
-      
+      return res.status(200).json(proposals);
+    }).catch((err) => {
+      return res.status(500).json({ message: err.message }).end()
+    });
+  },
+
+  getStudentApplicationsProposals: function (req, res) {
+    console.log(req.user);
+    proposalsServices.getStudentApplicationsProposals(req.user.id).then((proposals) => {
+      console.log(proposals);
+      return res.status(200).json(proposals);
+    }).catch((err) => {
+      return res.status(500).json({ message: err.message }).end()
+    });
+  },
+
+  getAvailableProposalsForStudent: function (req, res) {
+    console.log(req.user);
+    proposalsServices.getAvailableProposalsForStudent(req.user.id).then((proposals) => {
+      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message }).end()
@@ -47,7 +66,6 @@ module.exports = {
 
   searchProposals: function (req, res) {
     proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
-      
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message }).end()
@@ -59,7 +77,7 @@ module.exports = {
       const results = await proposalsServices.getTeacherActiveProposals(req.user.id);
       res.status(200).json(results);
     } catch (error) {
-      
+
       return res.status(500);
     }
   },
@@ -69,7 +87,7 @@ module.exports = {
       const results = await proposalsServices.getTeacherArchivedProposals(req.user.id);
       res.status(200).json(results);
     } catch (error) {
-      
+
       return res.status(500);
     }
   },

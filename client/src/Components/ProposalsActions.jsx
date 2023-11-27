@@ -21,7 +21,7 @@ export const ShowProposalsForm = ({ proposal, EnableEditing, EnableArchiving, En
             <Modal.Body>
                 <ProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
                     EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={() => {
-                        OnComplete();
+                        if (OnComplete) OnComplete();
                         setShow(false);
                     }} />
             </Modal.Body>
@@ -45,7 +45,7 @@ export const Delete = ({ proposalId, OnComplete }) => {
                             title: "Proposal Deleted",
                             icon: "success",
                             button: "Ok",
-                        }).then(() => OnComplete());
+                        }).then(() => { if (OnComplete) OnComplete() });
 
                     }
                     else {
@@ -81,7 +81,7 @@ export const Archive = ({ proposalId, OnComplete }) => {
                             title: "Proposal Archived",
                             icon: "success",
                             button: "Ok",
-                        }).then(() => OnComplete());
+                        }).then(() => { if (OnComplete) OnComplete() });
                     }
                     else {
                         sweetalert({

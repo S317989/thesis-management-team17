@@ -1,6 +1,7 @@
 'use strict';
 const db = require("../Database/DAO");
-const UtilitiesServices = require('../Services/Utilities');
+const UtilitiesServices = require('./Utilities');
+const UsersServices = require('./Users')
 
 module.exports = {
   addOrUpdateProposal: async function (data) {
@@ -86,7 +87,15 @@ module.exports = {
   },
 
   deleteProposal: async function (proposalId) {
-    await db.executeQuery('DELETE FROM Proposal WHERE Id=?', [proposalId]);
+    await db.executeTransaction(async () => {
+      // deleting all related data
+      await db.executeQuery('DELETE FROM Proposal_Internal_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
+      await db.executeQuery('DELETE FROM Proposal_External_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
+      await db.executeQuery('DELETE FROM Proposal_Degrees WHERE Proposal_Id=?', [proposalId]);
+      await db.executeQuery('DELETE FROM Proposal_Groups WHERE Proposal_Id=?', [proposalId]);
+      await db.executeQuery('DELETE FROM Proposal_Keywords WHERE Proposal_Id=?', [proposalId]);
+      await db.executeQuery('DELETE FROM Proposal WHERE Id=?', [proposalId]);
+    });
   },
 
   archiveProposal: async function (proposalId) {
@@ -98,8 +107,21 @@ module.exports = {
     return await this.getProposalsLinkedData(results);
   },
 
-  getAllProposalsByDegree: async function (stuedentId) {
-    var results = await db.getData(`SELECT * FROM Proposal`, []);
+  getStudentApplicationsProposals: async function (studentId) {
+    // get proposals data of the student's applications
+    var results = await db.getData(
+      `SELECT * FROM Proposal
+       WHERE Id IN (SELECT Proposal_Id FROM Application WHERE Student_Id = ?)`, [studentId]);
+    return await this.getProposalsLinkedData(results);
+  },
+
+  getAvailableProposalsForStudent: async function (studentId) {
+    // get active proposals that suits the student degree
+    const studentData = await UsersServices.getStudentInfos(studentId);
+    var results = await db.getData(
+      `SELECT * FROM Proposal
+        WHERE Id IN (SELECT Proposal_Id FROM Proposal_Degrees WHERE Degree_Id = ?)
+        AND Archived = 0 AND Expiration >= date('now')`, [studentData.cod_degree]);
     return await this.getProposalsLinkedData(results);
   },
 
@@ -109,8 +131,8 @@ module.exports = {
     return await this.getProposalsLinkedData(results);
   },
 
-  // we need another one that filters with the degree
   searchProposals: async function (searchTerm) {
+    // THIS METHOD IS NO LONGER NEEEDED, LEFTOVER CODE, IN CASE NEEDED IN THE FUTURE
     var results = await db.getData(
       `SELECT *
       FROM Proposal

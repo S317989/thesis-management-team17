@@ -1,33 +1,11 @@
-const URL = 'http://localhost:3000/api';
+const subParentURL = '/applications';
+import FetchAPIs from "./FetchAPIs";
 
 const ApplicationsAPI = {
-    getAllApplications: function () {
-        return fetch(URL + '/application/retrieve-all', {
-            method: 'GET',
-            credentials: "include"
-        })
-    },
-
-    acceptApplication: function (application_id) {
-        return fetch(URL + '/application/accept/' + application_id, {
-            method: 'PUT',
-            credentials: "include"
-        })
-    },
-
-    rejectApplication: function (application_id) {
-        return fetch(URL + '/application/reject/' + application_id, {
-            method: 'PUT',
-            credentials: "include"
-        })
-    },
-
-    getMyApplications: function (student_id) {
-        return fetch(URL + '/application/retrieve-my-all/' + student_id, {
-            method: 'GET',
-            credentials: "include"
-        })
-    },
+    getAllApplications: async () => await FetchAPIs.get(subParentURL + '/all'),
+    acceptApplication: async (applicationId) => await FetchAPIs.post(subParentURL + '/accept', { applicationId: applicationId }),
+    rejectApplication: async (applicationId) => await FetchAPIs.post(subParentURL + '/reject', { applicationId: applicationId }),
+    getMyApplications: async () => await FetchAPIs.get(subParentURL + '/mine'),
 }
 
 export default ApplicationsAPI;

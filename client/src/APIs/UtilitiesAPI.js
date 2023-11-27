@@ -1,103 +1,110 @@
-const parentURL = 'http://localhost:3000/api/utilities';
+import FetchAPIs from "./FetchAPIs";
+const subParentURL = '/utilities';
 
 const UtilitesAPI = {
 
-  getListCds: function () {
-    const url = new URL(parentURL + "/degrees");
+  getListCds: async () => await FetchAPIs.get(subParentURL + '/degrees'),
+  // function () {
+  //   const url = new URL(subParentURL + "/degrees");
 
-    
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-  },
 
-  getExternalCosupervisorList: function () {
-    const url = new URL(parentURL + "/external-cosupervisors");
+  //   return fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   });
+  // },
 
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-  },
+  getExternalCosupervisorList: async () => await FetchAPIs.get(subParentURL + '/external-cosupervisors'),
+  // function () {
+  //   const url = new URL(subParentURL + "/external-cosupervisors");
 
-  addExternal: function (surname, name, email) {
-    const url = new URL(parentURL + "/external-cosupervisors");
+  //   return fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   });
+  // },
 
-    return fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        surname: surname,
-        name: name,
-        email: email
-      }),
-    });
-  },
+  addExternal: async (surname, name, email) => await FetchAPIs.post(subParentURL + '/archive', { Surname: surname, Name: name, Email: email }),
+  // function (surname, name, email) {
+  //   const url = new URL(subParentURL + "/external-cosupervisors");
 
-  getKeywordsList: function () {
-    const url = new URL(parentURL + "/keywords");
+  //   return fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //     body: JSON.stringify({
+  //       surname: surname,
+  //       name: name,
+  //       email: email
+  //     }),
+  //   });
+  // },
 
-    
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-  },
+  getKeywordsList: async () => await FetchAPIs.get(subParentURL + '/keywords'),
+  // function () {
+  //   const url = new URL(subParentURL + "/keywords");
 
-  newThesisProposal: function (name) {
-    const url = new URL(parentURL + "/keywords");
 
-    
-    return fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        name:name
-      }),
-    });
-  },
+  //   return fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   });
+  // },
 
-  getAllGroups: function () {
-    const url = new URL(parentURL + "/groups");
+  // newThesisProposal: function (name) {
+  //   const url = new URL(subParentURL + "/keywords");
 
-    
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-  },
 
-  getListTeacher: function () {
-    const url = new URL(parentURL + "/teachers");
+  //   return fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //     body: JSON.stringify({
+  //       name:name
+  //     }),
+  //   });
+  // },
 
-    
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-  },
+  getAllGroups: async () => await FetchAPIs.get(subParentURL + '/groups'),
+  // function () {
+  //   const url = new URL(subParentURL + "/groups");
+
+
+  //   return fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   });
+  // },
+
+  getListTeacher: async () => await FetchAPIs.get(subParentURL + '/teachers'),
+  // function () {
+  //   const url = new URL(subParentURL + "/teachers");
+
+
+  //   return fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   });
+  // },
 };
 
 export default UtilitesAPI;

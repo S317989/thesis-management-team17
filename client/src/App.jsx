@@ -7,15 +7,13 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
 import AuthenticationAPI from './APIs/AuthenticationAPI';
-import SearchArchive from './Pages/Search-Archive';
 import Archive from './custom classes/archive';
 import Application from './custom classes/application';
-import { ApplyForProposal } from './Pages/Apply-for-proposal';
 import BrowseApplications from './Pages/BrowseApplications.jsx';
 import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
-import ApplicationDecisions from './Pages/ApplicationDecisions.jsx';
 import SearchProposals from './Pages/SearchProposals'
+import StudentApplications from './Pages/StudentApplications.jsx';
 
 function App() {
   const arc1 = new Archive(0, "title1", "description1", "applicabnt", "stat")
@@ -55,15 +53,11 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="sa" element={<SearchArchive archive={archive} />} />
-              <Route path="/application" element={<ApplyForProposal application={application} />} />
               <Route path="/proposals" element={<SearchProposals />} />
-              <Route path="/application-decisions" element={<ApplicationDecisions />} />
-
-              {/* <Route path="/proposal" element={<InsertProposal />} /> */}
               <Route path="/browse-applications" element={<BrowseApplications />} />
               <Route path="/browse-proposals" element={<BrowseProposals />} />
               <Route path="/my-proposals" element={<MyProposals />} />
+              <Route path="/student-applications" element={<StudentApplications />} />
 
             </Routes>
           </div>

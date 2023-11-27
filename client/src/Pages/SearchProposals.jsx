@@ -13,9 +13,7 @@ const SearchProposals = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await ProposalsAPI.getAllProposals();
-      // const result = await response.json();
-      // 
+      const response = await ProposalsAPI.getAvailableProposalsForStudent();
       setProposals(response.status === 200 ? await response.json() : []);
     }
     fetchData();

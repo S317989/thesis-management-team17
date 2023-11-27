@@ -36,7 +36,6 @@ function ProposalForm({ proposal, EnableEditing, EnableArchiving, EnableDeleting
     const { user } = useContext(UserContext);
     const location = useLocation();
     const { page } = useParams();
-    const [isLoading, setIsLoading] = useState(true);
 
     // Here are the default data for a new proposal
     const [proposalData, setProposalData] = useState({
@@ -63,28 +62,24 @@ function ProposalForm({ proposal, EnableEditing, EnableArchiving, EnableDeleting
     useEffect(() => {
         const fetchOptionsData = async () => {
             try {
-                const teachersResponse = await UtilitiesAPI.getListTeacher();
-                const externalSupervisorsResponse = await UtilitiesAPI.getExternalCosupervisorList();
-                const degreesResponse = await UtilitiesAPI.getListCds();
-                const keywordsResponse = await UtilitiesAPI.getKeywordsList();
+                const teachersData = await UtilitiesAPI.getListTeacher() || [];
+                const externalSupervisorsData = await UtilitiesAPI.getExternalCosupervisorList() || [];
+                const degreesData = await UtilitiesAPI.getListCds() || [];
+                const keywordsData = await UtilitiesAPI.getKeywordsList() || [];
 
-                setTeachers(teachersResponse.status === 200 ?
-                    (await teachersResponse.json()).map(t => ({
-                        ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-                    })).filter(t => t.Id !== user.id) : []);
-                setExternalCosupervisors(externalSupervisorsResponse.status === 200 ?
-                    (await externalSupervisorsResponse.json()).map(t => ({
-                        ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-                    })) : []);
-                setDegrees(degreesResponse.status === 200 ?
-                    (await degreesResponse.json()).map(d => ({
-                        ...d, value: d.Cod_Degree, label: d.Title_Degree
-                    })) : []);
-                setKeywords(keywordsResponse.status === 200 ?
-                    (await keywordsResponse.json()).map(k => ({
-                        ...k, value: k.Id, label: k.Name
-                    })) : []);
-                setIsLoading(false);
+                setTeachers(teachersData
+                    .map(t => ({ ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")" }))
+                    .filter(t => t.Id !== user.id));
+
+                setExternalCosupervisors(externalSupervisorsData
+                    .map(t => ({ ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")" })));
+
+                setDegrees(degreesData
+                    .map(d => ({ ...d, value: d.Cod_Degree, label: d.Title_Degree })));
+
+                setKeywords(keywordsData
+                    .map(k => ({ ...k, value: k.Id, label: k.Name })));
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -136,7 +131,7 @@ function ProposalForm({ proposal, EnableEditing, EnableArchiving, EnableDeleting
                     icon: "success",
                     button: "Ok",
                 }).then(() => {
-                    OnComplete();
+                    if (OnComplete) OnComplete();
                 });
             } else {
                 sweetalert({

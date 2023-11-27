@@ -13,8 +13,9 @@ const BrowseProposals = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await ProposalsAPI.getAllProposals();
-      setProposals(response.status === 200 ? await response.json() : []);
+      // const response = await ProposalsAPI.getAllProposals();
+      // setProposals(response.status === 200 ? await response.json() : []);
+      setProposals(await ProposalsAPI.getAllProposals() || []);
     }
     fetchData();
   }, []);
