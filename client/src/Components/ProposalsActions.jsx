@@ -1,10 +1,13 @@
-import { Container, Row, Col, Table, Button, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import ProposalsForm from './ProposalsForm';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 
-export const ShowProposalsForm = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, OnComplete }) => {
+export const ShowProposalsForm = ({
+    proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
+}) => {
+
     const [show, setShow] = useState(false);
     function ShowProposalModal() {
         setShow(true);
@@ -19,8 +22,12 @@ export const ShowProposalsForm = ({ proposal, EnableEditing, EnableArchiving, En
                 <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <ProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
-                    EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={() => {
+                <ProposalsForm proposal={proposal}
+                    EnableEditing={EnableEditing}
+                    EnableArchiving={EnableArchiving}
+                    EnableDeleting={EnableDeleting}
+                    EnableApplying={EnableApplying}
+                    OnComplete={() => {
                         if (OnComplete) OnComplete();
                         setShow(false);
                     }} />
@@ -33,7 +40,7 @@ export const Delete = ({ proposalId, OnComplete }) => {
     const handleDelete = () => {
         sweetalert({
             title: "Are you sure you want to delete this proposal?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
+            text: "Once deleted, all the related data and applications will be as well",
             icon: "warning",
             buttons: true,
             dangerMode: true,

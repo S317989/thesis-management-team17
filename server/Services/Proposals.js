@@ -89,6 +89,7 @@ module.exports = {
   deleteProposal: async function (proposalId) {
     await db.executeTransaction(async () => {
       // deleting all related data
+      await db.executeQuery('DELETE FROM Application WHERE Proposal_Id=?', [proposalId]);
       await db.executeQuery('DELETE FROM Proposal_Internal_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
       await db.executeQuery('DELETE FROM Proposal_External_Cosupervisor WHERE Proposal_Id=?', [proposalId]);
       await db.executeQuery('DELETE FROM Proposal_Degrees WHERE Proposal_Id=?', [proposalId]);
@@ -126,9 +127,9 @@ module.exports = {
   },
 
   getProposal: async function (proposalId) {
-    var results = await db.getData(`SELECT * FROM Proposal
+    var result = await db.getOne(`SELECT * FROM Proposal
                                     WHERE Id = ?`, [proposalId]);
-    return await this.getProposalsLinkedData(results);
+    return await this.getProposalLinkedData(result);
   },
 
   searchProposals: async function (searchTerm) {
@@ -190,43 +191,47 @@ module.exports = {
 
   //get data from the relation tables (Proposal_Degrees, Proposal_Innternal_Supervisor, ...)
   getProposalsLinkedData: async function (proposals) {
-    for (const p of proposals) {
-      p.Supervisor = (await db.getData(
-        `SELECT Id, Surname, Name, Email, Cod_Group, Cod_Department
-        FROM Teacher
-        WHERE Id = ?`, [p.Supervisor]))[0];
+    for (const p of proposals) await this.getProposalLinkedData(p);
+    return proposals;
+  },
 
-      p.cosupervisors = await db.getData(
-        `SELECT T.Id, T.Surname, T.Name, T.Email, T.Cod_Group, T.Cod_Department
+  getProposalLinkedData: async function (proposal) {
+    proposal.Supervisor = (await db.getData(
+      `SELECT Id, Surname, Name, Email, Cod_Group, Cod_Department
+        FROM Teacher
+        WHERE Id = ?`, [proposal.Supervisor]))[0];
+
+    proposal.cosupervisors = await db.getData(
+      `SELECT T.Id, T.Surname, T.Name, T.Email, T.Cod_Group, T.Cod_Department
         FROM Teacher AS T, Proposal_Internal_Cosupervisor AS C
         WHERE T.Id = C.Co_Supervisor_Id
-        AND C.Proposal_Id = ?`, [p.Id]);
+        AND C.Proposal_Id = ?`, [proposal.Id]);
 
-      p.externalCosupervisors = await db.getData(
-        `SELECT T.Id, T.Surname, T.Name, T.Email
+    proposal.externalCosupervisors = await db.getData(
+      `SELECT T.Id, T.Surname, T.Name, T.Email
        FROM External_Supervisor AS T, Proposal_External_Cosupervisor AS C
        WHERE T.Id = C.Co_Supervisor_Id
-       AND C.Proposal_Id = ?`, [p.Id]);
+       AND C.Proposal_Id = ?`, [proposal.Id]);
 
-      p.degrees = await db.getData(
-        `SELECT D.Cod_Degree, D.Title_Degree
+    proposal.degrees = await db.getData(
+      `SELECT D.Cod_Degree, D.Title_Degree
        FROM Proposal_Degrees AS PD, Degree AS D
        WHERE PD.Degree_Id = D.Cod_Degree
-       AND PD.Proposal_Id = ?`, [p.Id]);
+       AND PD.Proposal_Id = ?`, [proposal.Id]);
 
-      p.groups = await db.getData(
-        `SELECT G.Id, G.Name, G.Cod_Department
+    proposal.groups = await db.getData(
+      `SELECT G.Id, G.Name, G.Cod_Department
        FROM Proposal_Groups AS PG, ResearchGroup AS G
        WHERE PG.Group_Id = G.Id
-       AND PG.Proposal_Id = ?`, [p.Id]);
+       AND PG.Proposal_Id = ?`, [proposal.Id]);
 
-      p.keywords = await db.getData(
-        `SELECT K.Id, K.Name
+    proposal.keywords = await db.getData(
+      `SELECT K.Id, K.Name
        FROM Proposal_Keywords AS PK, Keyword AS K
        WHERE PK.Keyword_Id = K.Id
-       AND PK.Proposal_Id = ?`, [p.Id]);
-    }
+       AND PK.Proposal_Id = ?`, [proposal.Id]);
 
-    return proposals;
-  }
+    return proposal;
+  },
+
 };

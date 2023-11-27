@@ -5,7 +5,9 @@ import ProposalsTable from './ProposalsTable';
 import sweetalert from 'sweetalert';
 import { fontSize } from '@mui/system';
 
-const ProposalsSearchForm = ({ proposals, EnableEditing, EnableArchiving, EnableDeleting, requestRefresh }) => {
+const ProposalsSearchForm = ({
+  proposals, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, requestRefresh
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [availableProposals, setAvailableProposals] = useState([]);
   const [filteredProposals, setFilteredProposals] = useState([]);
@@ -56,7 +58,7 @@ const ProposalsSearchForm = ({ proposals, EnableEditing, EnableArchiving, Enable
         onChange={(e) => handleSearch(e.target.value)}
         placeholder="Search by title, supervisor, etc."
       />
-      {filteredProposals.length===0 ? (
+      {filteredProposals.length === 0 ? (
         <p>No Found Proposals</p>
       ) : (
         <ProposalsTable
@@ -64,6 +66,7 @@ const ProposalsSearchForm = ({ proposals, EnableEditing, EnableArchiving, Enable
           EnableEditing={EnableEditing}
           EnableArchiving={EnableArchiving}
           EnableDeleting={EnableDeleting}
+          EnableApplying={EnableApplying}
           requestRefresh={requestRefresh}
         />
       )}

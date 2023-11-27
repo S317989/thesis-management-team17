@@ -4,8 +4,12 @@ import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import { useNavigate } from 'react-router-dom';
 import { ShowProposalsForm, Delete, Archive } from './ProposalsActions';
+import { Apply } from './ApplicationsActions';
+import { ProposalFields } from './ProposalsForm';
 
-const ProposalsTable = ({ proposals, EnableEditing, EnableArchiving, EnableDeleting, requestRefresh }) => {
+const ProposalsTable = ({
+  proposals, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, requestRefresh
+}) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -19,18 +23,17 @@ const ProposalsTable = ({ proposals, EnableEditing, EnableArchiving, EnableDelet
       </thead>
       <tbody>
         {proposals.map((proposal) => (
-          <tr key={proposal.Id}>
-            <td>{proposal.Title}</td>
-            <td>{proposal.Supervisor.Name + ' ' + proposal.Supervisor.Surname}</td>
-            <td>{proposal.cosupervisors.map(c => <Badge key={c.Id} bg="secondary">{c.Name + ' ' + c.Surname}</Badge>)}</td>
-            <td>{proposal.Expiration}</td>
+          <tr key={proposal[ProposalFields.Id]}>
+            <td>{proposal[ProposalFields.Title]}</td>
+            <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
+            <td>{proposal[ProposalFields.cosupervisors].map(c => <Badge key={c.Id} bg="secondary">{c.Name + ' ' + c.Surname}</Badge>)}</td>
+            <td>{proposal[ProposalFields.Expiration]}</td>
             <td>
               <ShowProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
                 EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={requestRefresh} />
-
-              {EnableArchiving ? <Archive proposalId={proposal.Id} OnComplete={requestRefresh} /> : <></>}
-
-              {EnableDeleting ? <Delete proposalId={proposal.Id} OnComplete={requestRefresh} /> : <></>}
+              {EnableArchiving ? <Archive proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
+              {EnableDeleting ? <Delete proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
+              {EnableApplying ? <Apply proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
             </td>
           </tr>
         ))}

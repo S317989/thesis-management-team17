@@ -21,8 +21,16 @@ module.exports = {
         });
     },
 
+    getApplicationsByTeacherProposals: (req, res) => {
+        applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
+            return res.status(200).json(applications);
+        }).catch((err) => {
+            return res.status(500).json({ message: err.message }).end()
+        });
+    },
+
     createApplication: async function (req, res) {
-        applicationsServices.createApplication(req.body.proposalId, req.user.studentId).then((applicationAdded) => {
+        applicationsServices.createApplication(req.body.proposalId, req.user.id).then((applicationAdded) => {
             if (!applicationAdded) return res.status(400).json({ message: "The student has pending or accepted application" });
             return res.status(200).json({ message: 'application added' });
         }).catch((err) => {
