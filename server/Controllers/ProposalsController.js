@@ -45,9 +45,7 @@ module.exports = {
   },
 
   getStudentApplicationsProposals: function (req, res) {
-    console.log(req.user);
     proposalsServices.getStudentApplicationsProposals(req.user.id).then((proposals) => {
-      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message }).end()
@@ -55,9 +53,7 @@ module.exports = {
   },
 
   getAvailableProposalsForStudent: function (req, res) {
-    console.log(req.user);
     proposalsServices.getAvailableProposalsForStudent(req.user.id).then((proposals) => {
-      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message }).end()

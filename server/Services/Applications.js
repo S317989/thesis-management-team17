@@ -39,7 +39,6 @@ module.exports = {
 
     attachProposals: async function (applications) {
         for (const a of applications) {
-            console.log(a);
             a.Proposal = await ProposalsServices.getProposal(a.Proposal_Id);
         }
         return applications
@@ -63,7 +62,6 @@ module.exports = {
             const applicationDetails =
                 await db.getOne(`SELECT Proposal_Id, Student_Id FROM Application
                                  WHERE Application_Id = ?`, [applicationId]);
-            console.log(applicationDetails);
             await db.executeQuery(`UPDATE Application
                                     SET Status = "Accepted"
                                     WHERE Application_Id = ?`, [applicationId]);

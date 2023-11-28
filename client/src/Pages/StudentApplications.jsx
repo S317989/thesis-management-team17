@@ -58,7 +58,6 @@ const StudentApplications = () => {
 
 const PendingApplicationAlert = ({ application }) => {
     const proposal = application[ApplicationFields.Proposal];
-    console.log(proposal);
     return <Card>
         <Card.Header>You have {
             application[ApplicationFields.Status] === ApplicationStatus.Pending ?
