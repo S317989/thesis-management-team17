@@ -10,6 +10,13 @@ import { ProposalFields } from './ProposalsForm';
 const ProposalsTable = ({
   proposals, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, requestRefresh
 }) => {
+
+  function getProposalCopy(proposal) {
+    const newcopy = JSON.parse(JSON.stringify(proposal));
+    delete newcopy[ProposalFields.Id];
+    return newcopy;
+  }
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -32,6 +39,7 @@ const ProposalsTable = ({
               <ShowProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
                 EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={requestRefresh} />
               {EnableArchiving ? <Archive proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
+              <ShowProposalsForm EnableEditing={EnableEditing} proposal={getProposalCopy(proposal)} OnComplete={requestRefresh} />
               {EnableDeleting ? <Delete proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
               {EnableApplying ? <Apply proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
             </td>

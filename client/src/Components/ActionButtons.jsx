@@ -2,7 +2,7 @@ import '../Stylesheets/ActionButtonsStyle.css';
 
 import React from "react";
 import { PencilFill, PlusSquareFill } from "react-bootstrap-icons";
-import { ArchiveFill } from "react-bootstrap-icons";
+import { ArchiveFill, ClipboardPlus } from "react-bootstrap-icons";
 import { Trash3Fill } from "react-bootstrap-icons";
 import { InfoSquareFill } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
@@ -23,7 +23,8 @@ function ActionButtons(props) {
             </Button>
         ),
         Info: <InfoSquareFill className='info-icon' />,
-        Update: <PencilFill className='edit-icon' />
+        Update: <PencilFill className='edit-icon' />,
+        Copy: <ClipboardPlus className='edit-icon' />
     };
 
     const overlayComponent = (

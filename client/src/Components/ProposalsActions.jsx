@@ -1,5 +1,5 @@
 import { Modal } from 'react-bootstrap';
-import ProposalsForm from './ProposalsForm';
+import ProposalsForm, { ProposalFields } from './ProposalsForm';
 import React, { useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
@@ -19,14 +19,24 @@ export const ShowProposalsForm = ({
         {
             !proposal ?
                 <ActionButtons action="Add" onClick={ShowProposalModal} />
-                : EnableEditing ?
-                    <ActionButtons action="Update" onClick={ShowProposalModal} />
-                    : <ActionButtons action="Info" onClick={ShowProposalModal} />
+                : !proposal[ProposalFields.Id] ?
+                    <ActionButtons action="Copy" onClick={ShowProposalModal} />
+                    : EnableEditing ?
+                        <ActionButtons action="Update" onClick={ShowProposalModal} />
+                        : <ActionButtons action="Info" onClick={ShowProposalModal} />
         }
 
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
+                <Modal.Title>{
+                    proposal ?
+                        (
+                            proposal[ProposalFields.Id] ?
+                                proposal[ProposalFields.Title]
+                                : "Make a new proposal starting from " + proposal[ProposalFields.Title]
+                        )
+                        : "Add new proposal"}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <ProposalsForm proposal={proposal}

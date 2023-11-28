@@ -35,6 +35,7 @@ export const ProposalFields = {
 function ProposalForm({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) {
+    console.log(proposal);
     const { user } = useContext(UserContext);
 
     // Here are the default data for a new proposal
