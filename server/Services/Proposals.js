@@ -1,7 +1,8 @@
 'use strict';
 const db = require("../Database/DAO");
 const UtilitiesServices = require('./Utilities');
-const UsersServices = require('./Users')
+const UsersServices = require('./Users');
+const CustomDate = require('./CustomDate');
 
 module.exports = {
   addOrUpdateProposal: async function (data) {
@@ -121,7 +122,7 @@ module.exports = {
     var results = await db.getData(
       `SELECT * FROM Proposal
         WHERE Id IN (SELECT Proposal_Id FROM Proposal_Degrees WHERE Degree_Id = ?)
-        AND Archived = 0 AND Expiration >= date('now')`, [studentData.cod_degree]);
+        AND Archived = 0 AND Expiration >= ?`, [studentData.cod_degree, CustomDate.date]);
     return await this.getProposalsLinkedData(results);
   },
 
@@ -174,16 +175,16 @@ module.exports = {
 
   getTeacherActiveProposals: async function (teacherId) {
     var results = await db.getData(`SELECT * FROM Proposal
-                                    WHERE Archived == 0 AND Expiration >= date('now')
-                                    AND Supervisor = ?`, [teacherId]);
+                                    WHERE Archived == 0 AND Expiration >= ?
+                                    AND Supervisor = ?`, [CustomDate.date, teacherId]);
 
     return await this.getProposalsLinkedData(results);
   },
 
   getTeacherArchivedProposals: async function (teacherId) {
     var results = await db.getData(`SELECT * FROM Proposal
-                                    WHERE (Archived == 1 OR Expiration < date('now'))
-                                    AND Supervisor = ?`, [teacherId]);
+                                    WHERE (Archived == 1 OR Expiration < ?)
+                                    AND Supervisor = ?`, [CustomDate.date, teacherId]);
 
     return await this.getProposalsLinkedData(results);
   },

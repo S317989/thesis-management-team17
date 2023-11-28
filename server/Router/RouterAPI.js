@@ -5,6 +5,7 @@ apiRouter.use('/proposals', require('./ProposalsRouter'));
 apiRouter.use('/applications', require('./ApplicationsRouter'));
 apiRouter.use('/auth', require('./AuthRouter'));
 apiRouter.use('/utilities', require('./UtilitiesRouter'));
+apiRouter.use('/date', require('./DateRouter'));
 
 // All the routes will be protected by the checkAuthentication middleware
 const checkAuthentication = (req, res, next) => {
