@@ -5,8 +5,6 @@ const applicationsServices = require('../Services/Applications');
 module.exports = {
 
   getAllApplications: async function (req, res) {
-    console.log('Controller Applications');
-
     try {
       const applications = await applicationsServices.getAllApplications();
       return res.status(200).json(applications);
@@ -22,8 +20,6 @@ module.exports = {
   },
 
   getStudentApplications: async function (req, res) {
-    console.log('Controller Student Applications');
-
     try {
       const applications = await applicationsServices.getStudentApplications(req.user.id);
       return res.status(200).json(applications);
@@ -38,19 +34,17 @@ module.exports = {
     }
   },
 
-    getApplicationsByTeacherProposals: (req, res) => {
-        applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
-            return res.status(200).json(applications);
-        }).catch((err) => {
-            return res.status(500).json({ message: err.message }).end()
-        });
-    },
-    
-  createApplication: async function (req, res) {
-    console.log('Controller Create Application');
+  getApplicationsByTeacherProposals: (req, res) => {
+    applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
+      return res.status(200).json(applications);
+    }).catch((err) => {
+      return res.status(500).json({ message: err.message }).end()
+    });
+  },
 
+  createApplication: async function (req, res) {
     try {
-      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.studentId);
+      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.id);
 
       if (!applicationAdded) {
         return res.status(400).json({ message: "The student has pending or accepted application" });
@@ -64,8 +58,6 @@ module.exports = {
   },
 
   acceptApplication: async function (req, res) {
-    console.log('Controller Accept Application');
-
     try {
       await applicationsServices.acceptApplication(req.body.applicationId);
       return res.status(200).json({ message: "application accepted" });
@@ -76,8 +68,6 @@ module.exports = {
   },
 
   rejectApplication: async function (req, res) {
-    console.log('Controller Reject Application');
-
     try {
       await applicationsServices.rejectApplication(req.body.applicationId);
       return res.status(200).json({ message: "application rejected successfully!" });
