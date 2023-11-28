@@ -39,7 +39,7 @@ const ProposalsTable = ({
               <ShowProposalsForm EnableEditing={EnableEditing} EnableArchiving={EnableArchiving}
                 EnableDeleting={EnableDeleting} proposal={proposal} OnComplete={requestRefresh} />
               {EnableArchiving ? <Archive proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
-              <ShowProposalsForm EnableEditing={EnableEditing} proposal={getProposalCopy(proposal)} OnComplete={requestRefresh} />
+              {/* <ShowProposalsForm EnableEditing={EnableEditing} proposal={getProposalCopy(proposal)} OnComplete={requestRefresh} /> */}
               {EnableDeleting ? <Delete proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
               {EnableApplying ? <Apply proposalId={proposal[ProposalFields.Id]} OnComplete={requestRefresh} /> : <></>}
             </td>
