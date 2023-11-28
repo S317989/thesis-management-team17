@@ -5,7 +5,6 @@ const UsersServices = require('./Users')
 
 module.exports = {
   addOrUpdateProposal: async function (data) {
-    console.log(data);
     await db.executeTransaction(async () => {
       var proposalId;
 

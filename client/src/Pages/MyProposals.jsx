@@ -22,16 +22,17 @@ const MyProposals = () => {
 
   useEffect(() => {
     async function fetchData() {
-      // const activeProposalsResponse = await ProposalsAPI.getActiveProposals();
-      // const archivedProposalsResponse = await ProposalsAPI.getArchivedProposals();
-      // setActiveProposals(activeProposalsResponse.status === 200 ? await activeProposalsResponse.json() : []);
-      // setArchivedProposals(archivedProposalsResponse.status === 200 ? await archivedProposalsResponse.json() : []);
-
       setActiveProposals(await ProposalsAPI.getActiveProposals() || []);
       setArchivedProposals(await ProposalsAPI.getArchivedProposals() || []);
+      refreshData(false);
     }
     fetchData();
   }, [refresh]);
+
+  const requestRefresh = () => {
+    refreshData(true);
+  }
+
 
   useEffect(() => {
     AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.MY_PROPOSALS)
@@ -44,10 +45,6 @@ const MyProposals = () => {
         navigate("/")
       )
   }, [user]);
-
-  const requestRefresh = () => {
-    refreshData(true);
-  }
 
   return (
     <Container className="mt-4">

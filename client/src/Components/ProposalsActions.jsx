@@ -1,29 +1,29 @@
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import ProposalsForm from './ProposalsForm';
 import React, { useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
-import { PlusSquareFill } from "react-bootstrap-icons";
-import { PencilFill } from "react-bootstrap-icons";
-import { ArchiveFill } from "react-bootstrap-icons";
-import { Trash3Fill } from "react-bootstrap-icons";
-import { InfoSquareFill } from "react-bootstrap-icons";
+import ActionButtons from './ActionButtons';
 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) => {
 
     const [show, setShow] = useState(false);
+
     function ShowProposalModal() {
         setShow(true);
     }
 
     return <>
-      {!proposal ? 
-      <PlusSquareFill onClick={ShowProposalModal} style={{ cursor: 'pointer', fontSize: '40px', color: '#007bff'}}></PlusSquareFill> 
-       : 
-      <InfoSquareFill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'purple'}} onClick={ShowProposalModal}></InfoSquareFill>}
-      
+        {
+            !proposal ?
+                <ActionButtons action="Add" onClick={ShowProposalModal} />
+                : EnableEditing ?
+                    <ActionButtons action="Update" onClick={ShowProposalModal} />
+                    : <ActionButtons action="Info" onClick={ShowProposalModal} />
+        }
+
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>{proposal ? proposal.Title : "Add new proposal"}</Modal.Title>
@@ -40,7 +40,6 @@ export const ShowProposalsForm = ({
                     }} />
             </Modal.Body>
         </Modal>
-
     </>;
 };
 
@@ -75,9 +74,7 @@ export const Delete = ({ proposalId, OnComplete }) => {
         });
     };
     return <>
-        <Trash3Fill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'maroon'}} onClick={() => handleDelete()}>
-            Delete
-        </Trash3Fill>
+        <ActionButtons action="Delete" onClick={() => handleDelete()} />
     </>
 };
 
@@ -111,8 +108,6 @@ export const Archive = ({ proposalId, OnComplete }) => {
     };
 
     return <>
-        <ArchiveFill style={{ cursor: 'pointer', fontSize: '20px',  marginRight: '20px', color:'orange'}} onClick={handleArchive}>
-            Archive
-        </ArchiveFill>
+        <ActionButtons action="Archive" onClick={handleArchive} />
     </>
 };
