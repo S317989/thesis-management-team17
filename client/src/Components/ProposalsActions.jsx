@@ -7,7 +7,6 @@ import { PlusSquareFill } from "react-bootstrap-icons";
 import { PencilFill } from "react-bootstrap-icons";
 import { ArchiveFill } from "react-bootstrap-icons";
 import { Trash3Fill } from "react-bootstrap-icons";
-import { InfoSquareFill } from "react-bootstrap-icons";
 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
@@ -20,9 +19,9 @@ export const ShowProposalsForm = ({
 
     return <>
       {!proposal ? 
-      <PlusSquareFill onClick={ShowProposalModal} style={{ cursor: 'pointer', fontSize: '40px', color: '#007bff'}}></PlusSquareFill> 
+      <PlusSquareFill className="add-icon" onClick={ShowProposalModal} style={{ color: '#007bff'}}></PlusSquareFill> 
        : 
-      <InfoSquareFill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'purple'}} onClick={ShowProposalModal}></InfoSquareFill>}
+      <PencilFill className="edit-icon"  style={{color: '#31708f'}} onClick={ShowProposalModal}></PencilFill>}
       
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton>
@@ -75,7 +74,7 @@ export const Delete = ({ proposalId, OnComplete }) => {
         });
     };
     return <>
-        <Trash3Fill style={{ cursor: 'pointer', fontSize: '20px' , marginRight: '20px', color:'maroon'}} onClick={() => handleDelete()}>
+        <Trash3Fill className="delete-icon" style={{color: '#d9534f'}} onClick={() => handleDelete()}>
             Delete
         </Trash3Fill>
     </>
@@ -111,7 +110,7 @@ export const Archive = ({ proposalId, OnComplete }) => {
     };
 
     return <>
-        <ArchiveFill style={{ cursor: 'pointer', fontSize: '20px',  marginRight: '20px', color:'orange'}} onClick={handleArchive}>
+        <ArchiveFill  className="archive-icon" style={{color: '#f0ad4e'}} onClick={handleArchive}>
             Archive
         </ArchiveFill>
     </>
