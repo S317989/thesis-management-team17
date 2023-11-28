@@ -10,7 +10,7 @@ Version for Demo 2
 | Demo Version | Changes                                                                                                                 |
 | ------------ | :---------------------------------------------------------------------------------------------------------------------- |
 | Demo 1       | Implemented Search Proposals and SAML 2.0 authentication                                                                |
-| Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions |
+| Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions, Browse, Update, Delete and Archive Proposal |
 
 ## Contents
 
@@ -63,8 +63,8 @@ The Thesis Management is a web application designed for the proper management of
 | TM-6     | Browse Applications Decisions |                                                       As a **Student** I want to see the list of decisions on my application |
 | TM-7     |       Browse Proposals        |                          As a **Professor** I want to view the list of active thesis proposals so that I can operate on them |
 | TM-8     |        Update Proposal        |                                                                          As a **Professor** want to update a thesis proposal |
-| TM-9     |        Delete Proposal        |                                                                        As a **Professor** I want to delete a thesis proposal |
-| TM-10    |       Archive Proposal        |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
+| TM-10     |        Delete Proposal        |                                                                        As a **Professor** I want to delete a thesis proposal |
+| TM-12    |       Archive Proposal        |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
 
 
 ## Use case diagram
@@ -78,7 +78,22 @@ The Thesis Management is a web application designed for the proper management of
 | **Student**   | A generic Student can search for an existing thesis proposal, submit an application, and view the decision made by a professor regarding their application.                                                                                                |
 | **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, they can access a list of applications for existing thesis proposals and make decisions on whether to accept or reject them. |
 
+
+|           Story            | Student | Professor |
+| :------------------------: | :-----: | :-------: |
+|         TM story 1         |         |   X       |
+|         TM story 2         |  X      |           |
+|         TM story 3         |  X      |           |
+|         TM story 4         |         |   X       |
+|         TM story 5         |         |   X       |
+|         TM story 6         |  X      |           |
+|         TM story 7         |         |   X       |
+|         TM story 8         |         |   X       |
+|         TM story 10        |         |   X       |
+|         TM story 12        |         |   X       |
+
 ### Users Credentials
+
 |           Email            | Password | Role          |
 | :------------------------: | -------: | ------------- |
 | s301316@studenti.polito.it |  s301316 | **Student**   |
