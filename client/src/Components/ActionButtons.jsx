@@ -1,3 +1,5 @@
+import '../Stylesheets/ActionButtonsStyle.css';
+
 import React from "react";
 import { PencilFill, PlusSquareFill } from "react-bootstrap-icons";
 import { ArchiveFill } from "react-bootstrap-icons";
@@ -12,16 +14,16 @@ function ActionButtons(props) {
     };
 
     const actionComponents = {
-        Delete: <Trash3Fill style={{ cursor: 'pointer', fontSize: '20px', marginRight: '20px', color: 'maroon' }} />,
-        Archive: <ArchiveFill style={{ cursor: 'pointer', fontSize: '20px', marginRight: '20px', color: 'orange' }} />,
+        Delete: <Trash3Fill className='delete-icon' />,
+        Archive: <ArchiveFill className='archive-icon' />,
         Add: (
             <Button className="float-end" style={{ display: 'flex', alignItems: 'center' }}>
-                <PlusSquareFill style={{ cursor: 'pointer', fontSize: '30px' }} />
+                <PlusSquareFill className='add-icon' />
                 <span style={{ marginLeft: '5px' }}>New Proposal</span>
             </Button>
         ),
-        Info: <InfoSquareFill style={{ cursor: 'pointer', fontSize: '20px', marginRight: '20px', color: 'purple' }} />,
-        Update: <PencilFill style={{ cursor: 'pointer', fontSize: '20px', marginRight: '20px', color: 'green' }} />
+        Info: <InfoSquareFill className='info-icon' />,
+        Update: <PencilFill className='edit-icon' />
     };
 
     const overlayComponent = (
