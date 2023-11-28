@@ -3,6 +3,7 @@
 const applicationsServices = require('../Services/Applications');
 
 module.exports = {
+
   getAllApplications: async function (req, res) {
     console.log('Controller Applications');
 
@@ -37,6 +38,14 @@ module.exports = {
     }
   },
 
+    getApplicationsByTeacherProposals: (req, res) => {
+        applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
+            return res.status(200).json(applications);
+        }).catch((err) => {
+            return res.status(500).json({ message: err.message }).end()
+        });
+    },
+    
   createApplication: async function (req, res) {
     console.log('Controller Create Application');
 

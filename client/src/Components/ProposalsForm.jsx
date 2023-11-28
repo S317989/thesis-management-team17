@@ -10,10 +10,11 @@ import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { Delete, Archive } from './ProposalsActions';
+import { Apply, Reject, Accept } from "./ApplicationsActions";
 
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
-const ProposalFields = {
+export const ProposalFields = {
     Id: "Id",
     Title: "Title",
     Supervisor: "Supervisor",
@@ -31,11 +32,10 @@ const ProposalFields = {
     keywords: "keywords"
 }
 
-function ProposalForm({ proposal, EnableEditing, EnableArchiving, EnableDeleting, OnComplete }) {
-    const navigate = useNavigate();
+function ProposalForm({
+    proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
+}) {
     const { user } = useContext(UserContext);
-    const location = useLocation();
-    const { page } = useParams();
 
     // Here are the default data for a new proposal
     const [proposalData, setProposalData] = useState({
@@ -281,17 +281,20 @@ function ProposalForm({ proposal, EnableEditing, EnableArchiving, EnableDeleting
                                 </div>
                             </Col>
                         </Row>
-                        {EnableEditing ?
-                            <>
-                                {proposalData.Id ? <>
-                                    {EnableArchiving ? <Archive proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                    {EnableDeleting ? <Delete proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                </> : <></>}
-                                <Button
-                                    variant="primary" onClick={handleInsertOrUpdateProposal}>
-                                    Save
-                                </Button>
-                            </> : <></>}
+                        {
+                            EnableEditing ?
+                                <>
+                                    {proposalData.Id ? <>
+                                        {EnableArchiving ? <Archive proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
+                                        {EnableDeleting ? <Delete proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
+                                    </> : <></>}
+                                    <Button
+                                        variant="primary" onClick={handleInsertOrUpdateProposal}>
+                                        Save
+                                    </Button>
+                                </> : <></>
+                        }
+                        {EnableApplying ? <Apply proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
                     </Col>
                 </div>
             </div >

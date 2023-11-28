@@ -10,31 +10,28 @@ const session = require('express-session');
 const UsersServices = require('./Services/Users');
 const path = require('path');
 const fs = require('fs');
+const { pass } = require('jest-extended');
+const bodyParser = require('body-parser');
 
-passport.use(new auth0Strategy({
-    domain: 'thesis-management-team17.eu.auth0.com',
-    clientID: 'fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS',
-    clientSecret: 'yJX_spk-i03YxHbY_ggTZAjz17Zk3tnNBup3SiLY3RYQn52LkgWq1a6QTaOEcfUa',
-    callbackURL: 'http://localhost:3000/login/callback',
-    scope: 'openid profile',
-    credentials: true
-},
-    function (accessToken, refreshToken, extraParams, profile, done) {
-        return done(null, profile);
-    }
-));
+passport.use(new SamlStrategy({
+    entryPoint: 'https://thesis-management-team17.eu.auth0.com/samlp/fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS',
+    callbackUrl: 'http://localhost:3000/login/callback',
+    issuer: 'urn:thesis-management-team17.eu.auth0.com',
+    cert: fs.readFileSync(path.join(__dirname, './cert.pem'), 'utf8'),
+    acceptedClockSkewMs: 30000,
+}, function (profile, done) {
+    return done(null, {
+        email: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+        nickname: profile['http://schemas.auth0.com/nickname'],
+    });
+}));
 
 passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-    UsersServices.getUserById(user.nickname.substring(1, user.length))
-        .then(user => {
-            done(null, user);
-        }).catch(err => {
-            done(err, null);
-        });
+    return done(null, user);
 });
 
 // Init express
@@ -56,51 +53,45 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60000,
-        _expires: 60000
+        maxAge: 1296000, //60000ms = 1min: for testing
     }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.authenticate('session'));
 
 app.use("/api", require("./Router/RouterAPI"));
 
 app.get('/login', (req, res, next) => {
-    !req.isAuthenticated() ?
-        passport.authenticate('auth0', function (err, user, info) {
-            if (err) return next(err);
-            if (!user) return res.redirect('/login');
-            req.logIn(user, function (err) {
-                if (err) { return next(err); }
-                return res.redirect('/');
-            });
-        }
-        )(req, res, next)
-        : res.status(401).json({ message: 'Forbidden' });
+    passport.authenticate('saml', { failureRedirect: '/login', failureFlash: true })(req, res, next);
 });
 
-app.get('/login/callback', (req, res, next) => {
-    !req.isAuthenticated() ?
-        passport.authenticate('auth0', function (err, user, info) {
-            if (err) return next(err);
-            if (!user) return res.redirect('/login');
-            req.logIn(user, async function (err) {
-                if (err) { return next(err); }
+app.post('/login/callback', bodyParser.urlencoded({ extended: false }), (req, res, next) => {
+    if (!req.isAuthenticated())
+        passport.authenticate('saml', { failureRedirect: '/login', failureFlash: true }, async function (err, user, info) {
+            if (err)
+                return next(err);
 
-                const userData = await UsersServices.getUserById(user.nickname.substring(1, user.length));
+            if (!user)
+                return res.redirect('/login');
 
-                if (userData === undefined)
+            const userData = await UsersServices.getUserById(user.nickname.substring(1, user.nickname.length));
+
+            if (userData === undefined)
+                return next(new Error("User data not found"));
+
+            req.logIn(userData, async function (err) {
+                if (err)
                     return next(err);
 
                 const redirectURL = "http://localhost:5173";
                 return res.redirect(redirectURL);
             });
-        }
-        )(req, res, next) :
-        res.status(401).json({ message: 'Forbidden' });
-}
-);
+        })(req, res, next);
+    else
+        res.redirect('http://localhost:5173');
+});
 
 app.get('/logout', (req, res) => {
     req.isAuthenticated() ?
@@ -110,10 +101,10 @@ app.get('/logout', (req, res) => {
             const redirectURL = "http://localhost:5173";
             return res.redirect(redirectURL);
         })
-        : res.status(401).json({ message: 'Forbidden' });
+        : res.redirect('http://localhost:5173');
 });
 
 // activate the server
 app.listen(port, () => {
-    
+    console.log(`Server listening at http://localhost:${port}`);
 });
