@@ -3,72 +3,72 @@
 const proposalsServices = require('../Services/Proposals');
 
 module.exports = {
-  addOrUpdateProposal: function (req, res) {
-    proposalsServices
+  addOrUpdateProposal: async function (req, res) {
+    await proposalsServices
       .addOrUpdateProposal(req.body)
       .then((proposal) => {
         return res.status(200).json(proposal);
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  deleteProposal: function (req, res) {
-    proposalsServices
+  deleteProposal: async function (req, res) {
+    await proposalsServices
       .deleteProposal(req.body.proposalId)
       .then(() => {
         return res.status(200).json('proposal deleted');
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  archiveProposal: function (req, res) {
-    proposalsServices
+  archiveProposal: async function (req, res) {
+    await proposalsServices
       .archiveProposal(req.body.proposalId)
       .then(() => {
         return res.status(200).json('proposal archived');
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  getAllProposals: function (req, res) {
-    proposalsServices.getAllProposals().then((proposals) => {
+  getAllProposals: async function (req, res) {
+    await proposalsServices.getAllProposals().then((proposals) => {
       return res.status(200).json(proposals);
     }).catch((err) => {
-      return res.status(500).json({ message: err.message }).end()
+      return res.status(500).json({ message: err.message })
     });
   },
 
-  getStudentApplicationsProposals: function (req, res) {
+  getStudentApplicationsProposals: async function (req, res) {
     console.log(req.user);
-    proposalsServices.getStudentApplicationsProposals(req.user.id).then((proposals) => {
+    await proposalsServices.getStudentApplicationsProposals(req.user.id).then((proposals) => {
       console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
-      return res.status(500).json({ message: err.message }).end()
+      return res.status(500).json({ message: err.message })
     });
   },
 
-  getAvailableProposalsForStudent: function (req, res) {
+  getAvailableProposalsForStudent: async function (req, res) {
     console.log(req.user);
-    proposalsServices.getAvailableProposalsForStudent(req.user.id).then((proposals) => {
+    await proposalsServices.getAvailableProposalsForStudent(req.user.id).then((proposals) => {
       console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
-      return res.status(500).json({ message: err.message }).end()
+      return res.status(500).json({ message: err.message })
     });
   },
 
-  searchProposals: function (req, res) {
-    proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
+  searchProposals: async function (req, res) {
+     await proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
       return res.status(200).json(proposals);
     }).catch((err) => {
-      return res.status(500).json({ message: err.message }).end()
+      return res.status(500).json({ message: err.message })
     });
   },
 
