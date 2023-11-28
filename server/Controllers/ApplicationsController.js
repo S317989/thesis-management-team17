@@ -38,19 +38,19 @@ module.exports = {
     }
   },
 
-    getApplicationsByTeacherProposals: (req, res) => {
-        applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
-            return res.status(200).json(applications);
-        }).catch((err) => {
-            return res.status(500).json({ message: err.message }).end()
-        });
-    },
-    
+  getApplicationsByTeacherProposals: (req, res) => {
+    applicationsServices.getApplicationsByTeacherProposals(req.user.id).then((applications) => {
+      return res.status(200).json(applications);
+    }).catch((err) => {
+      return res.status(500).json({ message: err.message }).end()
+    });
+  },
+
   createApplication: async function (req, res) {
     console.log('Controller Create Application');
 
     try {
-      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.studentId);
+      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.id);
 
       if (!applicationAdded) {
         return res.status(400).json({ message: "The student has pending or accepted application" });
