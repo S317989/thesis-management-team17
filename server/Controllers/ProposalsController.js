@@ -45,9 +45,7 @@ module.exports = {
   },
 
   getStudentApplicationsProposals: async function (req, res) {
-    console.log(req.user);
     await proposalsServices.getStudentApplicationsProposals(req.user.id).then((proposals) => {
-      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message })
@@ -55,9 +53,7 @@ module.exports = {
   },
 
   getAvailableProposalsForStudent: async function (req, res) {
-    console.log(req.user);
     await proposalsServices.getAvailableProposalsForStudent(req.user.id).then((proposals) => {
-      console.log(proposals);
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message })
@@ -65,7 +61,7 @@ module.exports = {
   },
 
   searchProposals: async function (req, res) {
-     await proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
+    await proposalsServices.searchProposals(req.params.searchTerm).then((proposals) => {
       return res.status(200).json(proposals);
     }).catch((err) => {
       return res.status(500).json({ message: err.message })
