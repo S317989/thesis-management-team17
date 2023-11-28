@@ -7,40 +7,45 @@ Date: 30/11/2023
 
 Version for Demo 2
 
-| Demo Version   | Changes                                              |
-| -------------- | :--------------------------------------------------- |
-| Demo 1         | Implemented Search Proposals and SAML 2.0 authentication |
-| Demo 2         | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions |
+| Demo Version | Changes                                                                                                                 |
+| ------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| Demo 1       | Implemented Search Proposals and SAML 2.0 authentication                                                                |
+| Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions |
 
 ## Contents
 
-- [Informal description](#informal-description)
-- [Stories](#stories)
-- [Use case diagram](#use-case-diagram)
-- [Users](#users)
-- [Authentication with SAML](#authentication-with-saml)
-- [API Specification](#api-specifications)
-  - [API List](#api-list)
-    - [AuthenticationAPI.jsx](#authenticationApijsx)
-      - [getSessionAPI](#getsessionapi)
-      - [login](#login)
-      - [logoutAPI](#logoutapi)
-    - [CoSupervisorAPI.jsx](#cosupervisorApijsx)
-      - [getCoSupList](#getcosuplist)
-    - [DegreeApi.jsx](#degreeApijsx)
-      - [getListCds](#getlistcds)
-    - [ProposalApi.jsx](#proposalApijsx)
-      - [newThesisProposal](#newthesisproposal)
-    - [ResearchGroupAPI.jsx](#researchgroupApijsx)
-      - [getAllGroups](#getallgroups)
-    - [SearchAPI.jsx](#searchApijsx)
-      - [getAllProposals](#getallproposals)
-      - [searchProposals](#searchproposals)
-    - [TeacherAPI.jsx](#teacherApijsx)
-      - [getListTeacher](#getlistteacher)
-    - [TestAPI.jsx](#testApijsx)
-      - [getTest](#gettest)
-      - [postTest](#posttest)
+- [thesis-management-team17](#thesis-management-team17)
+- [Thesis Management: requirements description](#thesis-management-requirements-description)
+  - [Contents](#contents)
+  - [Informal description](#informal-description)
+  - [Stories](#stories)
+  - [Use case diagram](#use-case-diagram)
+  - [Users](#users)
+    - [Users Credentials](#users-credentials)
+  - [General Information about the Project Management](#general-information-about-the-project-management)
+    - [Authentication with SAML2.0](#authentication-with-saml20)
+    - [Docker Implementation](#docker-implementation)
+  - [API Specifications](#api-specifications)
+    - [API List](#api-list)
+      - [AuthenticationAPI.jsx](#authenticationapijsx)
+        - [`getSessionAPI`](#getsessionapi)
+        - [`logoutAPI`](#logoutapi)
+      - [CoSupervisorAPI.jsx](#cosupervisorapijsx)
+        - [`getCoSupList`](#getcosuplist)
+      - [DegreeApi.jsx](#degreeapijsx)
+        - [`getListCds`](#getlistcds)
+      - [ProposalApi.jsx](#proposalapijsx)
+        - [`newThesisProposal`](#newthesisproposal)
+      - [ResearchGroupAPI.jsx](#researchgroupapijsx)
+        - [`getAllGroups`](#getallgroups)
+      - [SearchAPI.jsx](#searchapijsx)
+        - [`getAllProposals`](#getallproposals)
+        - [`searchProposals`](#searchproposals)
+      - [TeacherAPI.jsx](#teacherapijsx)
+        - [`getListTeacher`](#getlistteacher)
+      - [TestAPI.jsx](#testapijsx)
+        - [`getTest`](#gettest)
+        - [`postTest`](#posttest)
 
 ## Informal description
 
@@ -48,15 +53,18 @@ The Thesis Management is a web application designed for the proper management of
 
 ## Stories
 
-| Issue-id            | Story                         | Description                                   |
-| ------------------- | :---------------------------: | -------------------------------------------------: |
-| TM-1                | Insert Proposal               | As a **Professor** I wanto to insert a thesis proposal so that student can apply to it  |
-| TM-2                | Search Proposals              | As a **Student** I want to search for thesis proposal so that i can find one that matches my interest   |
-| TM-3                | Apply for Proposal            | As a **Student** I want to apply fot an existing thesis proposal so that the proposing professor can evaluate my application    |
-| TM-4                | Browse Applications           | As a **Professor** I want to see the list of all applications so that I can accept or reject them   |
-| TM-5                | Accept Application            | As a **Professor** I want to accept or reject an application for existing thesis proposals  |
-| TM-6                | Browse Applications Decisions | As a **Student** I want to see the list of decisions on my application  |
-| TM-7                | Browse Proposals              | As a **Professor** I want to view the list of active thesis proposals so that I can operate on them     |
+| Issue-id |             Story             |                                                                                                                  Description |
+| -------- | :---------------------------: | ---------------------------------------------------------------------------------------------------------------------------: |
+| TM-1     |        Insert Proposal        |                                       As a **Professor** I wanto to insert a thesis proposal so that student can apply to it |
+| TM-2     |       Search Proposals        |                        As a **Student** I want to search for thesis proposal so that i can find one that matches my interest |
+| TM-3     |      Apply for Proposal       | As a **Student** I want to apply fot an existing thesis proposal so that the proposing professor can evaluate my application |
+| TM-4     |      Browse Applications      |                            As a **Professor** I want to see the list of all applications so that I can accept or reject them |
+| TM-5     |      Accept Application       |                                   As a **Professor** I want to accept or reject an application for existing thesis proposals |
+| TM-6     | Browse Applications Decisions |                                                       As a **Student** I want to see the list of decisions on my application |
+| TM-7     |       Browse Proposals        |                          As a **Professor** I want to view the list of active thesis proposals so that I can operate on them |
+| TM-8     |        Update Proposal        |                                                                          As a **Professor** want to update a thesis proposal |
+| TM-9     |        Delete Proposal        |                                                                        As a **Professor** I want to delete a thesis proposal |
+| TM-10    |       Archive Proposal        |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
 
 
 ## Use case diagram
@@ -65,28 +73,45 @@ The Thesis Management is a web application designed for the proper management of
 
 ## Users 
 
-| Role           | Actions                                                    |
-| -------------- | :--------------------------------------------------------- |
-|  **Student**   | A generic Student can search for an existing thesis proposal, submit an application, and view the decision made by a professor regarding their application. |
-|  **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, they can access a list of applications for existing thesis proposals and make decisions on whether to accept or reject them. |
+| Role          | Actions                                                                                                                                                                                                                                                    |
+| ------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Student**   | A generic Student can search for an existing thesis proposal, submit an application, and view the decision made by a professor regarding their application.                                                                                                |
+| **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, they can access a list of applications for existing thesis proposals and make decisions on whether to accept or reject them. |
 
-### Authentication with SAML
+### Users Credentials
+|           Email            | Password | Role          |
+| :------------------------: | -------: | ------------- |
+| s301316@studenti.polito.it |  s301316 | **Student**   |
+| s308344@studenti.polito.it |  s308344 | **Student**   |
+| s314140@studenti.polito.it |  s314140 | **Student**   |
+| s317989@studenti.polito.it |  s317989 | **Student**   |
+| s319572@studenti.polito.it |  s319572 | **Student**   |
+| s319976@studenti.polito.it |  s319976 | **Student**   |
+|      d12571@polito.it      |   d12571 | **Professor** |
+|      d23817@polito.it      |   d23817 | **Professor** |
+|      d54723@polito.it      |   d54723 | **Professor** |
+|      d78912@polito.it      |   d78912 | **Professor** |
+|      d96970@polito.it      |   d96970 | **Professor** |
 
-For the authentication we initially implemented passport-auth0, but encountered limitations as it only supports AUTH0 as an Identity Provider (IDP). To overcome this restriction and enhance compatibility with different IDPs available on the web, we decided to transition to passport-saml. This alternative solution enables us to configure and integrate with a broader range of web-based identity providers.
+## General Information about the Project Management 
 
-| Role            | Email                         | Password |
-| --------------- | :---------------------------: | -------: |
-| **Student**     | s301316@studenti.polito.it    | s301316  |
-| **Student**     | s308344@studenti.polito.it    | s308344  |
-| **Student**     | s314140@studenti.polito.it    | s314140  |
-| **Student**     | s317989@studenti.polito.it    | s317989  |
-| **Student**     | s319572@studenti.polito.it    | s319572  |
-| **Student**     | s319976@studenti.polito.it    | s319976  |
-| **Professor**   | d12571@polito.it              | d12571   |
-| **Professor**   | d23817@polito.it              | d23817   |
-| **Professor**   | d54723@polito.it              | d54723   |
-| **Professor**   | d78912@polito.it              | d78912   |
-| **Professor**   | d96970@polito.it              | d96970   |
+### Authentication with SAML2.0
+
+For the authentication we initially implemented **passport-auth0**, but encountered limitations as it only supports AUTH0 as an Identity Provider (IDP). 
+
+To overcome this restriction and enhance compatibility with different IDPs available on the web, we decided to transition to **passport-saml**. This alternative solution enables us to configure and integrate with a broader range of web-based identity providers.
+
+### Docker Implementation
+
+Regarding Docker, you can download both the client and server images at "https://hub.docker.com/repository/docker/s317989/thesis-management-team17"
+
+The client will be accessible on the following ports:
+- Local: http://localhost:5173/
+- Network: http://192.168.68.114:5173/
+
+The server will be accessible on the port:
+- Local: http://localhost:3000/
+
 
 ## API Specifications
 
@@ -197,4 +222,3 @@ This part of the document lists all the expected behaviors for the APIs that com
 - Method: POST
 - Body content: none
 - Returns an error message status if not performed correctly
-
