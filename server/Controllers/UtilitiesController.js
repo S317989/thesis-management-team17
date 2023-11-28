@@ -3,48 +3,48 @@
 const utilitiesServices = require('../Services/Utilities');
 
 module.exports = {
-  getAllExternalCosupervisors: function (req, res) {
+  getAllExternalCosupervisors: async function (req, res) {
     
-    utilitiesServices
+    await utilitiesServices
       .getAllExternalCoSupervisor()
       .then((result) => {
         return res.status(200).json(result);
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  getAllCds: function (req, res) {
+  getAllCds: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .getAllDegrees()
       .then((result) => {
         return res.status(200).json(result);
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  getAllGroups: function (req, res) {
+  getAllGroups: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .getAllGroups()
       .then((result) => {
         return res.status(200).json(result);
       })
       .catch((err) => {
-        return res.status(500).json({ message: err.message }).end();
+        return res.status(500).json({ message: err.message });
       });
   },
 
-  getAllTeacher: function (req, res) {
+  getAllTeacher: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .getAllTeacher()
       .then((result) => {
 
@@ -56,10 +56,10 @@ module.exports = {
       });
   },
 
-  getAllKeywords: function (req, res) {
+  getAllKeywords: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .getAllKeywords()
       .then((result) => {
 
@@ -71,10 +71,10 @@ module.exports = {
       });
   },
 
-  addKeyword: function (req, res) {
+  addKeyword: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .addKeyword(req.body.keyword)
       .then((result) => {
         return res.status(200).json(result);
@@ -85,10 +85,10 @@ module.exports = {
       });
   },
 
-  addExternalCoSupervisor: function (req, res) {
+  addExternalCoSupervisor: async function (req, res) {
     
 
-    utilitiesServices
+    await utilitiesServices
       .addExternalCoSupervisor(req.body)
       .then((result) => {
         return res.status(200).json(result);
