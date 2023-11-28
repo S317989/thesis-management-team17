@@ -23,6 +23,7 @@ function VirtualClockComponent() {
         console.log('sent request ', response);
         if (response.status === 200) {
             setSelectedDate(newDate);
+            window.location.reload(false);
         }
         else console.log(response);
     }
