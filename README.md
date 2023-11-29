@@ -7,10 +7,10 @@ Date: 30/11/2023
 
 Version for Demo 2
 
-| Demo Version | Changes                                                                                                                 |
-| ------------ | :---------------------------------------------------------------------------------------------------------------------- |
-| Demo 1       | Implemented Search Proposals and SAML 2.0 authentication                                                                |
-| Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions, Browse, Update, Delete and Archive Proposal |
+| Demo Version | Changes                                                                                                                                                                              |
+| ------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Demo 1       | Implemented Search Proposals and SAML 2.0 authentication                                                                                                                             |
+| Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions, Browse, Update, Delete, Archive Proposal and Search Archive |
 
 ## Contents
 
@@ -21,6 +21,7 @@ Version for Demo 2
   - [Stories](#stories)
   - [Use case diagram](#use-case-diagram)
   - [Users](#users)
+    - [User Privileges](#user-privileges)
     - [Users Credentials](#users-credentials)
   - [General Information about the Project Management](#general-information-about-the-project-management)
     - [Authentication with SAML2.0](#authentication-with-saml20)
@@ -63,9 +64,9 @@ The Thesis Management is a web application designed for the proper management of
 | TM-6     | Browse Applications Decisions |                                                       As a **Student** I want to see the list of decisions on my application |
 | TM-7     |       Browse Proposals        |                          As a **Professor** I want to view the list of active thesis proposals so that I can operate on them |
 | TM-8     |        Update Proposal        |                                                                          As a **Professor** want to update a thesis proposal |
-| TM-10     |        Delete Proposal        |                                                                        As a **Professor** I want to delete a thesis proposal |
+| TM-10    |        Delete Proposal        |                                                                        As a **Professor** I want to delete a thesis proposal |
 | TM-12    |       Archive Proposal        |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
-
+| TM-16    |        Search Archive         |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
 
 ## Use case diagram
 
@@ -78,19 +79,20 @@ The Thesis Management is a web application designed for the proper management of
 | **Student**   | A generic Student can search for an existing thesis proposal, submit an application, and view the decision made by a professor regarding their application.                                                                                                |
 | **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, they can access a list of applications for existing thesis proposals and make decisions on whether to accept or reject them. |
 
-
-|           Story            | Student | Professor |
-| :------------------------: | :-----: | :-------: |
-|         TM story 1         |         |   X       |
-|         TM story 2         |  X      |           |
-|         TM story 3         |  X      |           |
-|         TM story 4         |         |   X       |
-|         TM story 5         |         |   X       |
-|         TM story 6         |  X      |           |
-|         TM story 7         |         |   X       |
-|         TM story 8         |         |   X       |
-|         TM story 10        |         |   X       |
-|         TM story 12        |         |   X       |
+### User Privileges
+|    Story    | Student | Professor |
+| :---------: | :-----: | :-------: |
+| TM story 1  |         |     X     |
+| TM story 2  |    X    |           |
+| TM story 3  |    X    |           |
+| TM story 4  |         |     X     |
+| TM story 5  |         |     X     |
+| TM story 6  |    X    |           |
+| TM story 7  |         |     X     |
+| TM story 8  |         |     X     |
+| TM story 10 |         |     X     |
+| TM story 12 |         |     X     |
+| TM story 16 |         |     X     |
 
 ### Users Credentials
 
@@ -118,13 +120,15 @@ To overcome this restriction and enhance compatibility with different IDPs avail
 
 ### Docker Implementation
 
-Regarding Docker, you can download both the client and server images at "https://hub.docker.com/repository/docker/s317989/thesis-management-team17"
+Regarding Docker, you can download both the client and server images at: 
 
-The client will be accessible on the following ports:
+https://hub.docker.com/repository/docker/s317989/thesis-management-team17
+
+The **client** will be accessible on the following ports:
 - Local: http://localhost:5173/
 - Network: http://192.168.68.114:5173/
 
-The server will be accessible on the port:
+The **server** will be accessible on the port:
 - Local: http://localhost:3000/
 
 
