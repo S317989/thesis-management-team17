@@ -128,6 +128,17 @@ https://hub.docker.com/repository/docker/s317989/thesis-management-team17
 
 #### Docker Pull and Run commands
 
+**Method 1**
+
+To download the images and successfully run the project, please follow these steps:
+
+- docker run -p 5173:5173 -d s317989/thesis-management-team17:client-tag
+- docker run -p 3000:3000 -d s317989/thesis-management-team17:server-tag
+  
+After completing the above steps, docker will pull automatically the images and will create a single container with the two images running, so it allows you to open the client via localhost:5173.
+
+**Method 2**
+
 To download the images and successfully run the project, please follow these steps:
 
 - Create a directory and name it as desired --> ThesisManagementTeam17
