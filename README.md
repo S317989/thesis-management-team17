@@ -26,6 +26,8 @@ Version for Demo 2
   - [General Information about the Project Management](#general-information-about-the-project-management)
     - [Authentication with SAML2.0](#authentication-with-saml20)
     - [Docker Implementation](#docker-implementation)
+      - [Docker Pull and Run commands](#docker-pull-and-run-commands)
+      - [Docker Ports](#docker-ports)
   - [API Specifications](#api-specifications)
     - [API List](#api-list)
       - [AuthenticationAPI.jsx](#authenticationapijsx)
@@ -124,13 +126,23 @@ Regarding Docker, you can download both the client and server images at:
 
 https://hub.docker.com/repository/docker/s317989/thesis-management-team17
 
+#### Docker Pull and Run commands
+
+To download the images and successfully run the project, please follow these steps:
+
+- Create a directory and name it as desired --> ThesisManagementTeam17
+- Copy the docker-compose.yml file and paste it into the newly created directory
+- Run docker-compose up
+
+After completing the above steps, wait a few seconds for everything to be executed successfully, and then you can open the client via localhost:5173.
+
+#### Docker Ports
 The **client** will be accessible on the following ports:
 - Local: http://localhost:5173/
 - Network: http://192.168.68.114:5173/
 
 The **server** will be accessible on the port:
-- Local: http://localhost:3000/
-
+- Local: http://localhost:3000/ 
 
 ## API Specifications
 
