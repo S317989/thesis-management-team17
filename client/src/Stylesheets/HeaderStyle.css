@@ -3,33 +3,33 @@
     top: 0;
     width: 100%;
     z-index: 999 White !important;
+    background-color: #007ea8;
+}
+
+#logo {
+    width: 20dvh;
+    margin-left: 5dvh;
+    object-fit: contain;
+}
+
+.nav-link {
+    color: #f8f8f8;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #ff9900;
 }
 
 .sided-items {
+    display: flex;
+    align-items: center;
+}
+
+.icon-item {
     margin-right: 5px;
 }
 
-/* styles.css */
-
-.nav-link {
-    text-align: center;
-}
-
-#info-items {
-    color: white;
-}
-
-.icon-container {
+#user-info-container {
     display: inline-block;
-    margin-right: 5px;
-}
-
-.text-container {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.text-content {
-    margin: 0;
-    line-height: 1.5;
 }
