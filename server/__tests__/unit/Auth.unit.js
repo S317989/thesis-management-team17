@@ -1,6 +1,6 @@
 import "jest-extended";
 const request = require('supertest');
-const AuthenticationController = require('../Controllers/AuthenticationController');
+const AuthenticationController = require('../../Controllers/AuthenticationController');
 
 describe("Authentication Tests", () => {
     let req, res;

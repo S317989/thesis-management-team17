@@ -1,7 +1,7 @@
 'use strict';
 
-const applicationsServices = require('../Services/Applications');
-const applicationsController = require('../Controllers/ApplicationsController');
+const applicationsServices = require('../../Services/Applications');
+const applicationsController = require('../../Controllers/ApplicationsController');
 
 jest.mock('../Services/Applications');
 
