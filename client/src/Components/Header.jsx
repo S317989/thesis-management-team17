@@ -1,18 +1,20 @@
+import React, { useContext, useState } from "react";
+import "../Stylesheets/HeaderStyle.css";
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Nav, Navbar, Offcanvas, Button, Form } from 'react-bootstrap';
-import React from "react";
-import { useContext } from "react";
-import { UserContext } from "../Contexts.js";
-import AuthenticationAPI from "../APIs/AuthenticationAPI";
-import { useEffect, useState } from "react";
+import { Container, Nav, Navbar, Offcanvas, Button } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import VirtualClockComponent from "./VirtualClockComponent.jsx";
+import { UserContext } from "../Contexts.js";
 
-
-function Header(props) {
+function Header() {
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
+    const [isOffcanvasActive, setIsOffcanvasActive] = useState(false);
     const { user } = useContext(UserContext);
+
+    const handleOffcanvasToggle = () => {
+        setIsOffcanvasActive(!isOffcanvasActive);
+    };
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" id="header-container">
@@ -21,89 +23,92 @@ function Header(props) {
                     Thesis Management
                 </Navbar.Brand>
 
-                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+                <Navbar.Toggle aria-controls={`offcanvasNavbar`} />
 
-                <Nav className="me-auto">
-                    <Link className={"nav-link"}
-                        to={("/")}>Home</Link>
+                <Navbar.Collapse id={`offcanvasNavbar`} className="justify-content-end">
+                    <Nav className="me-auto">
+                        <Link className={"nav-link"} to={("/")}>
+                            Home
+                        </Link>
 
-                </Nav>
-                {
-                    !user ? null :
-                        <>
-                            {
-                                user.role === "Student" ?
+                        {user && (
+                            <>
+                                {user.role === "Student" ? (
+                                    <Link className={"nav-link"} to={("/student-applications")}>
+                                        Thesis Proposals
+                                    </Link>
+                                ) : (
                                     <>
-                                        <Nav className="me-auto">
-                                            <Link className={"nav-link"}
-                                                to={("/student-applications")}>Thesis Proposals</Link>
-                                        </Nav>
-
+                                        <Link className={"nav-link"} to={("/my-proposals")}>
+                                            My Proposals
+                                        </Link>
+                                        <Link className={"nav-link"} to={("/browse-proposals")}>
+                                            All Proposals
+                                        </Link>
+                                        <Link className={"nav-link"} to={("/browse-applications")}>
+                                            Applications
+                                        </Link>
                                     </>
-                                    :
-                                    <>
-                                        <Nav className="me-auto">
-                                            <Link className={"nav-link"} to={("/my-proposals")}>My Proposals</Link>
-                                        </Nav>
+                                )}
+                            </>
+                        )}
+                    </Nav>
 
-                                        <Nav className="me-auto">
-                                            <Link className={"nav-link"} to={("/browse-proposals")}>All Proposals</Link>
-                                        </Nav>
+                    <Nav>
+                        {!user ? (
+                            <>
+                                <Nav.Link
+                                    className="nav-link"
+                                    onMouseOver={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
+                                >
+                                    <PersonCircle />
+                                    {isHovered ? `Not Authenticated` : null}
+                                </Nav.Link>
 
-                                        <Nav className="me-auto">
-                                            <Link className={"nav-link"} to={("/browse-applications")}>Applications</Link>
-                                        </Nav>
-
-                                    </>
-                            }
-                        </>
-                }
-
-                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
-
-                <Navbar.Offcanvas
-                    id={`offcanvasNavbar-expand-md`}
-                    aria-labelledby={`offcanvasNavbarLabel-expand-md`}
-                    placement="end">
-                    <Offcanvas.Body>
-                        {
-                            !user ?
-                                <Nav className="justify-content-end flex-grow-1 me-auto">
+                                <Button
+                                    variant="link"
+                                    className={"nav-link"}
+                                    href="http://localhost:3000/login"
+                                >
+                                    Login
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Nav.Link className={"nav-link"} id="info-items">
                                     <VirtualClockComponent />
-                                    <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
-                                        onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
-                                        <PersonCircle />
-                                        {
-                                            isHovered ? `Not Authenticated` : null
-                                        }
-                                    </Nav.Link>
-                                    <Button variant="link"
-                                        className={"nav-link"}
-                                        href="http://localhost:3000/login">Login</Button>
-                                </Nav>
-                                :
-                                <Nav className="justify-content-end flex-grow-1 me-auto">
-                                    <Nav.Link className="icon-link" style={{ color: "white" }}>
-                                        <VirtualClockComponent />
-                                    </Nav.Link>
+                                </Nav.Link>
 
-                                    <Nav.Link className="icon-link" onMouseOver={() => setIsHovered(true)}
-                                        onMouseLeave={() => setIsHovered(false)} style={{ color: "white" }}>
+                                <Nav.Link
+                                    className={"nav-link"}
+                                    id="info-items"
+                                    onMouseOver={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
+                                >
+                                    <div className="icon-container">
                                         <PersonCircle />
-                                        {
-                                            !isHovered ? user.id : `Authenticated as ${user.role}`
-                                        }
-                                    </Nav.Link>
+                                    </div>
+                                    <div className="text-container">
+                                        <p className="text-content">
+                                            {!isHovered ? user.id : `Authenticated as ${user.role}`}
+                                        </p>
+                                    </div>
+                                </Nav.Link>
 
-                                    <Button variant="link"
-                                        className={"nav-link"}
-                                        href="http://localhost:3000/logout">Logout</Button>
-                                </Nav>
-                        }
-                    </Offcanvas.Body>
-                </Navbar.Offcanvas>
+                                <Button
+                                    variant="link"
+                                    className={"nav-link"}
+                                    href="http://localhost:3000/logout"
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        )}
+                    </Nav>
+                </Navbar.Collapse>
             </Container>
-        </Navbar>
+        </Navbar >
     );
 }
 

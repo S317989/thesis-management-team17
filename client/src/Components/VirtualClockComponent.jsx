@@ -36,7 +36,7 @@ function VirtualClockComponent() {
                 onChange={(date) => setDate(date)}
                 customInput={
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <Clock style={{ marginRight: "10px" }} />
+                        <Clock className="sided-items" />
                         <div>{dayjs(selectedDate).format("YYYY-MM-DD")}</div>
                     </div>
                 }
