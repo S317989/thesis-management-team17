@@ -1,3 +1,5 @@
+import "../Stylesheets/CardManagerStyle.css";
+
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 
@@ -17,6 +19,7 @@ const ProposalPagination = ({ proposalsPerPage, totalProposals, currentPage, set
             {pageNumbers.map(number => (
                 <Pagination.Item
                     key={number}
+                    linkStyle={{ color: 'white', backgroundColor: '#23527c', borderColor: 'white' }}
                     active={number === currentPage}
                     onClick={() => handlePageChange(number)}
                 >

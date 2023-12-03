@@ -70,7 +70,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     }
 
     return (
-        <>
+        <Container className="card-manager-container">
             <Form.Control
                 type="text"
                 value={searchTerm}
@@ -108,7 +108,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
                     </>
                 )
             }
-        </>
+        </Container>
     );
 }
 

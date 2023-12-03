@@ -16,7 +16,7 @@ const CustomCard = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, 
             <Card onClick={handleCardClick} className="card-item">
                 <Card.Header>{proposal.Title}</Card.Header>
                 <Card.Body>
-                    <Card.Subtitle className="mb-2 text-muted">{proposal.Type}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">{proposal.Expiration}</Card.Subtitle>
                     <Card.Text className="truncate-text">
                         {proposal.Description}
                     </Card.Text>
@@ -24,7 +24,7 @@ const CustomCard = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, 
                 <Card.Footer>
                     {
                         proposal.keywords.map((keyword) => (
-                            <Badge key={keyword.Id} bg="primary" className="me-1">{keyword.Name}</Badge>
+                            <Badge key={keyword.Id} bg="rgb(252, 122, 8)" className="me-1 badge-item">{keyword.Name}</Badge>
                         ))
                     }
                 </Card.Footer>

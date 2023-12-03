@@ -52,12 +52,12 @@ const MyProposals = () => {
       <Row>
         <h3>My Active Proposals</h3>
       </Row>
-      <Row className="mt-4 mb-4">
+      <Row className="mt-4">
         <Col xs={12} className="text-end">
           <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
         </Col>
       </Row>
-      <Row className="mt-4 mb-4">
+      <Row>
         <Col xs={12}>
           <CardManager page={"MyProposals"} proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
           {/** <ProposalsSearchForm proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh}></ProposalsSearchForm> */}

@@ -18,7 +18,7 @@ export const ShowProposalsForm = ({
     return <>
         {
             !proposal ?
-                <ActionButtons action="Add" onClick={ShowProposalModal} />
+                <ActionButtons action="Add" className="add-button" onClick={ShowProposalModal} />
                 : !proposal[ProposalFields.Id] ?
                     <ActionButtons action="Copy" onClick={ShowProposalModal} />
                     : EnableEditing ?
