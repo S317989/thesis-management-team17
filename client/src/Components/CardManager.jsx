@@ -1,15 +1,30 @@
 import "../Stylesheets/CardManagerStyle.css";
-import React, { useState, useEffect } from 'react';
-import { Col, Form, Container, Row } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import { Col, Form, Container, Row, Badge, Button } from 'react-bootstrap';
 import CustomCard from './CustomCard';
 import ProposalPagination from './ProposalPagination';
+import FilterComponent from './FilterComponent';
+import { UserContext } from '../Contexts';
 
 const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, requestRefresh }) => {
+    const { user } = useContext(UserContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [availableProposals, setAvailableProposals] = useState([]);
     const [filteredProposals, setFilteredProposals] = useState([]);
+    const [proposalFields, setProposalFields] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [proposalsPerPage, setProposalsPerPage] = useState(3);
+    const [filters, setFilters] = useState([]);
+
+    const addFilter = (field, value) => {
+        if (field && value) {
+            setFilters((prevFilters) => [...prevFilters, { field, value }]);
+        }
+    }
+
+    const removeFilter = (field) => {
+        setFilters((prevFilters) => prevFilters.filter((filter) => filter.field !== field));
+    };
 
     const indexOfLastProposal = currentPage * proposalsPerPage;
     const indexOfFirstProposal = indexOfLastProposal - proposalsPerPage;
@@ -42,9 +57,20 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         setAvailableProposals(ap);
         setFilteredProposals(ap);
 
-
-
     }, [proposals, page]);
+
+    useEffect(() => {
+        if (availableProposals.length > 0) {
+            let proposalFields;
+            if (user.role === "Student")
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat')
+            else
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived');
+
+            setProposalFields(proposalFields);
+        }
+
+    }, [availableProposals]);
 
     const handleSearch = (newValue) => {
         setSearchTerm(newValue);
@@ -71,12 +97,27 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
 
     return (
         <Container className="card-manager-container">
-            <Form.Control
+            {/*<Form.Control
                 type="text"
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Search by title, supervisor, etc."
-            />
+            />*/}
+            {
+                proposalFields.length > 0 && (
+                    <>
+                        <div>
+                            {filters.map((filter, index) => (
+                                <Badge key={index} variant="info" onClick={() => removeFilter(filter.field)}>
+                                    {`${filter.field} - ${filter.value}`} &#10005;
+                                </Badge>
+                            ))}
+                        </div>
+                        <FilterComponent proposalFields={proposalFields} onAddFilter={addFilter} onRemoveFilter={removeFilter} filters={filters} />
+                    </>
+                )
+
+            }
             {
                 filteredProposals.length === 0 ? (
                     <p>No Found Proposals</p>
