@@ -1,9 +1,20 @@
 const request = require("supertest");
-const app = require("../../app");
+const app = require("../../index");
 
 const { Builder, By, until } = require("selenium-webdriver");
 
 describe("End to end tests for list of applications", () => {
+
+  async function isElementVisible(selector) {
+    try {
+      const element = await driver.findElement(By.css(selector));
+      return await element.isDisplayed();
+    } catch (error) {
+      // If the element is not found, consider it not visible
+      return false;
+    }
+  }
+  
   let driver;
   let baseURL = `http://localhost:5173`;
 
@@ -41,17 +52,27 @@ describe("End to end tests for list of applications", () => {
   };
 
   const doLogout = async () => {
-    // click on the drop menu
-    const logoutDropdown = await driver.findElement(By.id("dropdown-basic"));
-    await logoutDropdown.click();
+    const isNavbarCollapsed = await isElementVisible('.navbar-toggler-icon');
 
-    // click on logout
-    const logout = await driver.findElement(By.id("logout-id"));
-    await logout.click();
+    if (!isNavbarCollapsed) {
+      // Navbar is not collapsed, click the "Logout" link directly
+      const logoutLinkButton = await driver.findElement(By.id('link-logout-navbar-button'));
+      await logoutLinkButton.click();
+    } else {
+      // Navbar is collapsed, trigger the collapse by clicking the hamburger menu icon
+      const hamburgerMenuIcon = await driver.findElement(By.css('.navbar-toggler-icon'));
+      await hamburgerMenuIcon.click();
 
-    await driver.sleep(1000);
+      // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
+      await driver.wait(until.elementLocated(By.css('.nav-item')), 5000);
+
+      // Now locate and click the "Logout" link
+      const logoutLinkButton = await driver.findElement(By.id('link-logout-navbar-button'));
+      await logoutLinkButton.click();
+    }
+
   }
-
+ //try to use wait instead of sleep for better synchro
   beforeAll(async () => {
     driver = await new Builder().forBrowser("chrome").build();
   });
@@ -77,8 +98,16 @@ describe("End to end tests for list of applications", () => {
      await driver.sleep(1000);
  
      // Assert that the navigation to the correct route occurred
-     const currentUrl = await driver.getCurrentUrl();
-     expect(currentUrl).toContain("/browse-applications");
+     //const currentUrl = await driver.getCurrentUrl();
+     await driver.wait(until.urlContains("/browse-applications"), 5000);
+
+      // Verify the presence of a specific table on the page
+      const tableElement = await driver.findElement(By.id('applications-table'));
+
+      // Check if the table element is present
+      await driver.wait(until.elementIsVisible(tableElement), 5000);
+
+
 
       await doLogout();
     

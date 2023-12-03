@@ -95,7 +95,7 @@ function Header(props) {
                                         }
                                     </Nav.Link>
 
-                                    <Button variant="link"
+                                    <Button id='link-logout-navbar-button' variant="link"
                                         className={"nav-link"}
                                         href="http://localhost:3000/logout">Logout</Button>
                                 </Nav>

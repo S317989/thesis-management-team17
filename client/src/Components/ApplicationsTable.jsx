@@ -28,7 +28,7 @@ export const ApplicationFields = {
 
 const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRefresh }) => {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover id='applications-table'>
       <thead>
         <tr>
           <th>Title</th>
