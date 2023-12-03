@@ -12,123 +12,41 @@ Sections:
 ### Macro statistics
 
 - 10 stories committed | 10 stories done 
-- 18 points committed | 16 points done 
-- 96h | 78h spent (as a team)
-
- 
-- Unit Tests passing
-- Code review completed
-- Code present on VCS
-- End-to-End tests performed
+- 16 points committed | 16 points done 
+- 96h | 107h spent (as a team)
 
 
 ### Detailed statistics
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   | DB final fixes |        |    3h        |        3h      |
-| _#0_   | YouTrack management  |        |    1h        |      1h        |
-| _#0_   | E2E testing preparation |        |    1h        |        1h      |
-| _#0_   | Virtual clock Frontend |        |    1h        |        1h      |
-| _#0_   | Docker management learning |        |    3h        |        3h      |
-| _#0_   | Docker management development |        |    3h        |        2h      |
-| _#0_   | Docker uploading test and final |        |    3h        |        2h      |
-| _#0_   | SAML fix |        |    3h        |        2h      |
-| _#0_   | Documentation management |        |    8h        |        10h      |
-| _#0_   | SonarCloud Learning |        |    2h        |        2h      |
-| _#0_   | Presentation |        |    2h        |       3h      |
-| _#0_   | Virtual clock Learning |        |    3h        |        3h      |
-| _#0_   | Virtual clock management |        |    3h        |        3h      |
-| _#0_   | Code Merge |        |    1h        |        0.5h      |
-| _#0_   | Learning unit test |        |    1h        |        5h      |
-| _#0_   | Graphic fix |        |    2h        |        2h      |
-| n 1    | Insert Proposal fix |    2    |      4h      |       4h       |
-| n 4    | Browse Applications test front-end |   1     |      0.5h      |       2.5h       |
-| n 5    | Accept Applications front-end |   2     |      1h      |       0.5h       |
-| n 5    | Accept Applications back-end |    2    |      3h      |       1h       |
-| n 6    | Browse Application decisions front-end |    1    |      3h      |       3.5h       |
-| n 6    | Browse Application decisions test front-end |    1    |      0.5h      |       0.5h       |
-| n 6    | Browse Application decisions back-end |    1    |      2h      |       2h       |
-| n 7    | Browse Proposal front-end |    1    |      2h      |       6h       |
-| n 7    | Browse Proposal back-end |    1    |      3h      |       3h       |
-| n 8    | Update Proposal front-end |   2     |      2h      |       2h       |
-| n 8    | Update Proposal back-end |    2    |      3h      |       3h       |
-| n 10   | Delete Proposal front-end |    2    |      0.5h      |       0.5h       |
-| n 10   | Delete Proposal back-end |    2    |      1h      |       1h       |
-| n 12   | Archive Proposal front-end |    2    |      1h      |       1h       |
-| n 12   | Archive Proposal back-end |    2    |      2h      |       2h       |
-| n 16   | Search Archive front-end |    1    |      0.5h      |       0.5h       |
-| n 16   | Search Archive back-end |    1    |      1h      |       1h       |
+| _#0_   |  16  |        |    33h       |        37h    |
+| n 1    |  3  |    2    |      10h     |       18h     |
+| n 2    |  1  |    2    |      3h      |       1h      |
+| n 3    |  2  |    2    |      6h      |       9.5h    |
+| n 4    |  4  |   1     |      7h      |       13h     |
+| n 5    |  2  |   2     |      4h      |       1.5h    |
+| n 6    |  3  |    1    |      4.5h    |       5h      |
+| n 7    |  2  |    1    |      5h      |       12h     |
+| n 8    |  2  |   2     |      4h      |       4h      |
+| n 10   |  2  |    2    |      1.5h    |       1.5h    |
+| n 12   |  2  |    2    |      3h      |       3h      |
+| n 16   |  2  |    1    |      1.5h    |       1.5h    |
+
 
 - Hours per task average, standard deviation (estimate and actual)
 
   - Hours per Task Average and Standard Deviation:
 
     - For **Estimated** Hours:
-      Story #0:
-      - Average: 2.66 hours
-      - Standard Deviation: 1.5 hours
-      Story n 1:
-      - Average: 4 hours
-      - Standard Deviation: 1 hour 
-      Story n 4:
-      - Average: 0.5 hours
-      - Standard Deviation: 0.75 hours 
-      Story n 5:
-      - Average: 2 hours
-      - Standard Deviation: 1.25 hours 
-      Story n 6:
-      - Average: 1.83 hours
-      - Standard Deviation: 1.8 hours 
-      Story n 7:
-      - Average: 2.5 hours
-      - Standard Deviation: 0.9 hours 
-      Story n 8:
-      - Average: 2.5 hours
-      - Standard Deviation: 1 hour 
-      Story n 10:
-      - Average: 0.75 hours
-      - Standard Deviation: 0.6 hours 
-      Story n 12:
-      - Average: 1.5 hours
-      - Standard Deviation: 0.7 hours 
-      Story n 16:
-      - Average: 0.75 hours
-      - Standard Deviation: 0.8 hours 
+      - Average Estimate: 1h 37m
+      - Standard Deviation Estimate: 2h 46m
 
     - For **Actual** Hours:
-      Story #0:
-      - Average: 4.26 hours
-      - Standard Deviation: 1.75 hours 
-      Story n 1:
-      - Average: 4 hours
-      - Standard Deviation: 1 hour 
-      Story n 4:
-      - Average: 2.5 hours
-      - Standard Deviation: 0.5 hours 
-      Story n 5:
-      - Average: 0.75 hours
-      - Standard Deviation: 0.75 hours 
-      Story n 6:
-      - Average: 2.33 hours
-      - Standard Deviation: 1.2 hours 
-      Story n 7:
-      - Average: 4.5 hours
-      - Standard Deviation: 0.9 hours 
-      Story n 8:
-      - Average: 2.5 hours
-      - Standard Deviation: 1 hour 
-      Story n 10:
-      - Average: 0.75 hours
-      - Standard Deviation: 0.6 hours 
-      Story n 12:
-      - Average: 1.5 hours
-      - Standard Deviation: 0.7 hours 
-      Story n 16:
-      - Average: 0.75 hours
-      - Standard Deviation: 0.8 hours 
+      - Average Actual: 2h 7m
+      - Standard Deviation Actual: 3h 8m
 
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 --> 70/78 - 1 = -0.103
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent - 1 --> 82.5/107 - 1 = -0.23
 
 
 ## QUALITY MEASURES 
