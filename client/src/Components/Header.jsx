@@ -1,7 +1,7 @@
 import "../Stylesheets/HeaderStyle.css";
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Button, Offcanvas } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import { Navbar, Nav } from 'react-bootstrap';
 import { PersonCircle } from "react-bootstrap-icons";
 import VirtualClockComponent from "./VirtualClockComponent.jsx";
 import { UserContext } from "../Contexts.js";

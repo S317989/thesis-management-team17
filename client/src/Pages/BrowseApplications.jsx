@@ -39,13 +39,13 @@ const BrowseApplications = () => {
   return (
     <Container className="mt-4 mb-4">
       <Col>
-      <Row className="mt-4 mb-4">
-      <h3>Applications Management</h3>
-      </Row>
-      <Row>
-      <ApplicationsTable EnableAccept EnableReject
-          applications={applications} requestRefresh={fetchData} />
-      </Row>
+        <Row className="mt-4 mb-4">
+          <h3>Applications Management</h3>
+        </Row>
+        <Row>
+          <ApplicationsTable EnableAccept EnableReject
+            applications={applications} requestRefresh={fetchData} />
+        </Row>
       </Col>
     </Container>
   );

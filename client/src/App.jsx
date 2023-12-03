@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './Components/Header'
 import Home from './Pages/Home'
-import { Route, Routes, useLocation, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { UserContext } from './Contexts.js';
 import AuthenticationAPI from './APIs/AuthenticationAPI';
@@ -12,7 +12,6 @@ import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
 import SearchProposals from './Pages/SearchProposals'
 import StudentApplications from './Pages/StudentApplications.jsx';
-import { Roles } from './APIs/AuthenticationAPI';
 
 function App() {
   const [user, setUser] = useState(null);

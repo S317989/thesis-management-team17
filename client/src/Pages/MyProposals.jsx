@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ProposalsTable from '../Components/ProposalsTable'
+import CardManager from '../Components/CardManager';
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
 import ProposalsSearchForm from '../Components/ProposalsSearchForm';
@@ -56,24 +57,26 @@ const MyProposals = () => {
           <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <ProposalsSearchForm proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh}></ProposalsSearchForm>
+      <Row className="mt-4 mb-4">
+        <Col xs={12}>
+          <CardManager page={"MyProposals"} proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
+          {/** <ProposalsSearchForm proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh}></ProposalsSearchForm> */}
         </Col>
-      </Row>
+      </Row >
       <Row className="mt-4 mb-4">
         <Accordion>
           <Accordion.Item eventKey="0">
             <Col>
               <Accordion.Header className="text-center"><h4>My Archived Proposals</h4> </Accordion.Header>
               <Accordion.Body>
-                <ProposalsSearchForm proposals={archivedProposals} EnableEditing EnableDeleting requestRefresh={requestRefresh}></ProposalsSearchForm>
+                <CardManager page={"MyProposals"} proposals={archivedProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
+                {/**<ProposalsSearchForm proposals={archivedProposals} EnableEditing EnableDeleting requestRefresh={requestRefresh}></ProposalsSearchForm>*/}
               </Accordion.Body>
             </Col>
           </Accordion.Item>
         </Accordion>
       </Row>
-    </Container >
+    </Container>
   );
 };
 

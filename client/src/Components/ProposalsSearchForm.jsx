@@ -51,7 +51,6 @@ const ProposalsSearchForm = ({
 
   return (
     <Col>
-      {/* <p style={{ fontSize: "10px", textAlign: "start", padding: "0" }}> You can search by: Proposal Title, Supervisor, Type, Description, Required Knowledge, Notes, Expiration, Level, Cosupervisors, External Cosupervisors, Degrees, Groups Or Keywords</p> */}
       <Form.Control
         type="text"
         value={searchTerm}
