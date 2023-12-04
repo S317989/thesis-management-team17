@@ -41,6 +41,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
                 return ({ ...p, searchableFormat: sf.toLowerCase() });
             })
         ];
+
         setAvailableProposals(ap);
         setFilteredProposals(ap);
     };
@@ -91,7 +92,11 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
             if (user.role === "Student")
                 proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat')
             else
-                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived');
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived' && key !== 'Id');
+
+            proposalFields = proposalFields.map((field) => {
+                return field.charAt(0).toUpperCase() + field.slice(1);
+            })
 
             setProposalFields(proposalFields);
         }
