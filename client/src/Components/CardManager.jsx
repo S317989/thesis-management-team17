@@ -90,7 +90,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         if (availableProposals.length > 0) {
             let proposalFields;
             if (user.role === "Student")
-                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat')
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Archived' && key !== 'Id')
             else
                 proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived' && key !== 'Id');
 
@@ -114,12 +114,6 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
 
     return (
         <Container className="card-manager-container">
-            {/*<Form.Control
-                type="text"
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search by title, supervisor, etc."
-            />*/}
             {
                 proposalFields.length > 0 && (
                     <Container fluid>

@@ -70,7 +70,7 @@ export const Accept = ({ applicationId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="success" onClick={() => handleDelete()}>
+        <Button variant="success" size='sm' onClick={() => handleDelete()}>
             Accept
         </Button>{' '}
     </>
@@ -106,7 +106,7 @@ export const Reject = ({ applicationId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="danger" onClick={() => handleReject()}>
+        <Button variant="danger" size='sm' onClick={() => handleReject()}>
             Reject
         </Button>{' '}
     </>

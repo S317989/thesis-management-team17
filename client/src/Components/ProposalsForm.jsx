@@ -4,13 +4,16 @@ import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleBu
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { Delete, Archive } from './ProposalsActions';
 import { Apply, Reject, Accept } from "./ApplicationsActions";
+import { Mortarboard } from "react-bootstrap-icons";
+
+const { MultiValueLabel } = components;
 
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
@@ -32,10 +35,124 @@ export const ProposalFields = {
     keywords: "keywords"
 }
 
+const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField }) => {
+    const handleChange = (property, newValue) => {
+        setProposalData((old) => {
+            const updatedData = { ...old };
+            updatedData[property] = newValue;
+            return updatedData;
+        });
+    };
+
+    switch (type) {
+        case "Input":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" type="text" readOnly={readOnly} value={value}
+                        onChange={(e) => handleChange(proposalField, e.target.value)} />
+                </Form.Group>
+            );
+        case "Date":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" type="date" readOnly={readOnly} value={value} onChange={(e) => handleChange(proposalField, e.target.value)} />
+                </Form.Group>
+            );
+        case "TextArea":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" as="textarea" rows={3} readOnly={readOnly} value={value} onChange={(e) => handleChange(proposalField, e.target.value)} />
+                </Form.Group>
+            );
+        case "Select":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Select
+                        className="field-item"
+                        styles={{
+                            control: (baseStyle) => ({
+                                ...baseStyle,
+                                backgroundColor: 'rgb(255, 220, 150)',
+                            }),
+                            multiValueLabel: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                            }),
+                            multiValueRemove: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#9fd2ff',
+                                },
+                            }),
+                        }}
+                        isDisabled={readOnly}
+                        isMulti
+                        onChange={(newSelection) => handleChange(proposalField, newSelection)}
+                        options={options}
+                        value={value}
+                    />
+                </Form.Group>
+            );
+        case "CreatableSelect":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <CreatableSelect
+                        className="field-item"
+                        styles={{
+                            control: provided => ({
+                                ...provided,
+                                backgroundColor: 'rgb(255, 220, 150)',
+                            }),
+                            multiValueLabel: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                            }),
+                            multiValueRemove: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#9fd2ff',
+                                },
+                            }),
+                        }}
+                        isMulti
+                        isDisabled={readOnly}
+                        onChange={(newSelection) => handleChange(proposalField, newSelection)}
+                        options={options}
+                        value={value} />
+                </Form.Group>
+            );
+        case "IconButton":
+            return (
+                <Button
+                    className={
+                        `circle-button${value === options ? '-selected' : ''} rounded-circle`}
+                    onClick={() => handleChange(proposalField, options)}
+                    disabled={readOnly}>
+                    <div className="icon-container">
+                        <Mortarboard className="icon" />
+                    </div>
+                    <div className="label">{label}</div>
+                </Button>
+            );
+        default:
+            return null;
+    }
+};
+
 function ProposalForm({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) {
-    console.log(proposal);
     const { user } = useContext(UserContext);
 
     // Here are the default data for a new proposal
@@ -108,14 +225,6 @@ function ProposalForm({
         changeProposalData(ProposalFields.keywords, [...proposalData.keywords, newKeyword]);
     };
 
-    const changeProposalData = function (property, newValue) {
-        setProposalData((old) => {
-            const updatedData = { ...old };
-            updatedData[property] = newValue;
-            return updatedData;
-        });
-    }
-
     const handleInsertOrUpdateProposal = async () => {
         // groups depend on the supervisor and the internal supervisors
         const readyProposalData = { ...proposalData };
@@ -148,157 +257,153 @@ function ProposalForm({
 
     return (
         <>
-            <div className="main-container">
-                <div className="container">
-                    <Col>
-                        <Row>
-                            <Col className="form-section">
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Title</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        placeholder="Title"
-                                        aria-label="Title"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Title}
-                                        onChange={(e) => changeProposalData(ProposalFields.Title, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Type</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        placeholder="Type"
-                                        aria-label="Type"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Type}
-                                        onChange={(e) => changeProposalData(ProposalFields.Type, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Expiration Date</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        type="date"
-                                        placeholder="Expiration Date"
-                                        aria-label="Expiration Date"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Expiration}
-                                        onChange={(e) => changeProposalData(ProposalFields.Expiration, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No Co-Supervisor Selected"
-                                    options={teachers}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.cosupervisors, newSelection)}
-                                    //onCreateOption={handleCreateSupervisor}
-                                    value={proposalData.cosupervisors}
+            <Form className="main-container">
+                <Container className="form-container" fluid>
+                    <Row>
+                        <Col xs={12} md={4}>
+                            <div className="form-section">
+                                <FormInput
+                                    type="Input"
+                                    label="Title"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Title}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Title}
                                 />
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No External Co-Supervisor Selected"
-                                    options={externalCosupervisors}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.externalCosupervisors, newSelection)}
-                                    //onCreateOption={handleCreateSupervisor}
-                                    value={proposalData.externalCosupervisors}
+                                <FormInput
+                                    type="Input"
+                                    label="Type"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Type}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Type}
                                 />
-                                <CreatableSelect
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No Keywords Selected"
+                                <FormInput
+                                    type="Date"
+                                    label="Expiration"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Expiration}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Expiration}
+                                />
+                                <FormInput
+                                    type="CreatableSelect"
+                                    label="Keywords"
+                                    readOnly={!EnableEditing}
                                     options={keywords}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.keywords, newSelection)}
-                                    onCreateOption={handleCreateKeyword}
-                                    value={proposalData.keywords} />
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No CDS Selected"
+                                    value={proposalData.keywords}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.keywords}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="Cosupervisors"
+                                    readOnly={!EnableEditing}
+                                    options={teachers}
+                                    value={proposalData.cosupervisors}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.cosupervisors}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="External Cosupervisors"
+                                    readOnly={!EnableEditing}
+                                    options={externalCosupervisors}
+                                    value={proposalData.externalCosupervisors}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.externalCosupervisors}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="CDS"
+                                    readOnly={!EnableEditing}
                                     options={degrees}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.degrees, newSelection)}
-                                    value={proposalData.degrees} />
-                            </Col>
-                            <Col className="textarea-section">
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Description</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Description"
-                                        aria-label="Description"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Description}
-                                        onChange={(e) => changeProposalData(ProposalFields.Description, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Required Knowledge</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Required Knowledge"
-                                        aria-label="Required Knowledge"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Required_Knowledge}
-                                        onChange={(e) => changeProposalData(ProposalFields.Required_Knowledge, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Notes</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Notes"
-                                        aria-label="Notes"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Notes}
-                                        onChange={(e) => changeProposalData(ProposalFields.Notes, e.target.value)}
-                                    />
-                                </InputGroup>
+                                    value={proposalData.degrees}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.degrees}
+                                />
+                            </div>
+                        </Col>
+                        <Col xs={12} md={8}>
+                            <div className="textarea-section">
+                                <FormInput
+                                    type="TextArea"
+                                    label="Description"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Description}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Description}
+                                />
+                                <FormInput
+                                    type="TextArea"
+                                    label="Required Knowledge"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Required_Knowledge}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Required_Knowledge}
+                                />
+                                <FormInput
+                                    type="TextArea"
+                                    label="Notes"
+                                    readOnly={!EnableEditing}
+                                    value={proposalData.Notes}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Notes}
+                                />
                                 <div className="button-div">
                                     <ButtonGroup className="button-group">
-                                        {Object.keys(Levels).map((l) => {
-                                            return <Form.Check
-                                                disabled={!EnableEditing}
-                                                className="mb-3"
-                                                key={l}
-                                                type="radio"
-                                                label={l}
-                                                name="switchOptions"
-                                                id={l}
-                                                checked={proposalData.Level === l}
-                                                onChange={() => changeProposalData(ProposalFields.Level, l)}
-                                            />
-                                        })
+                                        {
+                                            <div className="icons-section">
+                                                <FormInput
+                                                    type="IconButton"
+                                                    label="BsC"
+                                                    readOnly={!EnableEditing}
+                                                    options={Levels.Bachelor}
+                                                    value={proposalData.Level}
+                                                    setProposalData={setProposalData}
+                                                    proposalField={ProposalFields.Level}
+                                                />
+
+                                                <FormInput
+                                                    type="IconButton"
+                                                    label="MsC"
+                                                    readOnly={!EnableEditing}
+                                                    options={Levels.Master}
+                                                    value={proposalData.Level}
+                                                    setProposalData={setProposalData}
+                                                    proposalField={ProposalFields.Level}
+                                                />
+                                            </div>
                                         }
                                     </ButtonGroup>{' '}
                                 </div>
-                            </Col>
-                        </Row>
-                        {
-                            EnableEditing ?
-                                <>
-                                    {proposalData.Id ? <>
-                                        {EnableArchiving ? <Archive proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                        {EnableDeleting ? <Delete proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                    </> : <></>}
-                                    <Button
-                                        variant="primary" onClick={handleInsertOrUpdateProposal}>
-                                        Save
-                                    </Button>
-                                </> : <></>
+                            </div>
+                        </Col >
+                    </Row>
+                    <div className="actions-section">
+                        {EnableEditing &&
+                            <>
+                                {proposalData.Id &&
+                                    <>
+                                        {EnableArchiving &&
+                                            <Archive proposalId={proposalData.Id} OnComplete={OnComplete} />
+                                        }
+                                        {EnableDeleting &&
+                                            <Delete proposalId={proposalData.Id} OnComplete={OnComplete} />
+                                        }
+                                    </>
+                                }
+                                <Button id="save-button" onClick={handleInsertOrUpdateProposal}>
+                                    Save
+                                </Button>
+                            </>
                         }
-                        {EnableApplying ? <Apply proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                    </Col>
-                </div>
-            </div >
+                        {EnableApplying &&
+                            <Apply proposalId={proposalData.Id} OnComplete={OnComplete} />
+                        }
+                    </div>
+                </Container >
+            </Form >
         </>
     );
 }

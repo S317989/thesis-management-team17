@@ -12,6 +12,7 @@ import { ProposalFields } from '../Components/ProposalsForm';
 import ApplicationsTable from '../Components/ApplicationsTable';
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
+import CardManager from '../Components/CardManager';
 
 const StudentApplications = () => {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ const StudentApplications = () => {
         <Container className="mt-4">
             {pendingOrActiveApplication ? <PendingApplicationAlert application={pendingOrActiveApplication} /> : <></>}
             <h3>Available Thesis Proposals</h3>
-            <ProposalsSearchForm proposals={availableProposals} EnableApplying={!pendingOrActiveApplication} requestRefresh={fetchData} />
+            <CardManager page={"AvailableProposals"} proposals={availableProposals} EnableApplying={!pendingOrActiveApplication} requestRefresh={fetchData} />
             <h3>Your Applications</h3>
             <ApplicationsTable applications={applications} />
         </Container>

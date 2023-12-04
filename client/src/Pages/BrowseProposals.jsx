@@ -36,7 +36,6 @@ const BrowseProposals = () => {
     <Container className="mt-4">
       <h3 className="mb-4">All Thesis Proposals</h3>
       <CardManager page={"AllProposals"} proposals={proposals} />
-      {/*<ProposalsSearchForm proposals={proposals} />*/}
     </Container>
   );
 };

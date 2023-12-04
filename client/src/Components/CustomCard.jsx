@@ -2,6 +2,7 @@ import "../Stylesheets/CardManagerStyle.css";
 import React, { useState } from "react";
 import { Badge, Card, Modal } from "react-bootstrap";
 import ProposalsForm, { ProposalFields } from "./ProposalsForm";
+import ProposalsModal from "./ProposalModal";
 
 
 const CustomCard = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete }) => {
@@ -30,32 +31,7 @@ const CustomCard = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, 
                 </Card.Footer>
             </Card>
 
-            <Modal show={show} fullscreen onHide={() => setShow(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{
-                        proposal ?
-                            (
-                                proposal[ProposalFields.Id] ?
-                                    proposal[ProposalFields.Title]
-                                    : "Make a new proposal starting from " + proposal[ProposalFields.Title]
-                            )
-                            : "Add new proposal"}
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <ProposalsForm
-                        proposal={proposal}
-                        EnableEditing={EnableEditing}
-                        EnableArchiving={EnableArchiving}
-                        EnableDeleting={EnableDeleting}
-                        EnableApplying={EnableApplying}
-                        OnComplete={() => {
-                            if (OnComplete) OnComplete();
-                            setShow(false);
-                        }} />
-                </Modal.Body>
-            </Modal>
-
+            <ProposalsModal proposal={proposal} EnableEditing={EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
         </>
     )
 }
