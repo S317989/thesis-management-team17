@@ -60,7 +60,6 @@ const MyProposals = () => {
       <Row>
         <Col xs={12}>
           <CardManager page={"MyProposals"} proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
-          {/** <ProposalsSearchForm proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh}></ProposalsSearchForm> */}
         </Col>
       </Row >
       <Row className="mt-4 mb-4">
@@ -70,7 +69,6 @@ const MyProposals = () => {
               <Accordion.Header className="text-center"><h4>My Archived Proposals</h4> </Accordion.Header>
               <Accordion.Body>
                 <CardManager page={"MyProposals"} proposals={archivedProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
-                {/**<ProposalsSearchForm proposals={archivedProposals} EnableEditing EnableDeleting requestRefresh={requestRefresh}></ProposalsSearchForm>*/}
               </Accordion.Body>
             </Col>
           </Accordion.Item>

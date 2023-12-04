@@ -16,24 +16,11 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     const [proposalsPerPage, setProposalsPerPage] = useState(3);
     const [filters, setFilters] = useState([]);
 
-    const addFilter = (field, value) => {
-        if (field && value) {
-            setFilters((prevFilters) => [...prevFilters, { field, value }]);
-        }
-    }
-
-    const removeFilter = (field) => {
-        setFilters((prevFilters) => prevFilters.filter((filter) => filter.field !== field));
-    };
-
     const indexOfLastProposal = currentPage * proposalsPerPage;
     const indexOfFirstProposal = indexOfLastProposal - proposalsPerPage;
     const currentProposals = filteredProposals.slice(indexOfFirstProposal, indexOfLastProposal);
 
-    useEffect(() => {
-        if (page == "AllProposals")
-            setProposalsPerPage(6);
-
+    const fetchData = async () => {
         const ap = [
             ...proposals.map(p => {
                 const sf =
@@ -56,21 +43,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         ];
         setAvailableProposals(ap);
         setFilteredProposals(ap);
-
-    }, [proposals, page]);
-
-    useEffect(() => {
-        if (availableProposals.length > 0) {
-            let proposalFields;
-            if (user.role === "Student")
-                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat')
-            else
-                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived');
-
-            setProposalFields(proposalFields);
-        }
-
-    }, [availableProposals]);
+    };
 
     const handleSearch = (newValue) => {
         setSearchTerm(newValue);
@@ -95,6 +68,45 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         return rows;
     }
 
+    const addFilter = (field, value) => {
+        if (field && value) {
+            setFilters((prevFilters) => [...prevFilters, { field, value }]);
+        }
+    }
+
+    const removeFilter = (field) => {
+        setFilters((prevFilters) => prevFilters.filter((filter) => filter.field !== field));
+    };
+
+    useEffect(() => {
+        if (page == "AllProposals")
+            setProposalsPerPage(6);
+        fetchData();
+
+    }, [proposals, page]);
+
+    useEffect(() => {
+        if (availableProposals.length > 0) {
+            let proposalFields;
+            if (user.role === "Student")
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat')
+            else
+                proposalFields = Object.keys(availableProposals[0]).filter(key => key !== 'searchableFormat' && key !== 'Supervisor' && key !== 'Archived');
+
+            setProposalFields(proposalFields);
+        }
+
+    }, [availableProposals]);
+
+    useEffect(() => {
+        if (filters.length > 0)
+            filters.forEach((filter) => {
+                handleSearch(filter.value);
+            });
+        else
+            fetchData();
+    }, [filters]);
+
     return (
         <Container className="card-manager-container">
             {/*<Form.Control
@@ -105,16 +117,33 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
             />*/}
             {
                 proposalFields.length > 0 && (
-                    <>
-                        <div>
-                            {filters.map((filter, index) => (
-                                <Badge key={index} variant="info" onClick={() => removeFilter(filter.field)}>
-                                    {`${filter.field} - ${filter.value}`} &#10005;
-                                </Badge>
-                            ))}
-                        </div>
-                        <FilterComponent proposalFields={proposalFields} onAddFilter={addFilter} onRemoveFilter={removeFilter} filters={filters} />
-                    </>
+                    <Container fluid>
+                        <Row className="mb-3">
+                            <Col>
+                                <FilterComponent
+                                    proposalFields={proposalFields}
+                                    onAddFilter={addFilter}
+                                    onRemoveFilter={removeFilter}
+                                    filters={filters}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <div className="mb-2">
+                                    {filters.map((filter, index) => (
+                                        <Badge
+                                            key={index}
+                                            className="filter-badge"
+                                            onClick={() => removeFilter(filter.field)}
+                                        >
+                                            {`${filter.field} - ${filter.value}`} &#10005;
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </Col>
+                        </Row>
+                    </Container>
                 )
 
             }
