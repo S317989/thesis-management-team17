@@ -1,0 +1,22 @@
+.parent-pending-card-container-Pending,
+.parent-pending-card-container-Active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.parent-pending-card-container-Active {
+    background-color: #fff;
+}
+
+.parent-pending-card-container-Pending {
+    background-color: rgb(172, 229, 166);
+}
+
+.child-pending-card-container {
+    border-radius: 5px;
+    background-color: #fff;
+}
