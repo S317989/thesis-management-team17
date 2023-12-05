@@ -10,6 +10,13 @@
     margin-top: 3%;
 }
 
+.action-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .form-section {
     margin-right: 20px;
 }
@@ -88,4 +95,23 @@
     border-color: rgb(255, 122, 8);
     background-color: rgb(255, 220, 150);
     margin-bottom: 10px;
+}
+
+#field-item-disabled:focus {
+    border-color: rgb(255, 122, 8);
+    background-color: rgb(255, 220, 150);
+}
+
+.action-allowed-button {
+    background-color: #23527c;
+    border: none;
+    border-radius: 30px;
+}
+
+.action-allowed-button:hover {
+    background-color: rgb(255, 122, 8);
+}
+
+.action-icon-container {
+    font-size: 1.3rem;
 }

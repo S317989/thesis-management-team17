@@ -38,7 +38,10 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
             user.role === 'Student' ?
               <th>Supervisor</th> : null
           }
-          <th>Student</th>
+          {
+            user.role === 'Teacher' ?
+              <th>Student</th> : null
+          }
           <th>Application Date</th>
           <th>Expiration Date</th>
           <th>Status</th>
@@ -55,7 +58,11 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                 <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
                 : null
             }
-            <td>{application[ApplicationFields.StudentName]}</td>
+            {
+              user.role === 'Teacher' ?
+                <td>{application[ApplicationFields.StudentName]}</td>
+                : null
+            }
             <td>{application[ApplicationFields.Date]}</td>
             <td>{proposal[ProposalFields.Expiration]}</td>
             <td>{(
