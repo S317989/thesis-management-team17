@@ -3,7 +3,6 @@ import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import sweetalert from "sweetalert";
-import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';

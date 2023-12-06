@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import ProposalsTable from '../Components/ProposalsTable'
 import CardManager from '../Components/CardManager';
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
-import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 import sweetalert from "sweetalert";
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';

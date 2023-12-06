@@ -7,7 +7,6 @@ import ProposalsAPI from "../APIs/ProposalsAPI";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import sweetalert from "sweetalert";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
-import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 import { ApplicationFields, ApplicationStatus } from '../Components/ApplicationsTable';
 import { ProposalFields } from '../Components/ProposalsForm';
 import ApplicationsTable from '../Components/ApplicationsTable';

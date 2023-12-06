@@ -20,7 +20,6 @@ function VirtualClockComponent() {
     async function setDate(newDate) {
         const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
         const response = await DateAPI.setDate(formattedDate);
-        console.log('sent request ', response);
         if (response.status === 200) {
             setSelectedDate(newDate);
             window.location.reload(false);

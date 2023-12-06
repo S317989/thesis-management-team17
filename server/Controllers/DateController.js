@@ -8,9 +8,8 @@ module.exports = {
             return res.status(500).json({ message: error });
         }
     },
-    
+
     setDate: (req, res) => {
-        console.log(res.body);
         try {
             CustomDate.date = req.body.newDate;
             return res.status(200).json({ message: 'date set' });

@@ -10,7 +10,6 @@ import AuthenticationAPI from './APIs/AuthenticationAPI';
 import BrowseApplications from './Pages/BrowseApplications.jsx';
 import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
-import SearchProposals from './Pages/SearchProposals'
 import StudentApplications from './Pages/StudentApplications.jsx';
 
 function App() {
@@ -51,7 +50,6 @@ function App() {
                 <Header />
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/proposals" element={<SearchProposals />} />
                   <Route path="/browse-applications" element={<BrowseApplications />} />
                   <Route path="/browse-proposals" element={<BrowseProposals />} />
                   <Route path="/my-proposals" element={<MyProposals />} />
