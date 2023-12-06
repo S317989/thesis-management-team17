@@ -117,9 +117,9 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         <Container className="card-manager-container">
             {
                 proposalFields.length > 0 && (
-                    <Container fluid>
-                        <Row className="mb-3">
-                            <Col>
+                    <Container fluid style={{ zIndex: 1, position: 'static' }}>
+                        <Row className="mb-3" style={{ zIndex: 1, position: 'relative' }}>
+                            <Col style={{ zIndex: 1, position: 'relative' }}>
                                 <FilterComponent
                                     proposalFields={proposalFields}
                                     onAddFilter={addFilter}

@@ -72,7 +72,7 @@ function Header() {
 
     return (
         <>
-            <Navbar expand="lg" id="header-container">
+            <Navbar fixed="top" expand="lg" id="header-container">
                 <Navbar.Brand onClick={() => navigate("/")}>
                     <img
                         id="logo"

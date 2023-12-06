@@ -71,7 +71,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
     }, [proposalFields]);
 
     return (
-        <Dropdown show={dropdownOpen} onToggle={(isOpen) => setDropdownOpen(isOpen)} drop={'down-centered'}>
+        <Dropdown style={{ zIndex: 1, position: 'relative' }} show={dropdownOpen} onToggle={(isOpen) => setDropdownOpen(isOpen)} drop={'down-centered'}>
             <Dropdown.Toggle id="dropdown-basic">
                 Filters
                 <FilterCircle style={{ marginLeft: '5px' }} />
