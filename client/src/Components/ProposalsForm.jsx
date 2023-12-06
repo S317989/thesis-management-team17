@@ -12,6 +12,7 @@ import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { Delete, Archive } from './ProposalsActions';
 import { Apply, Reject, Accept } from "./ApplicationsActions";
 import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
+import ApplicationsAPI from "../APIs/ApplicationsAPI";
 
 const { MultiValueLabel } = components;
 
@@ -171,7 +172,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
 };
 
 function ProposalForm({
-    proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
+    proposal, applications, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) {
     const { user } = useContext(UserContext);
     const [enableEditing, setEnableEditing] = useState(EnableEditing === undefined ? false : !EnableEditing);
@@ -199,8 +200,6 @@ function ProposalForm({
     const [keywords, setKeywords] = useState([]);
 
     useEffect(() => {
-        console.log(EnableEditing);
-
         const fetchOptionsData = async () => {
             try {
                 const teachersData = await UtilitiesAPI.getListTeacher() || [];
@@ -221,6 +220,14 @@ function ProposalForm({
                 setKeywords(keywordsData
                     .map(k => ({ ...k, value: k.Id, label: k.Name })));
 
+                let applications = await ApplicationsAPI.getApplicationsByTeacherProposals(user.id);
+
+                applications.some((application) => {
+                    if (application.Proposal_Id === proposal.Id && application.Status === "Accepted") {
+                        console.log(proposal.Title + " is accepted");
+                        setEnableEditing(null);
+                    }
+                });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -283,8 +290,10 @@ function ProposalForm({
             <Form className="main-container">
                 <Container className="form-container" fluid>
                     {
-
-                        proposalData.Supervisor.Id === user.id ?
+                        console.log("Enabled: " + enableEditing)
+                    }
+                    {
+                        proposalData.Supervisor.Id === user.id && enableEditing !== null ?
                             (
                                 <div className="action-section">
                                     {

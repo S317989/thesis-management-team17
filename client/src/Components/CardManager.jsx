@@ -82,6 +82,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     useEffect(() => {
         if (page == "AllProposals")
             setProposalsPerPage(6);
+
         fetchData();
 
     }, [proposals, page]);
@@ -160,7 +161,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
                                         EnableApplying={EnableApplying}
                                         EnableArchiving={EnableArchiving}
                                         EnableDeleting={EnableDeleting}
-                                        EnableEditing={EnableEditing}
+                                        EnableEditing={EnableEditing !== undefined ? !EnableEditing : undefined}
                                         OnComplete={requestRefresh}
                                     />
                                 ))}

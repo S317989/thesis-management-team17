@@ -1,6 +1,6 @@
 import { Modal } from 'react-bootstrap';
 import ProposalsForm, { ProposalFields } from './ProposalsForm';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 import ActionButtons from './ActionButtons';
@@ -9,12 +9,15 @@ import ProposalsModal from './ProposalModal';
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) => {
-
     const [show, setShow] = useState(false);
 
     function ShowProposalModal() {
         setShow(true);
     }
+
+    useEffect(() => {
+        console.log(EnableEditing);
+    }, [EnableEditing]);
 
     return <>
         {
@@ -27,7 +30,7 @@ export const ShowProposalsForm = ({
                         : <ActionButtons action="Info" onClick={ShowProposalModal} />
         }
 
-        <ProposalsModal proposal={proposal} EnableEditing={EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
+        <ProposalsModal proposal={proposal} EnableEditing={EnableEditing === undefined ? undefined : EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
     </>;
 };
 

@@ -1,5 +1,5 @@
 import "../Stylesheets/CardManagerStyle.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Card, Modal } from "react-bootstrap";
 import ProposalsForm, { ProposalFields } from "./ProposalsForm";
 import ProposalsModal from "./ProposalModal";
@@ -31,7 +31,7 @@ const CustomCard = ({ proposal, EnableEditing, EnableArchiving, EnableDeleting, 
                 </Card.Footer>
             </Card>
 
-            <ProposalsModal proposal={proposal} EnableEditing={EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
+            <ProposalsModal proposal={proposal} EnableEditing EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
         </>
     )
 }

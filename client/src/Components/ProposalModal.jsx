@@ -1,9 +1,10 @@
 import "../Stylesheets/ProposalModalStyle.css";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import ProposalsForm, { ProposalFields } from './ProposalsForm';
 
 function ProposalsModal({ proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete, show, setShow }) {
+
     return (
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header closeButton className="modal-header">

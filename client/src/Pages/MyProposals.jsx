@@ -11,6 +11,7 @@ import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
+import ApplicationsAPI from '../APIs/ApplicationsAPI';
 
 
 const MyProposals = () => {
@@ -25,6 +26,7 @@ const MyProposals = () => {
     async function fetchData() {
       setActiveProposals(await ProposalsAPI.getActiveProposals() || []);
       setArchivedProposals(await ProposalsAPI.getArchivedProposals() || []);
+
       refreshData(false);
     }
     fetchData();
@@ -33,7 +35,6 @@ const MyProposals = () => {
   const requestRefresh = () => {
     refreshData(true);
   }
-
 
   useEffect(() => {
     AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.MY_PROPOSALS)
