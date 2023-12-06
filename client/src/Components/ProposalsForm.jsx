@@ -37,7 +37,7 @@ export const ProposalFields = {
     keywords: "keywords"
 }
 
-const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField }) => {
+const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField, onCreate }) => {
     const handleChange = (property, newValue) => {
         setProposalData((old) => {
             const updatedData = { ...old };
@@ -142,6 +142,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         isMulti
                         isDisabled={readOnly}
                         onChange={(newSelection) => handleChange(proposalField, newSelection)}
+                        onCreateOption={onCreate}
                         options={options}
                         value={value} />
                 </Form.Group>
@@ -172,7 +173,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
 };
 
 function ProposalForm({
-    proposal, applications, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
+    proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) {
     const { user } = useContext(UserContext);
     const [enableEditing, setEnableEditing] = useState(EnableEditing === undefined ? false : !EnableEditing);
@@ -252,7 +253,15 @@ function ProposalForm({
             label: inputValue,
             Name: inputValue
         };
-        changeProposalData(ProposalFields.keywords, [...proposalData.keywords, newKeyword]);
+        handleChangeMain(ProposalFields.keywords, [...proposalData.keywords, newKeyword]);
+    };
+
+    const handleChangeMain = (property, newValue) => {
+        setProposalData((old) => {
+            const updatedData = { ...old };
+            updatedData[property] = newValue;
+            return updatedData;
+        });
     };
 
     const handleInsertOrUpdateProposal = async () => {
@@ -289,9 +298,6 @@ function ProposalForm({
         <>
             <Form className="main-container">
                 <Container className="form-container" fluid>
-                    {
-                        console.log("Enabled: " + enableEditing)
-                    }
                     {
                         proposalData.Supervisor.Id === user.id && enableEditing !== null ?
                             (
@@ -364,6 +370,7 @@ function ProposalForm({
                                     options={keywords}
                                     value={proposalData.keywords}
                                     setProposalData={setProposalData}
+                                    onCreate={handleCreateKeyword}
                                     proposalField={ProposalFields.keywords}
                                 />
                                 <FormInput
