@@ -15,10 +15,6 @@ export const ShowProposalsForm = ({
         setShow(true);
     }
 
-    useEffect(() => {
-        console.log(EnableEditing);
-    }, [EnableEditing]);
-
     return <>
         {
             !proposal ?

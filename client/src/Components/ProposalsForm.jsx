@@ -224,8 +224,7 @@ function ProposalForm({
                 let applications = await ApplicationsAPI.getApplicationsByTeacherProposals(user.id);
 
                 applications.some((application) => {
-                    if (application.Proposal_Id === proposal.Id && application.Status === "Accepted") {
-                        console.log(proposal.Title + " is accepted");
+                    if (proposal && application.Proposal_Id === proposal.Id && application.Status === "Accepted") {
                         setEnableEditing(null);
                     }
                 });
@@ -234,7 +233,7 @@ function ProposalForm({
             }
         };
         fetchOptionsData();
-        // check if data was recieved means we are editing
+        // check if data was received means we are editing
         if (proposal) {
             const pd = { ...proposal };
 

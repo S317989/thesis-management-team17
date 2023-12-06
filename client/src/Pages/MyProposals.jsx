@@ -55,7 +55,7 @@ const MyProposals = () => {
       </Row>
       <Row className="mt-4">
         <Col xs={12} className="text-end">
-          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
+          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing={false} />
         </Col>
       </Row>
       <Row>
