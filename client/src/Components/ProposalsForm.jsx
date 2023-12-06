@@ -9,7 +9,7 @@ import CreatableSelect from "react-select/creatable";
 import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
-import { Delete, Archive } from './ProposalsActions';
+import { Delete, Archive, ShowProposalsForm } from './ProposalsActions';
 import { Apply, Reject, Accept } from "./ApplicationsActions";
 import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
@@ -293,6 +293,12 @@ function ProposalForm({
         });
     };
 
+    function getProposalCopy(proposal) {
+        const newcopy = JSON.parse(JSON.stringify(proposal));
+        delete newcopy[ProposalFields.Id];
+        return newcopy;
+    }
+
     return (
         <>
             <Form className="main-container">
@@ -499,6 +505,7 @@ function ProposalForm({
                                         {EnableDeleting &&
                                             <Delete proposalId={proposalData.Id} OnComplete={OnComplete} />
                                         }
+                                        <ShowProposalsForm EnableEditing={false} proposal={getProposalCopy(proposal)} OnComplete={OnComplete} />
                                     </>
 
                                 }
