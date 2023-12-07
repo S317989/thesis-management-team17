@@ -3,7 +3,8 @@
 const applicationsServices = require('../../Services/Applications');
 const applicationsController = require('../../Controllers/ApplicationsController');
 
-jest.mock('../Services/Applications');
+
+jest.mock('../../Services/Applications');
 
 describe('ApplicationsController', () => {
   let req, res;

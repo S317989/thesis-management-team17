@@ -1,7 +1,7 @@
 'use strict';
 const utilitiesServices = require('../../Services/Utilities');
 const utilitiesController = require('../../Controllers/UtilitiesController');
-jest.mock('../Services/Utilities');
+jest.mock('../../Services/Utilities');
 
 describe('ApplicationsController', () => {
     let req, res;

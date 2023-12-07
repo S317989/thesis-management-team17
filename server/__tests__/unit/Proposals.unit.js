@@ -3,7 +3,7 @@
 const proposalsServices = require('../../Services/Proposals');
 const proposalsController = require('../../Controllers/ProposalsController');
 
-jest.mock('../Services/Proposals');
+jest.mock('../../Services/Proposals');
 
 describe('ApplicationsController', () => {
     let req, res;
