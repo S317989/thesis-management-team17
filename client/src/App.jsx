@@ -11,6 +11,7 @@ import BrowseApplications from './Pages/BrowseApplications.jsx';
 import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
 import StudentApplications from './Pages/StudentApplications.jsx';
+import NotifyApplicationDecision from './Components/NotifyApplicationDecision.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
