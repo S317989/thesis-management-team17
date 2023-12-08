@@ -86,6 +86,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                         {editableFields[field] ? (
                                             <InputGroup>
                                                 <FormControl
+                                                id={field}
                                                     type={field === "Expiration" ? "date" : "text"}
                                                     placeholder={field}
                                                     value={editableFields[field] !== true ? editableFields[field] : ""}
@@ -108,6 +109,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                         {editableFields[field] ? (
                                             <InputGroup>
                                                 <FormControl
+                                                    id={`input-${field}`}
                                                     type="text"
                                                     placeholder={field}
                                                     value={editableFields[field] !== true ? editableFields[field] : ""}
@@ -119,7 +121,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <p onClick={() => handleFieldClick(field)} className="clickable-text">{field}</p>
+                                            <p onClick={() => handleFieldClick(field)} id={`input-${field}`} className={`clickable-text-${field}`}>{field}</p>
                                         )}
                                     </div>
                                 ))}
