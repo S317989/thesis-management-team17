@@ -18,6 +18,14 @@ describe("End to end tests for list of applications", () => {
   let driver;
   let baseURL = `http://localhost:5173`;
 
+  async function checkAndCollapseNavbar() {
+    const isNavbarCollapsed = await isElementVisible('.navbar-toggler-icon');
+    if (isNavbarCollapsed) {
+      const hamburgerMenuIcon = await driver.findElement(By.css('.navbar-toggler-icon'));
+      await hamburgerMenuIcon.click();
+    }
+  }
+
   const doLogin = async () => {
     await driver.get(baseURL);
 
@@ -51,27 +59,11 @@ describe("End to end tests for list of applications", () => {
     await driver.sleep(1000);
   };
 
-  const doLogout = async () => {
-    const isNavbarCollapsed = await isElementVisible('.navbar-toggler-icon');
+  async function doLogout() {
+    await checkAndCollapseNavbar();
 
-    if (!isNavbarCollapsed) {
-      // Navbar is not collapsed, click the "Logout" link directly
-      const logoutLinkButton = await driver.findElement(By.css('#link-logout-navbar-button'));
-
-      await logoutLinkButton.click();
-    } else {
-      // Navbar is collapsed, trigger the collapse by clicking the hamburger menu icon
-      const hamburgerMenuIcon = await driver.findElement(By.css('.navbar-toggler-icon'));
-      await hamburgerMenuIcon.click();
-
-      // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
-      await driver.wait(until.elementLocated(By.css('.nav-item')), 5000);
-
-      // Now locate and click the "Logout" link
-      const logoutLinkButton = await driver.findElement(By.id('link-logout-navbar-button'));
-      await logoutLinkButton.click();
-    }
-
+    const logoutLinkButton = await driver.findElement(By.css('#link-logout-navbar-button'));
+    await logoutLinkButton.click();
   }
  //try to use wait instead of sleep for better synchro
   beforeAll(async () => {
@@ -86,8 +78,12 @@ describe("End to end tests for list of applications", () => {
     await doLogin();
 
     await driver.get(baseURL);
+    await checkAndCollapseNavbar();
 
     await driver.sleep(1000);
+      // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
+      await driver.wait(until.elementLocated(By.css('.nav-link')), 5000);
+
 
      // Find the "Applications" link by its text
      const applicationsLink = await driver.findElement(By.linkText('Applications'));
@@ -131,7 +127,6 @@ describe("End to end tests for list of applications", () => {
 
   // Check if the modal is no longer visible
   expect(await isElementVisible("proposal-modal-id")).toBe(false);
-
 
 
       await doLogout();
