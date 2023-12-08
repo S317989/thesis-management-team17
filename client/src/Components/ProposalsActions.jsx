@@ -5,7 +5,7 @@ import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 import ActionButtons from './ActionButtons';
 import ProposalsModal from './ProposalModal';
-
+ 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) => {
@@ -20,10 +20,10 @@ export const ShowProposalsForm = ({
             !proposal ?
                 <ActionButtons action="Add" className="add-button" onClick={ShowProposalModal} />
                 : !proposal[ProposalFields.Id] ?
-                    <ActionButtons className="copy-button" action="Copy" onClick={ShowProposalModal} />
+                    <ActionButtons id='#copy-action-proposal' className="copy-button" action="Copy" onClick={ShowProposalModal} />
                     : EnableEditing ?
-                        <ActionButtons action="Update" onClick={ShowProposalModal} />
-                        : <ActionButtons action="Info" onClick={ShowProposalModal} />
+                        <ActionButtons id='#update-action-proposal' action="Update" onClick={ShowProposalModal} />
+                        : <ActionButtons id='#info-action-proposal' action="Info" onClick={ShowProposalModal} />
         }
 
         <ProposalsModal proposal={proposal} EnableEditing={EnableEditing === undefined ? undefined : EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />

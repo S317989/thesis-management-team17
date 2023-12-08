@@ -33,7 +33,7 @@ describe("End to end tests for list of applications", () => {
 
     await driver.sleep(1000);
 
-    const submitButton = await driver.findElement(By.css("button.c480bc568"));
+    const submitButton = await driver.findElement(By.css("button.c1939bbc3.cc78b8bf3.ce1155df5.c1d2ca6e3.c331afe93"));
 
     // remove disabled property from button
     await driver.executeScript(
@@ -56,7 +56,8 @@ describe("End to end tests for list of applications", () => {
 
     if (!isNavbarCollapsed) {
       // Navbar is not collapsed, click the "Logout" link directly
-      const logoutLinkButton = await driver.findElement(By.id('link-logout-navbar-button'));
+      const logoutLinkButton = await driver.findElement(By.css('#link-logout-navbar-button'));
+
       await logoutLinkButton.click();
     } else {
       // Navbar is collapsed, trigger the collapse by clicking the hamburger menu icon
@@ -81,7 +82,7 @@ describe("End to end tests for list of applications", () => {
     await driver.quit();
   });
 
-  test("Should show list of applications after clicking on Applications tab in the navbar", async () => {
+  test("Should show list of applications after clicking on Applications tab in the navbar and see info applications opening a modal", async () => {
     await doLogin();
 
     await driver.get(baseURL);
@@ -106,6 +107,30 @@ describe("End to end tests for list of applications", () => {
 
       // Check if the table element is present
       await driver.wait(until.elementIsVisible(tableElement), 5000);
+
+     // Assuming driver is your Selenium WebDriver instance
+      const infoIcon = await driver.findElement(By.css('.info-icon'));
+
+      // Click the info icon
+      await infoIcon.click();
+
+    // Wait for some time (you can replace this with proper waits)
+    await driver.sleep(1000);
+
+    // Check if the modal is visible
+    const modalContent = await driver.findElement(By.css(".modal-content"));
+
+    // Check if the modal content is visible
+    const isModalVisible = await modalContent.isDisplayed();
+    expect(isModalVisible).toBe(true);
+
+    const closeButton = await driver.findElement(By.css(".modal-header [aria-label='Close']"));
+    await closeButton.click();
+
+    await driver.sleep(1000);
+
+  // Check if the modal is no longer visible
+  expect(await isElementVisible("proposal-modal-id")).toBe(false);
 
 
 
