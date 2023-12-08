@@ -71,6 +71,7 @@ module.exports = {
   getTeacherActiveProposals: async function (req, res) {
     try {
       const results = await proposalsServices.getTeacherActiveProposals(req.user.id);
+
       res.status(200).json(results);
     } catch (error) {
 

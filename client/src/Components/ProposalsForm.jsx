@@ -1,19 +1,24 @@
 import "../Stylesheets/ProposalFormStyle.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container } from "react-bootstrap";
+import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
-import { Delete, Archive } from './ProposalsActions';
+import { Delete, Archive, ShowProposalsForm } from './ProposalsActions';
 import { Apply, Reject, Accept } from "./ApplicationsActions";
+import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
+import ApplicationsAPI from "../APIs/ApplicationsAPI";
+
+const { MultiValueLabel } = components;
 
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
+
 export const ProposalFields = {
     Id: "Id",
     Title: "Title",
@@ -32,11 +37,185 @@ export const ProposalFields = {
     keywords: "keywords"
 }
 
+const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField, onCreate, required }) => {
+    const [isInvalid, setIsInvalid] = useState(false);
+
+    const handleBlur = () => {
+        console.log(value)
+        if (type === "Select" && required && value.length === 0)
+            setIsInvalid(true);
+        else if (required && !value) {
+            setIsInvalid(true);
+        } else {
+            setIsInvalid(false);
+        }
+    };
+
+    const handleChange = (property, newValue) => {
+
+        setProposalData((old) => {
+            const updatedData = { ...old };
+            updatedData[property] = newValue;
+            return updatedData;
+        });
+    };
+
+    switch (type) {
+        case "Input":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                        type="text"
+                        readOnly={readOnly}
+                        value={value}
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur}
+                    />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
+                </Form.Group>
+            );
+        case "Date":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                        type="date"
+                        readOnly={readOnly}
+                        value={value}
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
+                </Form.Group>
+            );
+        case "TextArea":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Form.Control className="field-item" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                        as="textarea"
+                        rows={3}
+                        readOnly={readOnly}
+                        value={value}
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
+                </Form.Group>
+            );
+        case "Select":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <Select
+                        className="field-item"
+                        styles={{
+                            control: (baseStyle) => ({
+                                ...baseStyle,
+                                backgroundColor: 'rgb(255, 220, 150)',
+                            }),
+                            multiValueLabel: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                            }),
+                            multiValueRemove: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#9fd2ff',
+                                },
+                            }),
+                        }}
+                        isDisabled={readOnly}
+                        isMulti
+                        onChange={(newSelection) => handleChange(proposalField, newSelection)}
+                        options={options}
+                        value={value}
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
+                </Form.Group>
+            );
+        case "CreatableSelect":
+            return (
+                <Form.Group className="input-item">
+                    <Form.Label className="label-item">{label}</Form.Label>
+                    <CreatableSelect
+                        className="field-item"
+                        styles={{
+                            control: (provided, state) => ({
+                                ...provided,
+                                backgroundColor: 'rgb(255, 220, 150)',
+                            }),
+                            multiValueLabel: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                            }),
+                            multiValueRemove: (baseStyle, { data }) => ({
+                                ...baseStyle,
+                                backgroundColor: '#9fd2ff',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#9fd2ff',
+                                },
+                            }),
+                        }}
+                        isMulti
+                        isDisabled={readOnly}
+                        onChange={(newSelection) => handleChange(proposalField, newSelection)}
+                        onCreateOption={onCreate}
+                        options={options}
+                        value={value} />
+                </Form.Group>
+            );
+        case "IconButton":
+            return (
+                <OverlayTrigger placement="bottom" overlay={<Tooltip>{options} Degree</Tooltip>}>
+                    {
+                        React.cloneElement(
+                            <Button
+                                className={
+                                    `circle-button${value === options ? '-selected' : ''} rounded-circle`}
+                                onClick={() => handleChange(proposalField, options)}
+                                disabled={readOnly}>
+                                <div className="icon-container">
+                                    <Mortarboard className="icon" />
+                                </div>
+                                <div className="label">{label}</div>
+                            </Button>
+
+                        )
+                    }
+                </OverlayTrigger>
+            );
+        default:
+            return null;
+    }
+};
+
 function ProposalForm({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) {
-    console.log(proposal);
     const { user } = useContext(UserContext);
+    const [enableEditing, setEnableEditing] = useState(EnableEditing === undefined ? false : !EnableEditing);
+    const [errorMessage, setErrorMessage] = useState("");
 
     // Here are the default data for a new proposal
     const [proposalData, setProposalData] = useState({
@@ -81,12 +260,19 @@ function ProposalForm({
                 setKeywords(keywordsData
                     .map(k => ({ ...k, value: k.Id, label: k.Name })));
 
+                let applications = await ApplicationsAPI.getApplicationsByTeacherProposals(user.id);
+
+                applications.some((application) => {
+                    if (proposal && application.Proposal_Id === proposal.Id && application.Status === "Accepted") {
+                        setEnableEditing(null);
+                    }
+                });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
         fetchOptionsData();
-        // check if data was recieved means we are editing
+        // check if data was received means we are editing
         if (proposal) {
             const pd = { ...proposal };
 
@@ -105,18 +291,18 @@ function ProposalForm({
             label: inputValue,
             Name: inputValue
         };
-        changeProposalData(ProposalFields.keywords, [...proposalData.keywords, newKeyword]);
+        handleChangeMain(ProposalFields.keywords, [...proposalData.keywords, newKeyword]);
     };
 
-    const changeProposalData = function (property, newValue) {
+    const handleChangeMain = (property, newValue) => {
         setProposalData((old) => {
             const updatedData = { ...old };
             updatedData[property] = newValue;
             return updatedData;
         });
-    }
+    };
 
-    const handleInsertOrUpdateProposal = async () => {
+    const handleInsertOrUpdateProposal = async (event) => {
         // groups depend on the supervisor and the internal supervisors
         const readyProposalData = { ...proposalData };
         readyProposalData.groups = [{ Id: readyProposalData.Supervisor.Cod_Group || readyProposalData.Supervisor.cod_group },
@@ -124,6 +310,12 @@ function ProposalForm({
             readyProposalData.cosupervisors.map(c => ({ Id: c.Cod_Group })) : [])];
         readyProposalData.Supervisor = readyProposalData.Supervisor.id || readyProposalData.Supervisor.Id;
 
+        event.preventDefault();
+
+        if (!readyProposalData.Title || !readyProposalData.Description || !readyProposalData.Expiration || !readyProposalData.Level || !readyProposalData.degrees) {
+            setErrorMessage("Please fill all the required fields. [Title, Description, Level, CDS, Expiration Date]");
+            return;
+        }
 
         ProposalsAPI.addOrUpdateProposal(readyProposalData).then((response) => {
             if (response.status === 200) {
@@ -142,163 +334,242 @@ function ProposalForm({
                 });
             }
         }).catch((error) => {
-
+            console.log(error);
         });
     };
 
+    function getProposalCopy(proposal) {
+        const newcopy = JSON.parse(JSON.stringify(proposal));
+        delete newcopy[ProposalFields.Id];
+        return newcopy;
+    }
+
     return (
         <>
-            <div className="main-container">
-                <div className="container">
-                    <Col>
-                        <Row>
-                            <Col className="form-section">
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Title</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        placeholder="Title"
-                                        aria-label="Title"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Title}
-                                        onChange={(e) => changeProposalData(ProposalFields.Title, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Type</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        placeholder="Type"
-                                        aria-label="Type"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Type}
-                                        onChange={(e) => changeProposalData(ProposalFields.Type, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Expiration Date</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        type="date"
-                                        placeholder="Expiration Date"
-                                        aria-label="Expiration Date"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Expiration}
-                                        onChange={(e) => changeProposalData(ProposalFields.Expiration, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No Co-Supervisor Selected"
-                                    options={teachers}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.cosupervisors, newSelection)}
-                                    //onCreateOption={handleCreateSupervisor}
-                                    value={proposalData.cosupervisors}
+            {(errorMessage.length) ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
+            <Form className="main-container">
+                <Container className="form-container" fluid>
+                    {
+                        proposalData.Supervisor.Id === user.id && enableEditing !== null ?
+                            (
+                                <div className="action-section">
+                                    {
+                                        !enableEditing ?
+                                            (
+                                                <OverlayTrigger placement="bottom" overlay={<Tooltip>Edit</Tooltip>}>
+                                                    {
+                                                        React.cloneElement(
+                                                            <Button
+                                                                className="action-allowed-button"
+                                                                onClick={() => setEnableEditing(true)}>
+                                                                <div className="action-icon-container">
+                                                                    <Pencil className="icon" />
+                                                                </div>
+                                                            </Button>
+                                                        )
+                                                    }
+                                                </OverlayTrigger>
+                                            )
+                                            : (
+                                                <OverlayTrigger placement="bottom" overlay={<Tooltip>View</Tooltip>}>
+                                                    {
+                                                        React.cloneElement(
+                                                            <Button
+                                                                className="action-allowed-button"
+                                                                onClick={() => setEnableEditing(false)}>
+                                                                <div className="action-icon-container">
+                                                                    <Eye className="icon" />
+                                                                </div>
+                                                            </Button>
+                                                        )
+                                                    }
+                                                </OverlayTrigger>)
+                                    }
+                                </div>
+                            ) : null}
+                    <Row>
+                        <Col xs={12} md={4}>
+                            <div className="form-section">
+                                <FormInput
+                                    type="Input"
+                                    label="Title"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Title}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Title}
+                                    required={true}
                                 />
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No External Co-Supervisor Selected"
-                                    options={externalCosupervisors}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.externalCosupervisors, newSelection)}
-                                    //onCreateOption={handleCreateSupervisor}
-                                    value={proposalData.externalCosupervisors}
+                                <FormInput
+                                    type="Input"
+                                    label="Type"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Type}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Type}
                                 />
-                                <CreatableSelect
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No Keywords Selected"
+                                <FormInput
+                                    type="Date"
+                                    label="Expiration"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Expiration}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Expiration}
+                                    required={true}
+                                />
+                                <FormInput
+                                    type="CreatableSelect"
+                                    label="Keywords"
+                                    readOnly={!enableEditing}
                                     options={keywords}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.keywords, newSelection)}
-                                    onCreateOption={handleCreateKeyword}
-                                    value={proposalData.keywords} />
-                                <Select
-                                    isDisabled={!EnableEditing}
-                                    className="mb-3"
-                                    isMulti
-                                    placeholder="No CDS Selected"
+                                    value={proposalData.keywords}
+                                    setProposalData={setProposalData}
+                                    onCreate={handleCreateKeyword}
+                                    proposalField={ProposalFields.keywords}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="Cosupervisors"
+                                    readOnly={!enableEditing}
+                                    options={teachers}
+                                    value={proposalData.cosupervisors}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.cosupervisors}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="External Cosupervisors"
+                                    readOnly={!enableEditing}
+                                    options={externalCosupervisors}
+                                    value={proposalData.externalCosupervisors}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.externalCosupervisors}
+                                />
+                                <FormInput
+                                    type="Select"
+                                    label="CDS"
+                                    readOnly={!enableEditing}
                                     options={degrees}
-                                    onChange={(newSelection) => changeProposalData(ProposalFields.degrees, newSelection)}
-                                    value={proposalData.degrees} />
-                            </Col>
-                            <Col className="textarea-section">
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Description</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Description"
-                                        aria-label="Description"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Description}
-                                        onChange={(e) => changeProposalData(ProposalFields.Description, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Required Knowledge</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Required Knowledge"
-                                        aria-label="Required Knowledge"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Required_Knowledge}
-                                        onChange={(e) => changeProposalData(ProposalFields.Required_Knowledge, e.target.value)}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text id="basic-addon1">Notes</InputGroup.Text>
-                                    <Form.Control
-                                        readOnly={!EnableEditing}
-                                        as="textarea"
-                                        placeholder="Notes"
-                                        aria-label="Notes"
-                                        aria-describedby="basic-addon1"
-                                        value={proposalData.Notes}
-                                        onChange={(e) => changeProposalData(ProposalFields.Notes, e.target.value)}
-                                    />
-                                </InputGroup>
+                                    value={proposalData.degrees}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.degrees}
+                                    required={true}
+                                />
+                            </div>
+                        </Col>
+                        <Col xs={12} md={8}>
+                            <div className="textarea-section">
+                                <FormInput
+                                    type="TextArea"
+                                    label="Description"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Description}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Description}
+                                    required={true}
+                                />
+                                <FormInput
+                                    type="TextArea"
+                                    label="Required Knowledge"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Required_Knowledge}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Required_Knowledge}
+                                />
+                                <FormInput
+                                    type="TextArea"
+                                    label="Notes"
+                                    readOnly={!enableEditing}
+                                    value={proposalData.Notes}
+                                    setProposalData={setProposalData}
+                                    proposalField={ProposalFields.Notes}
+                                />
                                 <div className="button-div">
                                     <ButtonGroup className="button-group">
-                                        {Object.keys(Levels).map((l) => {
-                                            return <Form.Check
-                                                disabled={!EnableEditing}
-                                                className="mb-3"
-                                                key={l}
-                                                type="radio"
-                                                label={l}
-                                                name="switchOptions"
-                                                id={l}
-                                                checked={proposalData.Level === l}
-                                                onChange={() => changeProposalData(ProposalFields.Level, l)}
-                                            />
-                                        })
+                                        {/** Se studente, deve vedere solo proposalData.Level, se prof, deve vedere se enable e proposalData */}
+                                        {
+                                            <div className="icons-section">
+                                                {user.role === 'Student' && (
+                                                    <FormInput
+                                                        type="IconButton"
+                                                        label={proposalData.Level === Levels.Bachelor ? "BsC" : "MsC"}
+                                                        readOnly={!enableEditing}
+                                                        options={proposalData.Level}
+                                                        value={proposalData.Level}
+                                                        setProposalData={setProposalData}
+                                                        proposalField={ProposalFields.Level}
+                                                    />
+                                                )}
+                                                {user.role === 'Teacher' && (
+                                                    <>
+                                                        {!enableEditing && (
+                                                            <FormInput
+                                                                type="IconButton"
+                                                                label={proposalData.Level === Levels.Bachelor ? "BsC" : "MsC"}
+                                                                readOnly={!enableEditing}
+                                                                options={proposalData.Level}
+                                                                value={proposalData.Level}
+                                                                setProposalData={setProposalData}
+                                                                proposalField={ProposalFields.Level}
+                                                            />
+                                                        )}
+                                                        {enableEditing && (
+                                                            <>
+                                                                <FormInput
+                                                                    type="IconButton"
+                                                                    label="BsC"
+                                                                    readOnly={!enableEditing}
+                                                                    options={Levels.Bachelor}
+                                                                    value={proposalData.Level}
+                                                                    setProposalData={setProposalData}
+                                                                    proposalField={ProposalFields.Level}
+                                                                />
+                                                                <FormInput
+                                                                    type="IconButton"
+                                                                    label="MsC"
+                                                                    readOnly={!enableEditing}
+                                                                    options={Levels.Master}
+                                                                    value={proposalData.Level}
+                                                                    setProposalData={setProposalData}
+                                                                    proposalField={ProposalFields.Level}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </div>
+
                                         }
                                     </ButtonGroup>{' '}
                                 </div>
-                            </Col>
-                        </Row>
-                        {
-                            EnableEditing ?
-                                <>
-                                    {proposalData.Id ? <>
-                                        {EnableArchiving ? <Archive proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                        {EnableDeleting ? <Delete proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                                    </> : <></>}
-                                    <Button
-                                        variant="primary" onClick={handleInsertOrUpdateProposal}>
-                                        Save
-                                    </Button>
-                                </> : <></>
+                            </div>
+                        </Col >
+                    </Row>
+                    <div className="actions-section">
+                        {enableEditing &&
+                            <>
+                                {proposalData.Id &&
+                                    <>
+                                        {EnableArchiving &&
+                                            <Archive proposalId={proposalData.Id} OnComplete={OnComplete} />
+                                        }
+                                        {EnableDeleting &&
+                                            <Delete proposalId={proposalData.Id} OnComplete={OnComplete} />
+                                        }
+                                        <ShowProposalsForm EnableEditing={false} proposal={getProposalCopy(proposal)} OnComplete={OnComplete} />
+                                    </>
+
+                                }
+                                <Button id="save-button" onClick={handleInsertOrUpdateProposal}>
+                                    Save
+                                </Button>
+                            </>
                         }
-                        {EnableApplying ? <Apply proposalId={proposalData.Id} OnComplete={OnComplete} /> : <></>}
-                    </Col>
-                </div>
-            </div >
+                        {EnableApplying &&
+                            <Apply proposalId={proposalData.Id} OnComplete={OnComplete} />
+                        }
+                    </div>
+                </Container >
+            </Form >
         </>
     );
 }

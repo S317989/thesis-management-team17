@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table } from 'react-bootstrap';
+import { Container, Row, Col, Table, Card } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import sweetalert from "sweetalert";
-import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
+import CardManager from '../Components/CardManager';
 
 const BrowseProposals = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const BrowseProposals = () => {
   return (
     <Container className="mt-4">
       <h3 className="mb-4">All Thesis Proposals</h3>
-      <ProposalsSearchForm proposals={proposals} />
+      <CardManager page={"AllProposals"} proposals={proposals} EnableEditing />
     </Container>
   );
 };

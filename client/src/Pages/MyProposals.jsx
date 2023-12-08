@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import ProposalsTable from '../Components/ProposalsTable'
+import CardManager from '../Components/CardManager';
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import { ShowProposalsForm } from '../Components/ProposalsActions';
-import ProposalsSearchForm from '../Components/ProposalsSearchForm';
 import sweetalert from "sweetalert";
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
+import ApplicationsAPI from '../APIs/ApplicationsAPI';
 
 
 const MyProposals = () => {
@@ -24,6 +24,7 @@ const MyProposals = () => {
     async function fetchData() {
       setActiveProposals(await ProposalsAPI.getActiveProposals() || []);
       setArchivedProposals(await ProposalsAPI.getArchivedProposals() || []);
+
       refreshData(false);
     }
     fetchData();
@@ -32,7 +33,6 @@ const MyProposals = () => {
   const requestRefresh = () => {
     refreshData(true);
   }
-
 
   useEffect(() => {
     AuthenticationAPI.checkAuthenticationAPI(user.role, Pages.MY_PROPOSALS)
@@ -51,29 +51,29 @@ const MyProposals = () => {
       <Row>
         <h3>My Active Proposals</h3>
       </Row>
-      <Row className="mt-4 mb-4">
+      <Row className="mt-4">
         <Col xs={12} className="text-end">
-          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing />
+          <ShowProposalsForm OnComplete={requestRefresh} EnableEditing={false} />
         </Col>
       </Row>
       <Row>
-        <Col>
-          <ProposalsSearchForm proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh}></ProposalsSearchForm>
+        <Col xs={12}>
+          <CardManager page={"MyProposals"} proposals={activeProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
         </Col>
-      </Row>
+      </Row >
       <Row className="mt-4 mb-4">
         <Accordion>
           <Accordion.Item eventKey="0">
             <Col>
               <Accordion.Header className="text-center"><h4>My Archived Proposals</h4> </Accordion.Header>
               <Accordion.Body>
-                <ProposalsSearchForm proposals={archivedProposals} EnableEditing EnableDeleting requestRefresh={requestRefresh}></ProposalsSearchForm>
+                <CardManager page={"MyProposals"} proposals={archivedProposals} EnableEditing EnableDeleting EnableArchiving requestRefresh={requestRefresh} />
               </Accordion.Body>
             </Col>
           </Accordion.Item>
         </Accordion>
       </Row>
-    </Container >
+    </Container>
   );
 };
 

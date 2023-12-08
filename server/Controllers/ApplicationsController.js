@@ -10,10 +10,8 @@ module.exports = {
       return res.status(200).json(applications);
     } catch (err) {
       if (err.status === 401) {
-        console.log('401 Unauthorized Error');
         return res.status(err.status).json({ message: err.message });
       } else {
-        console.log('500 Internal Server Error');
         return res.status(err.status || 500).json({ message: err.message || 'Internal Server Error' });
       }
     }
@@ -25,10 +23,8 @@ module.exports = {
       return res.status(200).json(applications);
     } catch (err) {
       if (err.status === 401) {
-        console.log('401 Unauthorized Error');
         return res.status(err.status).json({ message: err.message });
       } else {
-        console.log('500 Internal Server Error');
         return res.status(err.status || 500).json({ message: err.message || 'Internal Server Error' });
       }
     }
@@ -52,7 +48,6 @@ module.exports = {
 
       return res.status(200).json({ message: 'application added' });
     } catch (err) {
-      console.log('500 Internal Server Error');
       return res.status(500).json({ message: err.message || 'Internal Server Error' });
     }
   },
@@ -62,7 +57,6 @@ module.exports = {
       await applicationsServices.acceptApplication(req.body.applicationId);
       return res.status(200).json({ message: "application accepted" });
     } catch (err) {
-      console.log('500 Internal Server Error');
       return res.status(500).json({ errorMessage: 'Internal Server Error' });
     }
   },
@@ -72,7 +66,6 @@ module.exports = {
       await applicationsServices.rejectApplication(req.body.applicationId);
       return res.status(200).json({ message: "application rejected successfully!" });
     } catch (err) {
-      console.log('500 Internal Server Error');
       return res.status(500).json({ errorMessage: 'Internal Server Error' });
     }
   },

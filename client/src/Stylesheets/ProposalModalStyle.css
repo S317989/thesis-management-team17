@@ -1,0 +1,12 @@
+.modal-title {
+    color: rgb(255, 122, 8);
+    overflow: scroll;
+}
+
+.modal-header {
+    background-color: #23527c;
+}
+
+.btn-close {
+    color: white;
+}

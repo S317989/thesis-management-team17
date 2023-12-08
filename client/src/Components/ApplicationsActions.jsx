@@ -33,7 +33,7 @@ export const Apply = ({ proposalId, OnComplete }) => {
         });
     };
     return <>
-        <Button onClick={() => handleDelete()}>
+        <Button style={{ backgroundColor: '#23527c', border: 'none' }} onClick={() => handleDelete()}>
             Apply
         </Button>{' '}
     </>
@@ -70,7 +70,7 @@ export const Accept = ({ applicationId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="success" onClick={() => handleDelete()}>
+        <Button variant="success" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleDelete()}>
             Accept
         </Button>{' '}
     </>
@@ -106,7 +106,7 @@ export const Reject = ({ applicationId, OnComplete }) => {
         });
     };
     return <>
-        <Button variant="danger" onClick={() => handleReject()}>
+        <Button variant="danger" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleReject()}>
             Reject
         </Button>{' '}
     </>

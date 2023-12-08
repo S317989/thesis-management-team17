@@ -2,24 +2,48 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
-.container {
+.form-container {
+    width: 80%;
     margin-top: 3%;
-    width: 70%;
 }
 
-h1 {
-    text-align: center;
-    margin-top: 2%;
+.action-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .form-section {
-    width: 30%;
+    margin-right: 20px;
 }
 
-.textarea-section {
-    width: 70%;
+@media (max-width: 767px) {
+    .form-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-section {
+        width: 100%;
+        margin-right: 0;
+        overflow: hidden;
+    }
+
+    .textarea-section {
+        width: 100%;
+    }
+
+    .actions-section {
+        width: 100%;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .button-div {
@@ -28,11 +52,71 @@ h1 {
     align-items: center;
 }
 
-.button-group {
-    width: 30dvh;
-    justify-content: space-evenly;
+
+.circle-button {
+    border: none;
+    background-color: #23527c;
+    width: 4rem;
+    height: 4rem;
+    margin-right: 10px;
+}
+
+.circle-button-selected {
+    border: none;
+    width: 4rem;
+    height: 4rem;
+    margin-right: 10px;
+    background-color: rgb(255, 122, 8) !important;
+}
+
+.circle-button:hover {
+    background-color: rgb(255, 122, 8);
+}
+
+.icon-container {
+    font-size: 2dvh;
 }
 
 .insert-proposal-div {
     width: 5%;
+}
+
+.label-item {
+    color: #23527c;
+    font-weight: bold;
+}
+
+#save-button {
+    background-color: #23527c;
+    border: none;
+}
+
+.field-item {
+    border-color: rgb(255, 122, 8);
+    background-color: rgb(255, 220, 150);
+    margin-bottom: 10px;
+}
+
+#field-item-disabled:focus {
+    border-color: rgb(255, 122, 8);
+    background-color: rgb(255, 220, 150);
+}
+
+.action-allowed-button {
+    background-color: #23527c;
+    border: none;
+    border-radius: 30px;
+}
+
+.action-allowed-button:hover {
+    background-color: rgb(255, 122, 8);
+}
+
+.action-icon-container {
+    font-size: 1.3rem;
+}
+
+.text-danger {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
 }

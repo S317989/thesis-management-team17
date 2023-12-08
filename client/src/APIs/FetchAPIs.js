@@ -22,7 +22,6 @@ const FetchAPIs = {
     },
 
     post: async function (url, body) {
-        console.log(body);
         const request = await fetch(parentURL + url, {
             method: 'POST',
             credentials: "include",
@@ -31,7 +30,6 @@ const FetchAPIs = {
                 'Content-Type': 'application/json'
             }
         });
-        console.log(request);
         return request;
     },
 }

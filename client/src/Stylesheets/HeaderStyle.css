@@ -1,11 +1,33 @@
 #header-container {
-    position: sticky !important;
-    top: 0;
+    position: sticky;
     width: 100%;
-    z-index: 999 White !important;
+    background-color: #23527c;
 }
 
-.icon-link {
+#logo {
+    width: 18dvh;
+    margin-left: 5dvh;
+    object-fit: contain;
+}
+
+.nav-link {
+    color: #f8f8f8;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: rgb(252, 122, 8);
+}
+
+.sided-items {
     display: flex;
     align-items: center;
+}
+
+.icon-item {
+    margin-right: 5px;
+}
+
+#user-info-container {
+    display: inline-block;
 }

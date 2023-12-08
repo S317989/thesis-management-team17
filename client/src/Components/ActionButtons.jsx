@@ -17,7 +17,7 @@ function ActionButtons(props) {
         Delete: <Trash3Fill className='delete-icon' />,
         Archive: <ArchiveFill className='archive-icon' />,
         Add: (
-            <Button className="float-end" style={{ display: 'flex', alignItems: 'center' }}>
+            <Button className="add-button">
                 <PlusSquareFill className='add-icon' />
                 <span style={{ marginLeft: '5px' }}>New Proposal</span>
             </Button>

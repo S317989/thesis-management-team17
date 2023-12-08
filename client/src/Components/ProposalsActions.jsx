@@ -1,14 +1,14 @@
 import { Modal } from 'react-bootstrap';
 import ProposalsForm, { ProposalFields } from './ProposalsForm';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 import ActionButtons from './ActionButtons';
+import ProposalsModal from './ProposalModal';
 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) => {
-
     const [show, setShow] = useState(false);
 
     function ShowProposalModal() {
@@ -18,38 +18,15 @@ export const ShowProposalsForm = ({
     return <>
         {
             !proposal ?
-                <ActionButtons action="Add" onClick={ShowProposalModal} />
+                <ActionButtons action="Add" className="add-button" onClick={ShowProposalModal} />
                 : !proposal[ProposalFields.Id] ?
-                    <ActionButtons action="Copy" onClick={ShowProposalModal} />
+                    <ActionButtons className="copy-button" action="Copy" onClick={ShowProposalModal} />
                     : EnableEditing ?
                         <ActionButtons action="Update" onClick={ShowProposalModal} />
                         : <ActionButtons action="Info" onClick={ShowProposalModal} />
         }
 
-        <Modal show={show} fullscreen onHide={() => setShow(false)}>
-            <Modal.Header closeButton>
-                <Modal.Title>{
-                    proposal ?
-                        (
-                            proposal[ProposalFields.Id] ?
-                                proposal[ProposalFields.Title]
-                                : "Make a new proposal starting from " + proposal[ProposalFields.Title]
-                        )
-                        : "Add new proposal"}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <ProposalsForm proposal={proposal}
-                    EnableEditing={EnableEditing}
-                    EnableArchiving={EnableArchiving}
-                    EnableDeleting={EnableDeleting}
-                    EnableApplying={EnableApplying}
-                    OnComplete={() => {
-                        if (OnComplete) OnComplete();
-                        setShow(false);
-                    }} />
-            </Modal.Body>
-        </Modal>
+        <ProposalsModal proposal={proposal} EnableEditing={EnableEditing === undefined ? undefined : EnableEditing} EnableArchiving={EnableArchiving} EnableDeleting={EnableDeleting} EnableApplying={EnableApplying} OnComplete={OnComplete} show={show} setShow={setShow} />
     </>;
 };
 

@@ -1,5 +1,5 @@
 // src/components/ProposalItem.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import { useNavigate } from 'react-router-dom';
@@ -27,13 +27,21 @@ export const ApplicationFields = {
 };
 
 const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRefresh }) => {
+  const { user } = useContext(UserContext);
+
   return (
     <Table striped bordered hover id='applications-table'>
       <thead>
         <tr>
           <th>Title</th>
-          <th>Supervisor</th>
-          <th>Student</th>
+          {
+            user.role === 'Student' ?
+              <th>Supervisor</th> : null
+          }
+          {
+            user.role === 'Teacher' ?
+              <th>Student</th> : null
+          }
           <th>Application Date</th>
           <th>Expiration Date</th>
           <th>Status</th>
@@ -45,8 +53,16 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
           const proposal = application[ApplicationFields.Proposal];
           return <tr key={application[ApplicationFields.Application_Id]}>
             <td>{proposal[ProposalFields.Title]}</td>
-            <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
-            <td>{application[ApplicationFields.StudentName]}</td>
+            {
+              user.role === 'Student' ?
+                <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
+                : null
+            }
+            {
+              user.role === 'Teacher' ?
+                <td>{application[ApplicationFields.StudentName]}</td>
+                : null
+            }
             <td>{application[ApplicationFields.Date]}</td>
             <td>{proposal[ProposalFields.Expiration]}</td>
             <td>{(
