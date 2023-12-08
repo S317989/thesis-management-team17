@@ -86,7 +86,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                         {editableFields[field] ? (
                                             <InputGroup>
                                                 <FormControl
-                                                id={field}
+                                                id={`input-${field}`}
                                                     type={field === "Expiration" ? "date" : "text"}
                                                     placeholder={field}
                                                     value={editableFields[field] !== true ? editableFields[field] : ""}
@@ -98,7 +98,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <p onClick={() => handleFieldClick(field)} className="clickable-text">{field}</p>
+                                            <p onClick={() => handleFieldClick(field)} id={`clickable-${field}`} className="clickable-text">{field}</p>
                                         )}
                                     </div>
                                 ))}
@@ -121,7 +121,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <p onClick={() => handleFieldClick(field)} id={`input-${field}`} className={`clickable-text-${field}`}>{field}</p>
+                                            <p onClick={() => handleFieldClick(field)} id={`clickable-${field}`} className={`clickable-text`}>{field}</p>
                                         )}
                                     </div>
                                 ))}
