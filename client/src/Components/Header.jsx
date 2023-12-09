@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav } from 'react-bootstrap';
 import { PersonCircle } from "react-bootstrap-icons";
 import VirtualClockComponent from "./VirtualClockComponent.jsx";
-import NotifyApplicationDecision from "./NotifyApplicationDecision";
+import Notify from "./Notify";
 import { UserContext } from "../Contexts.js";
 
 function Header() {
@@ -52,7 +52,7 @@ function Header() {
             <>
 
                 <Nav.Link>
-                    <NotifyApplicationDecision />
+                    <Notify/>
                 </Nav.Link>
 
                 <Nav.Link>
