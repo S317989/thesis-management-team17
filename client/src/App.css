@@ -70,33 +70,9 @@
   margin-left: -20px;
   margin-top: -10px;
   font-size: xx-large;
-  /* position: absolute;
-  top: 4px;
-  right: 4px; */
-}
-
-
-.notification-container {
-  position: absolute;
-  top: 60px; /* Adjust the distance from the top */
-  right: 10px; /* Adjust the distance from the right */
-  background-color: gray;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.notification-item {
-  margin-bottom: 10px;
-}
-
-.notification-item-unread{
-  font-style: bold;
 }
 
 .view-more{
-
   padding: none;
   margin:none;
 }
