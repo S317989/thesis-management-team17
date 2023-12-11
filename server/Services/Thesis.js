@@ -78,6 +78,9 @@ module.exports = {
             FROM Teacher AS T, Thesis_Cosupervisors AS C
             WHERE T.Id = C.Cosupervisor_Id
             AND C.Thesis_Id = ?`, [thesis.Id]);
+
+        thesis.changesHistory = await db.getData(
+            `SELECT Change, Date FROM Thesis_Change_History WHERE Thesis_Id = ?`, [thesis.Id]);
         return thesis;
     },
 
@@ -104,9 +107,9 @@ module.exports = {
 
     deleteThesisRequest: async function (thesisId) {
         await db.executeTransaction(async () => {
-          await db.executeQuery('DELETE FROM Thesis_Change_History WHERE Thesis_Id=?', [thesisId]);
-          await db.executeQuery('DELETE FROM Thesis_Cosupervisors WHERE Thesis_Id=?', [thesisId]);
-          await db.executeQuery('DELETE FROM Thesis WHERE Id=?', [thesisId]);
+            await db.executeQuery('DELETE FROM Thesis_Change_History WHERE Thesis_Id=?', [thesisId]);
+            await db.executeQuery('DELETE FROM Thesis_Cosupervisors WHERE Thesis_Id=?', [thesisId]);
+            await db.executeQuery('DELETE FROM Thesis WHERE Id=?', [thesisId]);
         });
-      },
+    },
 };
