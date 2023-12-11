@@ -2,7 +2,6 @@
 const db = require("../Database/DAO");
 const ProposalsServices = require('./Proposals');
 const NotificationsServices = require('./Notifications');
-const Users = require("./Users");
 
 module.exports = {
     /* 
@@ -54,8 +53,13 @@ module.exports = {
             if (a.Status === 'Pending' || a.Status === 'Accepted' || a.Proposal_Id === proposalId)
                 return 0;
         }
-        await db.executeQuery(`INSERT INTO Application (Proposal_Id, Student_Id, Status, Date)
+        await db.executeTransaction(async () => {
+            await db.executeQuery(`INSERT INTO Application (Proposal_Id, Student_Id, Status, Date)
                                        VALUES (?, ?, "Pending", CURRENT_TIMESTAMP)`, [proposalId, studentId]);
+            const proposalDetails = await ProposalsServices.getProposal(proposalId);
+            await NotificationsServices.addNotification(proposalDetails.Supervisor.Id, 'New Application',
+                `A new application was made on your proposal: ${proposalDetails.Title}.`);
+        });
         return 1;
     },
 
