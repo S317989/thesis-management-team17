@@ -1,6 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 
+apiRouter.use('/thesis', require('./ThesisRouter'));
 apiRouter.use('/proposals', require('./ProposalsRouter'));
 apiRouter.use('/applications', require('./ApplicationsRouter'));
 apiRouter.use('/auth', require('./AuthRouter'));
