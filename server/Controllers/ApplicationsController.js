@@ -66,6 +66,7 @@ module.exports = {
       await applicationsServices.rejectApplication(req.body.applicationId);
       return res.status(200).json({ message: "application rejected successfully!" });
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ errorMessage: 'Internal Server Error' });
     }
   },

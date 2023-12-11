@@ -115,3 +115,8 @@
 .action-icon-container {
     font-size: 1.3rem;
 }
+
+.text-danger {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+}

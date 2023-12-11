@@ -12,7 +12,7 @@ Sections:
 ### Macro statistics
 
 - 10 stories committed | 10 stories done 
-- 16 points committed | 16 points done 
+- 48 points committed | 48 points done 
 - 96h | 107h spent (as a team)
 
 
@@ -21,16 +21,16 @@ Sections:
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
 | _#0_   |  16  |        |    33h       |        37h    |
-| n 1    |  3  |    2    |      10h     |       18h     |
-| n 2    |  1  |    2    |      3h      |       1h      |
-| n 3    |  2  |    2    |      6h      |       9.5h    |
+| n 1    |  3  |    13    |      10h     |       18h     |
+| n 2    |  1  |    5    |      3h      |       1h      |
+| n 3    |  2  |    8    |      6h      |       9.5h    |
 | n 4    |  4  |   1     |      7h      |       13h     |
-| n 5    |  2  |   2     |      4h      |       1.5h    |
+| n 5    |  2  |   3     |      4h      |       1.5h    |
 | n 6    |  3  |    1    |      4.5h    |       5h      |
-| n 7    |  2  |    1    |      5h      |       12h     |
-| n 8    |  2  |   2     |      4h      |       4h      |
-| n 10   |  2  |    2    |      1.5h    |       1.5h    |
-| n 12   |  2  |    2    |      3h      |       3h      |
+| n 7    |  2  |    2    |      5h      |       12h     |
+| n 8    |  2  |   8     |      4h      |       4h      |
+| n 10   |  2  |    3    |      1.5h    |       1.5h    |
+| n 12   |  2  |    3    |      3h      |       3h      |
 | n 16   |  2  |    1    |      1.5h    |       1.5h    |
 
 

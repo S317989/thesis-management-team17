@@ -22,13 +22,19 @@
 .badge-item-Pending,
 .pending-card-header-Pending {
     background-color: #A3A18F !important;
-    color: white
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .badge-item-Accepted,
 .pending-card-header-Accepted {
     background-color: #3A8373 !important;
-    color: white
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -43,12 +49,22 @@
     border-radius: 15px;
     margin-bottom: 10px;
     overflow: hidden;
+    text-overflow: ellipsis;
     transition: transform 0.2s;
 }
 
+.truncate-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+}
+
 @media screen and (min-width: 768px) {
-    .pending-card-item {
-        width: 15rem;
+    .parent-pending-card-container {
+        width: 13dvw;
     }
 
     .pending-card-item:hover {
