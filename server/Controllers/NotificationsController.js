@@ -16,6 +16,7 @@ module.exports = {
 
     getUserNotifications: async function (req, res) {
         try {
+            console.log("Entered controller:", req.body)
             const results = await thesisServices.getUserNotifications(req.user.id);
             res.status(200).json(results);
         } catch (error) {

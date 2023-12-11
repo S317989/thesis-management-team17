@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Navbar, OverlayTrigger, Popover, Badge, Button, CloseButton } from 'react-bootstrap';
 import { BellFill, Dot } from 'react-bootstrap-icons';
 import { UserContext } from "../Contexts";
+import NotificationsAPI from '../APIs/NotificationsAPI';
 
 
 
@@ -21,6 +22,26 @@ const Notify = () => {
     { title: 'Natural Language Processing', message: 'is rejected', date: '07/01/2022', read: true },
     // Add more student notifications as needed
   ]);
+
+  useEffect(() => {
+    // Fetch notifications on component mount
+    const fetchNotifications = async () => {
+      try {
+        const response = await NotificationsAPI.getMyNotifications();
+        if (response.status === 200) {
+          const fetchedNotifications = response.data;
+          console.log('test', fetchedNotifications);
+        } else {
+          console.error('Failed to fetch notifications');
+        }
+      } catch (error) {
+        console.error('Error fetching notifications', error);
+      }
+    };
+    fetchNotifications();
+  }, []);
+
+  
 
   // Choose the appropriate notification state based on the user's role
   const notifications = user.role === 'Teacher' ? teacherNotifications : studentNotifications;
