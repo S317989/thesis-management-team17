@@ -156,12 +156,14 @@ CREATE TABLE Proposal_External_Cosupervisor(
 
 CREATE TABLE Thesis(
     Id INTEGER NOT NULL,
-    Title TEXT NOT NULL,
+    Student_Id INTEGER NOT NULL,
     Supervisor_Id INTEGER NOT NULL,
+    Title TEXT NOT NULL,
     Description TEXT NOT NULL,
     Status TEXT CHECK (Status IN ('Accepted', 'Rejected', 'ChangeRequested', 'SecretaryAccepted', 'Pending')) NOT NULL,
-    Date DATE NOT NULL,
+    Date DATE NOT NULL default CURRENT_TIMESTAMP,
     FOREIGN KEY (Supervisor_Id) REFERENCES Teacher(Id),
+    FOREIGN KEY (Student_Id) REFERENCES Student(Id),
     PRIMARY KEY (Id AUTOINCREMENT)
 );
 
@@ -177,14 +179,14 @@ CREATE TABLE Thesis_Cosupervisors(
 CREATE TABLE Thesis_Change_History(
     Thesis_Id INTEGER NOT NULL,
     Change TEXT NOT NULL,
-    Date DATE NOT NULL,
+    Date DATE NOT NULL default CURRENT_TIMESTAMP,
     FOREIGN KEY (Thesis_Id) REFERENCES Thesis(Id)
 );
 
 CREATE TABLE Thesis_Ending_Requests(
     Thesis_Id INTEGER NOT NULL,
     Request_Type TEXT CHECK (Request_Type IN ('Interrupt', 'Conclude')) NOT NULL,
-    Date DATE NOT NULL,
+    Date DATE NOT NULL default CURRENT_TIMESTAMP,
     Status TEXT CHECK (Status IN ('Accepted', 'Rejected', 'Pending')) NOT NULL,
     FOREIGN KEY (Thesis_Id) REFERENCES Thesis(Id)
 );
