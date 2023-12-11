@@ -64,21 +64,31 @@ module.exports = {
             const applicationDetails =
                 await db.getOne(`SELECT Proposal_Id, Student_Id FROM Application
                                  WHERE Application_Id = ?`, [applicationId]);
+            const proposalDetails = await ProposalsServices.getProposal(applicationDetails.Proposal_Id);
             await db.executeQuery(`UPDATE Application
                                     SET Status = "Accepted"
                                     WHERE Application_Id = ?`, [applicationId]);
+            // Set Other Applications of the same student as rejected (useless as the student should only have one pending/active application)
             await db.executeQuery(`UPDATE Application
                                     SET Status = "Rejected"
                                     WHERE Proposal_Id != ? AND Student_Id = ?`
                 , [applicationDetails.Proposal_Id, applicationDetails.Student_Id]);
+            // Cancel Applications of other students on the same proposal.
             await db.executeQuery(`UPDATE Application
                                     SET Status = "Canceled"
                                     WHERE Proposal_Id = ? AND Student_Id != ?`,
                 [applicationDetails.Proposal_Id, applicationDetails.Student_Id]);
+            const otherStudents =
+                await db.getData(`SELECT Student_Id FROM Application WHERE Proposal_Id = ? AND Student_Id != ?`,
+                    [applicationDetails.Proposal_Id, applicationDetails.Student_Id]);
+            for (var s of otherStudents) {
+                await NotificationsServices.addNotification(s.Student_Id, 'Application Canceled',
+                    `Your application on ${proposalDetails.Title} was canceled.`);
+            }
+
             await db.executeQuery(`UPDATE Proposal
                                     SET Archived = 1
                                     WHERE Id = ?;`, [applicationDetails.Proposal_Id]);
-            const proposalDetails = await ProposalsServices.getProposal(applicationDetails.Proposal_Id);
             await NotificationsServices.addNotification(applicationDetails.Student_Id, 'Application Accepted',
                 `Your application on ${proposalDetails.Title} was accepted.`
             );
