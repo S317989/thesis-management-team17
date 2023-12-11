@@ -5,7 +5,7 @@ const db = require("../Database/DAO");
 
 module.exports = {
     addNotification: async function (userId, title, message) {
-        await db.executeQuery(`Insert Into Notifications (User_Id, Title, Message) Values (?, ?)`, [userId, title, message]);
+        await db.executeQuery(`Insert Into Notifications (User_Id, Title, Message) Values (?, ?, ?)`, [userId, title, message]);
     },
 
     setNotificationAsRead: async function (notificationId) {
