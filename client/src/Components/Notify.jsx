@@ -26,22 +26,17 @@ const Notify = () => {
   useEffect(() => {
     // Fetch notifications on component mount
     const fetchNotifications = async () => {
-      try {
-        const response = await NotificationsAPI.getMyNotifications();
-        if (response.status === 200) {
-          const fetchedNotifications = response.data;
-          console.log('test', fetchedNotifications);
-        } else {
-          console.error('Failed to fetch notifications');
-        }
-      } catch (error) {
-        console.error('Error fetching notifications', error);
+      const notifications = await NotificationsAPI.getMyNotifications();
+      if (notifications) {
+        console.log(notifications);
+      } else {
+        //problem happened
       }
     };
     fetchNotifications();
   }, []);
 
-  
+
 
   // Choose the appropriate notification state based on the user's role
   const notifications = user.role === 'Teacher' ? teacherNotifications : studentNotifications;

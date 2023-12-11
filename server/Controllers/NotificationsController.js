@@ -36,7 +36,7 @@ module.exports = {
 
     removeAllRead: async function (req, res) {
         await notificationsServices
-            .removeAllRead(req.body.notificationId)
+            .removeAllRead(req.user.id)
             .then(() => {
                 return res.status(200).json('deleted');
             })
