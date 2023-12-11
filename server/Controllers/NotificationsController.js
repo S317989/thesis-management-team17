@@ -4,7 +4,7 @@ const notificationsServices = require('../Services/Notifications');
 
 module.exports = {
     setNotificationAsRead: async function (req, res) {
-        await thesisServices
+        await notificationsServices
             .setNotificationAsRead(req.body.notificationId)
             .then(() => {
                 return res.status(200).json('status updated');
@@ -16,7 +16,7 @@ module.exports = {
 
     getUserNotifications: async function (req, res) {
         try {
-            const results = await thesisServices.getUserNotifications(req.user.id);
+            const results = await notificationsServices.getUserNotifications(req.user.id);
             res.status(200).json(results);
         } catch (error) {
             return res.status(500);
