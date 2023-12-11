@@ -17,6 +17,7 @@
     "fs": "^0.0.1-security",
     "jest": "^29.7.0",
     "jest-extended": "^4.0.2",
+    "nodemailer": "^6.9.7",
     "npx": "^3.0.0",
     "passport": "^0.6.0",
     "passport-auth0": "^1.4.4",
