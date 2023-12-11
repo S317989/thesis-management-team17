@@ -14,6 +14,7 @@ import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import CardManager from '../Components/CardManager';
 import CustomCard from "../Components/CustomCard";
+import ProposalsModal from "../Components/ProposalModal";
 
 const StudentApplications = () => {
     const navigate = useNavigate();
@@ -109,15 +110,21 @@ const PendingApplicationAlert = ({ application, applicationStatus }) => {
     if (!application)
         return null;
 
+    const [show, setShow] = useState(false);
+
+    const handleCardClick = () => {
+        setShow(true);
+    };
+
     const proposal = application[ApplicationFields.Proposal];
     return (
         <div className={`parent-pending-card-container`}>
             <Badge className={`me-1 badge-item-${applicationStatus}`}>{applicationStatus} Application</Badge>
-            <Card className="pending-card-item">
+            <Card className="pending-card-item" onClick={handleCardClick}>
                 <Card.Header className={`pending-card-header-${applicationStatus}`} > {proposal[ProposalFields.Title]}</Card.Header>
                 <Card.Body>
                     <Card.Subtitle className="mb-2 text-muted">{proposal[ProposalFields.Type]}</Card.Subtitle>
-                    <Card.Text>
+                    <Card.Text className="truncate-text">
                         {proposal[ProposalFields.Description]}
                     </Card.Text>
                 </Card.Body>
@@ -129,6 +136,8 @@ const PendingApplicationAlert = ({ application, applicationStatus }) => {
                     }
                 </Card.Footer>
             </Card>
+
+            <ProposalsModal proposal={proposal} show={show} setShow={setShow} />
         </div >
     );
 }

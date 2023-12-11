@@ -1,6 +1,6 @@
 import "../Stylesheets/ProposalFormStyle.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
@@ -37,8 +37,22 @@ export const ProposalFields = {
     keywords: "keywords"
 }
 
-const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField, onCreate }) => {
+const FormInput = ({ type, label, readOnly, value, options, setProposalData, proposalField, onCreate, required }) => {
+    const [isInvalid, setIsInvalid] = useState(false);
+
+    const handleBlur = () => {
+        console.log(value)
+        if (type === "Select" && required && value.length === 0)
+            setIsInvalid(true);
+        else if (required && !value) {
+            setIsInvalid(true);
+        } else {
+            setIsInvalid(false);
+        }
+    };
+
     const handleChange = (property, newValue) => {
+
         setProposalData((old) => {
             const updatedData = { ...old };
             updatedData[property] = newValue;
@@ -55,7 +69,14 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         type="text"
                         readOnly={readOnly}
                         value={value}
-                        onChange={(e) => handleChange(proposalField, e.target.value)} />
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur}
+                    />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
                 </Form.Group>
             );
         case "Date":
@@ -66,7 +87,13 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         type="date"
                         readOnly={readOnly}
                         value={value}
-                        onChange={(e) => handleChange(proposalField, e.target.value)} />
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
                 </Form.Group>
             );
         case "TextArea":
@@ -78,7 +105,13 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         rows={3}
                         readOnly={readOnly}
                         value={value}
-                        onChange={(e) => handleChange(proposalField, e.target.value)} />
+                        onChange={(e) => handleChange(proposalField, e.target.value)}
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
                 </Form.Group>
             );
         case "Select":
@@ -111,7 +144,12 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         onChange={(newSelection) => handleChange(proposalField, newSelection)}
                         options={options}
                         value={value}
-                    />
+                        onBlur={handleBlur} />
+                    {isInvalid && (
+                        <div className="text-danger">
+                            Please fill in this required field.
+                        </div>
+                    )}
                 </Form.Group>
             );
         case "CreatableSelect":
@@ -177,6 +215,7 @@ function ProposalForm({
 }) {
     const { user } = useContext(UserContext);
     const [enableEditing, setEnableEditing] = useState(EnableEditing === undefined ? false : !EnableEditing);
+    const [errorMessage, setErrorMessage] = useState("");
 
     // Here are the default data for a new proposal
     const [proposalData, setProposalData] = useState({
@@ -263,7 +302,7 @@ function ProposalForm({
         });
     };
 
-    const handleInsertOrUpdateProposal = async () => {
+    const handleInsertOrUpdateProposal = async (event) => {
         // groups depend on the supervisor and the internal supervisors
         const readyProposalData = { ...proposalData };
         readyProposalData.groups = [{ Id: readyProposalData.Supervisor.Cod_Group || readyProposalData.Supervisor.cod_group },
@@ -271,6 +310,12 @@ function ProposalForm({
             readyProposalData.cosupervisors.map(c => ({ Id: c.Cod_Group })) : [])];
         readyProposalData.Supervisor = readyProposalData.Supervisor.id || readyProposalData.Supervisor.Id;
 
+        event.preventDefault();
+
+        if (!readyProposalData.Title || !readyProposalData.Description || !readyProposalData.Expiration || !readyProposalData.Level || !readyProposalData.degrees) {
+            setErrorMessage("Please fill all the required fields. [Title, Description, Level, CDS, Expiration Date]");
+            return;
+        }
 
         ProposalsAPI.addOrUpdateProposal(readyProposalData).then((response) => {
             if (response.status === 200) {
@@ -301,6 +346,7 @@ function ProposalForm({
 
     return (
         <>
+            {(errorMessage.length) ? <Alert variant='danger'>{errorMessage}</Alert> : ''}
             <Form className="main-container">
                 <Container className="form-container" fluid>
                     {
@@ -351,6 +397,7 @@ function ProposalForm({
                                     value={proposalData.Title}
                                     setProposalData={setProposalData}
                                     proposalField={ProposalFields.Title}
+                                    required={true}
                                 />
                                 <FormInput
                                     type="Input"
@@ -367,6 +414,7 @@ function ProposalForm({
                                     value={proposalData.Expiration}
                                     setProposalData={setProposalData}
                                     proposalField={ProposalFields.Expiration}
+                                    required={true}
                                 />
                                 <FormInput
                                     type="CreatableSelect"
@@ -404,6 +452,7 @@ function ProposalForm({
                                     value={proposalData.degrees}
                                     setProposalData={setProposalData}
                                     proposalField={ProposalFields.degrees}
+                                    required={true}
                                 />
                             </div>
                         </Col>
@@ -416,6 +465,7 @@ function ProposalForm({
                                     value={proposalData.Description}
                                     setProposalData={setProposalData}
                                     proposalField={ProposalFields.Description}
+                                    required={true}
                                 />
                                 <FormInput
                                     type="TextArea"
