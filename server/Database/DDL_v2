@@ -190,3 +190,15 @@ CREATE TABLE Thesis_Ending_Requests(
     Status TEXT CHECK (Status IN ('Accepted', 'Rejected', 'Pending')) NOT NULL,
     FOREIGN KEY (Thesis_Id) REFERENCES Thesis(Id)
 );
+
+-- Notifications Table
+CREATE TABLE Notifications(
+    Id INTEGER NOT NULL,
+    User_Id INTEGER NOT NULL,
+    Title TEXT NOT NULL,
+    Message TEXT NOT NULL,
+    Read INTEGER CHECK (Read IN (0, 1)) NOT NULL DEFAULT 0,
+    Date DATE NOT NULL default CURRENT_TIMESTAMP,
+    FOREIGN KEY (User_Id) REFERENCES User(Id),
+    PRIMARY KEY (Id AUTOINCREMENT)
+);
