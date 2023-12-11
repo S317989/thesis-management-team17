@@ -2,6 +2,7 @@
 const db = require("../Database/DAO");
 const UtilitiesServices = require('./Utilities');
 const UsersServices = require('./Users');
+const NotificationsServices = require('./Notifications');
 const CustomDate = require('./CustomDate');
 
 module.exports = {

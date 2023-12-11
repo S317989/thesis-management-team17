@@ -1,6 +1,8 @@
 'use strict';
 const db = require("../Database/DAO");
 const ProposalsServices = require('./Proposals');
+const NotificationsServices = require('./Notifications');
+const Users = require("./Users");
 
 module.exports = {
     /* 
@@ -76,12 +78,25 @@ module.exports = {
             await db.executeQuery(`UPDATE Proposal
                                     SET Archived = 1
                                     WHERE Id = ?;`, [applicationDetails.Proposal_Id]);
+            const proposalDetails = await ProposalsServices.getProposal(applicationDetails.Proposal_Id);
+            await NotificationsServices.addNotification(applicationDetails.Student_Id, 'Application Accepted',
+                `Your application on ${proposalDetails.Title} was accepted.`
+            );
         });
     },
 
     rejectApplication: async function (applicationId) {
-        await db.executeQuery(`UPDATE Application
+        await db.executeTransaction(async () => {
+            await db.executeQuery(`UPDATE Application
                         SET Status = "Rejected"
                         WHERE Application_Id = ?`, [applicationId]);
+            const applicationDetails =
+                await db.getOne(`SELECT Proposal_Id, Student_Id FROM Application
+                                         WHERE Application_Id = ?`, [applicationId]);
+            const proposalDetails = await ProposalsServices.getProposal(applicationDetails.Proposal_Id);
+            await NotificationsServices.addNotification(applicationDetails.Student_Id, 'Application Rejected',
+                `Your application on ${proposalDetails.Title} was rejected.`
+            );
+        });
     }
 }
