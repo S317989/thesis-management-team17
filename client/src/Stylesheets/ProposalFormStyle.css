@@ -91,13 +91,14 @@
     border: none;
 }
 
-.field-item {
+.field-item-disabled,
+.field-item-enabled {
     border-color: rgb(255, 122, 8);
     background-color: rgb(255, 220, 150);
     margin-bottom: 10px;
 }
 
-#field-item-disabled:focus {
+.field-item-disabled:focus {
     border-color: rgb(255, 122, 8);
     background-color: rgb(255, 220, 150);
 }

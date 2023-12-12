@@ -17,7 +17,7 @@ module.exports = {
     getUserNotifications: async function (req, res) {
         try {
             const results = await notificationsServices.getUserNotifications(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
