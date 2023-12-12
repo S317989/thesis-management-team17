@@ -17,7 +17,7 @@ module.exports = {
     getUserNotifications: async function (req, res) {
         try {
             const results = await notificationsServices.getUserNotifications(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
@@ -36,7 +36,7 @@ module.exports = {
 
     removeAllRead: async function (req, res) {
         await notificationsServices
-            .removeAllRead(req.body.notificationId)
+            .removeAllRead(req.user.id)
             .then(() => {
                 return res.status(200).json('deleted');
             })
