@@ -291,7 +291,7 @@ describe("End to end tests for active proposal and create a New Proposal succesf
   async function checkAndCollapseNavbar() {
     const isNavbarCollapsed = await isElementVisible('.navbar-toggler-icon');
     if (isNavbarCollapsed) {
-      const hamburgerMenuIcon = await driver.findElement(By.css('.navbar-toggler-icon'));
+      const hamburgerMenuIcon = await driver.findElement(By.css('button[aria-controls="responsive-navbar-nav"].navbar-toggler'));
       await hamburgerMenuIcon.click();
     }
   }
@@ -380,44 +380,47 @@ describe("End to end tests for active proposal and create a New Proposal succesf
     expect(isModalVisible).toBe(true);
 
     // Find and interact with the Title input field
-    const titleInput = await driver.findElement(By.id("field-item-enabled"));
+    const titleInput = await driver.findElement(By.id("field-Title"));
     await titleInput.sendKeys("Your Title");
 
     // Find and interact with the Type input field
-    const typeInput = await driver.findElement(By.id("field-item-enabled"));
+    const typeInput = await driver.findElement(By.id("field-Type"));
     await typeInput.sendKeys("Your Type");
 
     // Find and interact with the Expiration date input (assuming you have a date picker)
-    const expirationInput = await driver.findElement(By.id("field-item-enabled"));
+    const expirationInput = await driver.findElement(By.id("field-Expiration"));
     await expirationInput.sendKeys("2023-12-31");
 
     // Find and interact with the Description textarea
-    const descriptionTextarea = await driver.findElement(By.id("description-input-textarea"));
+    const descriptionTextarea = await driver.findElement(By.id("field-Description"));
     await descriptionTextarea.sendKeys("Your Description");
 
     // Find and interact with the Required Knowledge textarea
-    const requiredKnowledgeTextarea = await driver.findElement(By.id("knowledge-input-textarea"));
+    const requiredKnowledgeTextarea = await driver.findElement(By.id("field-Required Knowledge"));
     await requiredKnowledgeTextarea.sendKeys("Your Required Knowledge");
 
     // Find and interact with the Notes textarea
-    const notesTextarea = await driver.findElement(By.id("notes-input-textarea"));
+    const notesTextarea = await driver.findElement(By.id("field-Notes"));
     await notesTextarea.sendKeys("Your Notes");
 
     // Find and interact with the Level radio button (choose "MsC")
-    const levelMsCRadioButton = await driver.findElement(By.id("Msc-input-button"));
+    const levelMsCRadioButton = await driver.findElement(By.id("iconButton-MsC"));
     await levelMsCRadioButton.click();
 
     // Find and interact with the Save button
     const saveButton = await driver.findElement(By.id("save-button"));
     await saveButton.click();
 
-
-     // Check if the modal content is visible
+    await driver.sleep(1000);
+     // Check if the modal content is visible, SUCCESS MODAL displayed
      const isModalClosed = await modalContent.isDisplayed();
-     expect(isModalClosed).toBe(false);
-    //can add check on errors on fields input in other tests
+     expect(isModalClosed).toBe(true);
 
-      await doLogout();
+     const swalButton= await driver.findElement(By.className("swal-button swal-button--confirm"));
+     await swalButton.click();
+     await driver.sleep(1000);
+    //can add check on errors on fields input in other tests
+     await doLogout();
     
   }, 20000);
 

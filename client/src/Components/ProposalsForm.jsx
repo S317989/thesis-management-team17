@@ -191,6 +191,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                     {
                         React.cloneElement(
                             <Button
+                            id={`iconButton-${label}`}
                                 className={
                                     `circle-button${value === options ? '-selected' : ''} rounded-circle`}
                                 onClick={() => handleChange(proposalField, options)}
