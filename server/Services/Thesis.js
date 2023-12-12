@@ -53,7 +53,7 @@ module.exports = {
     },
 
     logThesisRequestChange: async function (newData, oldData) {
-        var changes = '';
+        let changes = '';
         if (newData.Title !== oldData.Title)
             changes = `Title was changed from "${oldData.Title}" To "${newData.Title}".`;
         if (newData.Description !== oldData.Description)
@@ -85,22 +85,22 @@ module.exports = {
     },
 
     getThesis: async function (id) {
-        var results = await db.getOne(`SELECT * FROM Thesis WHERE Id=?`, [id]);
+        let results = await db.getOne(`SELECT * FROM Thesis WHERE Id=?`, [id]);
         return await this.getThesisLinkedData(results);
     },
 
     getThesisByStudent: async function (studentId) {
-        var results = await db.getData(`SELECT * FROM Thesis WHERE Student_Id=?`, [studentId]);
+        let results = await db.getData(`SELECT * FROM Thesis WHERE Student_Id=?`, [studentId]);
         return await this.getThesesLinkedData(results);
     },
 
     getThesisBySupervisor: async function (supervisorId) {
-        var results = await db.getData(`SELECT * FROM Thesis WHERE Supervisor_Id=?`, [supervisorId]);
+        let results = await db.getData(`SELECT * FROM Thesis WHERE Supervisor_Id=?`, [supervisorId]);
         return await this.getThesesLinkedData(results);
     },
 
     getThesisByCosupervisor: async function (cosupervisorId) {
-        var results = await db.getData(`SELECT * FROM Thesis WHERE Id IN 
+        let results = await db.getData(`SELECT * FROM Thesis WHERE Id IN 
         (SELECT Thesis_Id FROM Thesis_Cosupervisors WHERE Cosupervisor_Id=1)`, [cosupervisorId]);
         return await this.getThesesLinkedData(results);
     },

@@ -15,7 +15,7 @@ module.exports = {
 
     sendEmail(email, title, message) {
         return new Promise((resolve, reject) => {
-            var transporter = nodemailer.createTransport({
+            let transporter = nodemailer.createTransport({
                 service: 'hotmail',
                 auth: {
                     user: 'thesis-no-reply@outlook.com',
@@ -23,7 +23,7 @@ module.exports = {
                 }
             });
 
-            var mailOptions = {
+            let mailOptions = {
                 from: 'thesis-no-reply@outlook.com',
                 to: email,
                 subject: title,

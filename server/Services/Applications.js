@@ -85,7 +85,7 @@ module.exports = {
             const otherStudents =
                 await db.getData(`SELECT Student_Id FROM Application WHERE Proposal_Id = ? AND Student_Id != ?`,
                     [applicationDetails.Proposal_Id, applicationDetails.Student_Id]);
-            for (var s of otherStudents) {
+            for (let s of otherStudents) {
                 await NotificationsServices.addNotification(s.Student_Id, 'Application Canceled',
                     `Your application on ${proposalDetails.Title} was canceled.`);
             }

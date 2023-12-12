@@ -73,7 +73,7 @@ module.exports = {
       }
 
       if (data.keywords && data.keywords.length > 0) {
-        for (var k of data.keywords) {
+        for (let k of data.keywords) {
           if (!k.Id) {
             const newKeyword = await UtilitiesServices.addKeyword(k.Name);
             k = newKeyword;
@@ -105,13 +105,13 @@ module.exports = {
   },
 
   getAllProposals: async function () {
-    var results = await db.getData(`SELECT * FROM Proposal`, []);
+    let results = await db.getData(`SELECT * FROM Proposal`, []);
     return await this.getProposalsLinkedData(results);
   },
 
   getStudentApplicationsProposals: async function (studentId) {
     // get proposals data of the student's applications
-    var results = await db.getData(
+    let results = await db.getData(
       `SELECT * FROM Proposal
        WHERE Id IN (SELECT Proposal_Id FROM Application WHERE Student_Id = ?)`, [studentId]);
     return await this.getProposalsLinkedData(results);
@@ -120,7 +120,7 @@ module.exports = {
   getAvailableProposalsForStudent: async function (studentId) {
     // get active proposals that suits the student degree
     const studentData = await UsersServices.getStudentInfos(studentId);
-    var results = await db.getData(
+    let results = await db.getData(
       `SELECT * FROM Proposal
         WHERE Id IN (SELECT Proposal_Id FROM Proposal_Degrees WHERE Degree_Id = ?)
         AND Archived = 0 AND Expiration >= ?`, [studentData.cod_degree, CustomDate.date]);
@@ -128,14 +128,14 @@ module.exports = {
   },
 
   getProposal: async function (proposalId) {
-    var result = await db.getOne(`SELECT * FROM Proposal
+    let result = await db.getOne(`SELECT * FROM Proposal
                                     WHERE Id = ?`, [proposalId]);
     return await this.getProposalLinkedData(result);
   },
 
   searchProposals: async function (searchTerm) {
     // THIS METHOD IS NO LONGER NEEEDED, LEFTOVER CODE, IN CASE NEEDED IN THE FUTURE
-    var results = await db.getData(
+    let results = await db.getData(
       `SELECT *
       FROM Proposal
       WHERE Id IN (
@@ -175,7 +175,7 @@ module.exports = {
   },
 
   getTeacherActiveProposals: async function (teacherId) {
-    var results = await db.getData(`SELECT * FROM Proposal
+    let results = await db.getData(`SELECT * FROM Proposal
                                     WHERE Archived == 0 AND Expiration >= ?
                                     AND Supervisor = ?`, [CustomDate.date, teacherId]);
 
@@ -183,7 +183,7 @@ module.exports = {
   },
 
   getTeacherArchivedProposals: async function (teacherId) {
-    var results = await db.getData(`SELECT * FROM Proposal
+    let results = await db.getData(`SELECT * FROM Proposal
                                     WHERE (Archived == 1 OR Expiration < ?)
                                     AND Supervisor = ?`, [CustomDate.date, teacherId]);
 
