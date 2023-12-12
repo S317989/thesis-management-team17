@@ -52,6 +52,18 @@ describe('ApplicationsController', () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
     });
+
+    it('should handle 401 Internal Server Error and return the appropriate response', async () => {
+      // Mock the implementation of getAllApplications to simulate a 401 Internal Server Error
+      req.isAuthenticated.mockReturnValue(false);
+      applicationsServices.getAllApplications.mockRejectedValue({ status: 401, message: 'user not authenticated' });
+      // Call the method and pass in the mocked request and response objects
+      await applicationsController.getAllApplications(req, res);
+      // Verify that the status and JSON methods were called with the correct arguments for the error case
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({ message: 'user not authenticated' });
+    });
+
   });
 
   describe('getStudentApplications', () => {
@@ -90,6 +102,19 @@ describe('ApplicationsController', () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
     });
+
+    it('should handle 401 Internal Server Error and return the appropriate response', async () => {
+      // Mock the implementation of getStudentApplications to simulate a 401 Internal Server Error
+      req.isAuthenticated.mockReturnValue(false);
+      applicationsServices.getStudentApplications.mockRejectedValue({ status: 401, message: 'user not authenticated' });
+      // Call the method and pass in the mocked request and response objects
+      await applicationsController.getStudentApplications(req, res);
+      // Verify that the status and JSON methods were called with the correct arguments for the error case
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({ message: 'user not authenticated' });
+    });
+
+
   });
 
   describe('createApplication', () => {

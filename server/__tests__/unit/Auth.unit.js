@@ -26,6 +26,12 @@ describe("Authentication Tests", () => {
         expect(res.status).toHaveBeenCalledWith(200);
     });
 
+    test("CheckSession - Success, not student", async () => {
+        req.user.role = 'lecturer';
+        AuthenticationController.session(req, res);
+        expect(res.status).toHaveBeenCalledWith(200);
+    });
+
     test("CheckSession - Unauthorized", async () => {
         req.isAuthenticated = () => false;
         AuthenticationController.session(req, res);
