@@ -65,7 +65,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
             return (
                 <Form.Group className="input-item">
                     <Form.Label className="label-item">{label}</Form.Label>
-                    <Form.Control className="field-item" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                    <Form.Control className={`field-item-${readOnly ? "disabled" : "enabled"}`} id={`field-${label}`}
                         type="text"
                         readOnly={readOnly}
                         value={value}
@@ -83,7 +83,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
             return (
                 <Form.Group className="input-item">
                     <Form.Label className="label-item">{label}</Form.Label>
-                    <Form.Control className="field-item" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                    <Form.Control className={`field-item-${readOnly ? "disabled" : "enabled"}`} id={`field-${label}`}
                         type="date"
                         readOnly={readOnly}
                         value={value}
@@ -100,7 +100,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
             return (
                 <Form.Group className="input-item">
                     <Form.Label className="label-item">{label}</Form.Label>
-                    <Form.Control className="field-item prova" id={`field-item-${readOnly ? "disabled" : "enabled"}`}
+                    <Form.Control className={`field-item-${readOnly ? "disabled" : "enabled"}`} id={`field-${label}`}
                         as="textarea"
                         rows={3}
                         readOnly={readOnly}
@@ -119,7 +119,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                 <Form.Group className="input-item">
                     <Form.Label className="label-item">{label}</Form.Label>
                     <Select
-                        className="field-item"
+                        className={`field-item-${readOnly ? "disabled" : "enabled"}`} id={`field-${label}`}
                         styles={{
                             control: (baseStyle) => ({
                                 ...baseStyle,
@@ -157,7 +157,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                 <Form.Group className="input-item">
                     <Form.Label className="label-item">{label}</Form.Label>
                     <CreatableSelect
-                        className="field-item"
+                        className={`field-item-${readOnly ? "disabled" : "enabled"}`} id={`field-${label}`}
                         styles={{
                             control: (provided, state) => ({
                                 ...provided,

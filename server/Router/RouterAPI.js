@@ -1,10 +1,12 @@
 const express = require('express');
 const apiRouter = express.Router();
 
+apiRouter.use('/thesis', require('./ThesisRouter'));
 apiRouter.use('/proposals', require('./ProposalsRouter'));
 apiRouter.use('/applications', require('./ApplicationsRouter'));
 apiRouter.use('/auth', require('./AuthRouter'));
 apiRouter.use('/utilities', require('./UtilitiesRouter'));
+apiRouter.use('/notifications', require('./NotificationsRouter'));
 apiRouter.use('/date', require('./DateRouter'));
 
 // All the routes will be protected by the checkAuthentication middleware
