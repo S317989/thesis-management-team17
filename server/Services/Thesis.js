@@ -20,7 +20,7 @@ module.exports = {
             if (data.Id) {
                 // there's an Id meaning we are updating
                 thesisId = data.Id;
-                await this.logThesisRequestChange(data, this.getThesis(thesisId));
+                await this.logThesisRequestChange(data, await this.getThesis(thesisId));
                 await db.executeQuery(`
           UPDATE Thesis
           SET Title=?, Description=?
@@ -33,7 +33,7 @@ module.exports = {
                 // adding new
                 await db.executeQuery(`
           INSERT INTO Thesis (Title, Student_Id, Supervisor_Id, Description, Status) 
-          VALUES (?, ?, ?, ?)`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description, data.Status]);
+          VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description, data.Status]);
 
                 thesisId = (await db.getOne('SELECT MAX(Id) AS Id FROM Thesis', [])).Id;
             }
@@ -53,6 +53,7 @@ module.exports = {
     },
 
     logThesisRequestChange: async function (newData, oldData) {
+        if(!oldData) return;
         let changes = '';
         if (newData.Title !== oldData.Title)
             changes = `Title was changed from "${oldData.Title}" To "${newData.Title}".`;
@@ -73,6 +74,10 @@ module.exports = {
     },
 
     getThesisLinkedData: async function (thesis) {
+        thesis.Supervisor = (await db.getOne(
+            `SELECT Id, Surname, Name, Email, Cod_Group, Cod_Department
+              FROM Teacher
+              WHERE Id = ?`, [thesis.Supervisor_Id]));
         thesis.cosupervisors = await db.getData(
             `SELECT T.Id, T.Surname, T.Name, T.Email, T.Cod_Group, T.Cod_Department
             FROM Teacher AS T, Thesis_Cosupervisors AS C

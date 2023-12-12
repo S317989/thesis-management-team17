@@ -10,6 +10,7 @@ module.exports = {
                 return res.status(200).json(thesis);
             })
             .catch((err) => {
+                console.log(err);
                 return res.status(500).json({ message: err.message });
             });
     },
@@ -39,16 +40,17 @@ module.exports = {
     getThesis: async function (req, res) {
         try {
             const results = await thesisServices.getThesis(req.params.thesisId);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
     },
 
     getThesisByStudent: async function (req, res) {
+        console.log('reached');
         try {
-            const results = await thesisServices.getThesisByStudent(req.user.id);
-            res.status(200).json(results);
+            const results = await thesisServices.getThesisByStudent('319976');
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
@@ -57,7 +59,7 @@ module.exports = {
     getThesisBySupervisor: async function (req, res) {
         try {
             const results = await thesisServices.getThesisBySupervisor(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
@@ -66,7 +68,7 @@ module.exports = {
     getThesisByCosupervisor: async function (req, res) {
         try {
             const results = await thesisServices.getThesisByCosupervisor(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
             return res.status(500);
         }
