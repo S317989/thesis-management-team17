@@ -96,42 +96,22 @@ const Notify = () => {
           <div key={index}>
             {notification.Read ? (
               <p>
-                {user.role === 'Teacher' ? (
-                  <>
-                    A new application is available for {notification.Title}{'!'}{' '}
+                <>
+                    {notification.Message}{' '}
                     <small>
                       <i>{notification.Date}</i>
                     </small>
                   </>
-                ) : (
-                  <>
-                    Your thesis proposal application for {notification.Title}{' '}
-                    {notification.Message}{'!'}{' '}
-                    <small>
-                      <i>{notification.Date}</i>
-                    </small>
-                  </>
-                )}
               </p>
             ) : (
               <p>
                 <strong>
-                  {user.role === 'Teacher' ? (
-                    <>
-                      A new application is available for {notification.Title}{'!'}{' '}
-                      <small>
-                        <i>{notification.Date}</i>
-                      </small>
-                    </>
-                  ) : (
-                    <>
-                      Your thesis proposal application for {notification.Title}{' '}
-                      {notification.Message}{'!'}{' '}
-                      <small>
-                        <i>{notification.Date}</i>
-                      </small>
-                    </>
-                  )}
+                <>
+                    {notification.Message}{' '}
+                    <small>
+                      <i>{notification.Date}</i>
+                    </small>
+                  </>
                 </strong>
               </p>
             )}
