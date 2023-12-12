@@ -36,15 +36,13 @@ const StudentApplications = () => {
         setAvailableProposals((await ProposalsAPI.getAvailableProposalsForStudent()).filter(p =>
             !applicationsData.some(a => a[ApplicationFields.Proposal_Id] === p[ProposalFields.Id])
         ));
-
-
     }
 
     useEffect(() => {
         if (pendingOrActiveApplication)
             pendingOrActiveApplication[ApplicationFields.Status] === ApplicationStatus.Pending
                 ? setApplicationStatus("Pending")
-                : setApplicationStatus("Active");
+                : setApplicationStatus("Accepted");
 
     }, [pendingOrActiveApplication]);
 
