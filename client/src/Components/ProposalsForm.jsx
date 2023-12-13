@@ -41,7 +41,6 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
     const [isInvalid, setIsInvalid] = useState(false);
 
     const handleBlur = () => {
-        console.log(value)
         if (type === "Select" && required && value.length === 0)
             setIsInvalid(true);
         else if (required && !value) {

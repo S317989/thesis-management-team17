@@ -85,21 +85,21 @@ INSERT INTO Keyword VALUES
 
 --Proposal
 INSERT INTO Proposal VALUES
-    (1, 'Software Development Project', 12571, 'Development', 'Building Innovative Software', 'Software engineering, Programming', 'Familiarity with agile methodologies', '2024-02-20', 'Bachelor', 0),
-    (2, 'Mobile App Development Project', 12571, 'Development', 'Creating Mobile Applications', 'Mobile app development, UI/UX design', 'Experience with mobile platforms', '2024-01-10', 'Bachelor', 0),
-    (3, 'Aerospace Engineering Project', 54723, 'Development', 'Designing Aerospace Systems', 'Aerospace engineering, Aerodynamics', 'Knowledge of aviation regulations', '2024-03-05', 'Bachelor', 0),
-    (4, 'Civil Engineering Infrastructure Project', 78912, 'Development', 'Designing Civil Infrastructure', 'Structural engineering, Construction management', 'Knowledge of building codes', '2023-12-01', 'Bachelor', 0),
-    (5, 'Mechanical Engineering Study', 23817, 'Study', 'Investigating Mechanical Engineering', 'Solid mechanics, Fluid dynamics', 'Hands-on experience with CAD software', '2024-01-18', 'Bachelor', 0),
-    (6, 'Environmental Sustainability Project', 78912, 'Research', 'Investigating Environmental Impact', 'Environmental science, Sustainability', 'Awareness of ecological issues', '2024-02-19', 'Bachelor', 0),
-    (7, 'Electronics Design Project', 23817, 'Development', 'Electronic Engineering Project', 'Circuit design, PCB layout', 'Experience with embedded systems', '2023-01-01', 'Bachelor', 0),
-    (8, 'AI Research Project', 12571, 'Research', 'Exploring Artificial Intelligence', 'Machine Learning, Deep Learning', 'Research experience is a plus', '2023-12-01', 'Master', 1),
-    (9, 'Data Science Thesis', 12571, 'Research', 'Exploring Data Science', 'Statistics, Machine Learning', 'Programming skills in Python and R', '2023-12-10', 'Master', 0),
-    (10, 'Finance and Investment Study', 12571, 'Study', 'Analyzing Financial Markets', 'Finance, Investment analysis', 'Understanding of stock markets', '2024-02-25', 'Master', 0),
-    (11, 'Biomedical Research Thesis', 96970, 'Research', 'Advancing Biomedical Sciences', 'Biochemistry, Molecular biology', 'Laboratory skills are essential', '2024-02-01', 'Master', 0),
-    (12, 'Social Psychology Study', 96970, 'Study', 'Exploring Social Behavior', 'Psychology, Sociology', 'Research and analytical skills', '2024-01-28', 'Master', 0),
-    (13, 'Renewable Energy Research', 78912, 'Research', 'Advancing Renewable Energy Technologies', 'Renewable energy, Sustainability', 'Understanding of energy systems', '2024-01-19', 'Master', 0),
-    (14, 'Mathematical Modeling Project', 78912, 'Research', 'Mathematical Engineering Research', 'Advanced mathematics, Modeling', 'Strong mathematical background required', '2024-02-13', 'Master', 1),
-    (15, 'Cognitive Neuroscience Thesis', 12571, 'Research', 'Investigating Cognitive Processes', 'Neuroscience, Cognitive psychology', 'Experience with neuroimaging techniques', '2024-02-28', 'Master', 0);
+    (1, 'Software Development Project', 12571, 'Development', 'Building Innovative Software', 'Software engineering, Programming', 'Familiarity with agile methodologies', '2024-02-20 18:18:18', 'Bachelor', 0),
+    (2, 'Mobile App Development Project', 12571, 'Development', 'Creating Mobile Applications', 'Mobile app development, UI/UX design', 'Experience with mobile platforms', '2024-01-10 18:18:18', 'Bachelor', 0),
+    (3, 'Aerospace Engineering Project', 54723, 'Development', 'Designing Aerospace Systems', 'Aerospace engineering, Aerodynamics', 'Knowledge of aviation regulations', '2024-03-05 18:18:18', 'Bachelor', 0),
+    (4, 'Civil Engineering Infrastructure Project', 78912, 'Development', 'Designing Civil Infrastructure', 'Structural engineering, Construction management', 'Knowledge of building codes', '2023-12-01 18:18:18', 'Bachelor', 0),
+    (5, 'Mechanical Engineering Study', 23817, 'Study', 'Investigating Mechanical Engineering', 'Solid mechanics, Fluid dynamics', 'Hands-on experience with CAD software', '2024-01-18 18:18:18', 'Bachelor', 0),
+    (6, 'Environmental Sustainability Project', 78912, 'Research', 'Investigating Environmental Impact', 'Environmental science, Sustainability', 'Awareness of ecological issues', '2024-02-19 18:18:18', 'Bachelor', 0),
+    (7, 'Electronics Design Project', 23817, 'Development', 'Electronic Engineering Project', 'Circuit design, PCB layout', 'Experience with embedded systems', '2023-01-01 18:18:18', 'Bachelor', 0),
+    (8, 'AI Research Project', 12571, 'Research', 'Exploring Artificial Intelligence', 'Machine Learning, Deep Learning', 'Research experience is a plus', '2023-12-01 18:18:18', 'Master', 1),
+    (9, 'Data Science Thesis', 12571, 'Research', 'Exploring Data Science', 'Statistics, Machine Learning', 'Programming skills in Python and R', '2023-12-10 18:18:18', 'Master', 0),
+    (10, 'Finance and Investment Study', 12571, 'Study', 'Analyzing Financial Markets', 'Finance, Investment analysis', 'Understanding of stock markets', '2024-02-25 18:18:18', 'Master', 0),
+    (11, 'Biomedical Research Thesis', 96970, 'Research', 'Advancing Biomedical Sciences', 'Biochemistry, Molecular biology', 'Laboratory skills are essential', '2024-02-01 18:18:18', 'Master', 0),
+    (12, 'Social Psychology Study', 96970, 'Study', 'Exploring Social Behavior', 'Psychology, Sociology', 'Research and analytical skills', '2024-01-28 18:18:18', 'Master', 0),
+    (13, 'Renewable Energy Research', 78912, 'Research', 'Advancing Renewable Energy Technologies', 'Renewable energy, Sustainability', 'Understanding of energy systems', '2024-01-19 18:18:18', 'Master', 0),
+    (14, 'Mathematical Modeling Project', 78912, 'Research', 'Mathematical Engineering Research', 'Advanced mathematics, Modeling', 'Strong mathematical background required', '2024-02-13 18:18:18', 'Master', 1),
+    (15, 'Cognitive Neuroscience Thesis', 12571, 'Research', 'Investigating Cognitive Processes', 'Neuroscience, Cognitive psychology', 'Experience with neuroimaging techniques', '2024-02-28 18:18:18', 'Master', 0);
 
 --Proposal_Degrees
 INSERT INTO Proposal_Degrees VALUES

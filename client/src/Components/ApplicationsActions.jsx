@@ -27,8 +27,6 @@ export const Apply = ({ proposalId, OnComplete }) => {
     formData.append('pdfFile', cvFile);
     formData.append('proposalId', proposalId);
 
-    console.log(cvFile, formData);
-
     sweetalert({
       title: 'Are you sure you want to apply to this proposal?',
       text: 'Once you apply, you will not be able to make other applications until this one is accepted or rejected',

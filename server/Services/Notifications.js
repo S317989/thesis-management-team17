@@ -35,7 +35,6 @@ module.exports = {
                     console.log(error);
                     reject(error);
                 } else {
-                    console.log('Email sent: ' + info.response);
                     resolve(info);
                 }
             });
