@@ -14,4 +14,4 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const handleFileUpload = upload.single('pdfFile');
-export default handleFileUpload;
+// export default handleFileUpload;
