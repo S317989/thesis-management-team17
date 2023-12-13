@@ -452,6 +452,20 @@ function ProposalForm({
                         </Col>
                         <Col xs={12} md={8}>
                             <div className="textarea-section">
+                                {
+                                    user.role === 'Teacher'
+                                        ? <></>
+                                        :
+
+                                        <FormInput
+                                            type="Input"
+                                            label="Supervisor"
+                                            readOnly={true}
+                                            value={"[" + proposalData.Supervisor.Id + "] " + proposalData.Supervisor.Name + " " + proposalData.Supervisor.Surname}
+                                            setProposalData={setProposalData}
+                                            proposalField={ProposalFields.Supervisor}
+                                        />
+                                }
                                 <FormInput
                                     type="TextArea"
                                     label="Description"
