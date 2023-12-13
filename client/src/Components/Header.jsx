@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav } from 'react-bootstrap';
 import { PersonCircle } from "react-bootstrap-icons";
 import VirtualClockComponent from "./VirtualClockComponent.jsx";
+import Notify from "./Notify";
 import { UserContext } from "../Contexts.js";
 
 function Header() {
@@ -49,6 +50,11 @@ function Header() {
     const InfoLinks = () => {
         return (
             <>
+
+                <Nav.Link>
+                    <Notify/>
+                </Nav.Link>
+
                 <Nav.Link>
                     <VirtualClockComponent />
                 </Nav.Link>

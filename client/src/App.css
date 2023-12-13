@@ -65,3 +65,25 @@
   padding: 1px;
   /* Optional: Add padding to the icon */
 }
+
+.fileperson-icon {
+  cursor: pointer;
+  font-size: 25px;
+  border: 2px solid #B99470;
+  /* Add your desired border color and style */
+  border-radius: 10px;
+  padding: 1px;
+  /* Optional: Add padding to the icon */
+}
+
+
+.notification-dot {
+  margin-left: -20px;
+  margin-top: -10px;
+  font-size: xx-large;
+}
+
+.view-more{
+  padding: none;
+  margin:none;
+}
