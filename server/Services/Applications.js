@@ -12,7 +12,7 @@ module.exports = {
     getAllApplications: async function () {
         const applications =
             await db.getData(`SELECT A.Application_Id, A.Student_Id, S.Surname|| " " || S.name AS StudentName,
-                            A.Proposal_Id, P.Title, T.Surname|| " " || T.name AS Supervisor, A.date, A.Status
+                            A.Proposal_Id, P.Title, T.Surname|| " " || T.name AS Supervisor, A.date, A.Status, A.Cv
                             FROM Application AS A, Student AS S,  Proposal AS P, Teacher AS T
                             WHERE A.Student_Id = S.Id AND A.Proposal_Id = P.Id AND T.Id = P.Supervisor`, []);
         return this.attachProposals(applications);
@@ -21,7 +21,7 @@ module.exports = {
     getStudentApplications: async function (studentId) {
         const applications =
             await db.getData(`SELECT A.Application_Id, A.Student_Id, S.Surname|| " " || S.name AS StudentName,
-                                A.Proposal_Id, P.Title, T.Surname || " " || T.name AS Supervisor, A.date, A.Status
+                                A.Proposal_Id, P.Title, T.Surname || " " || T.name AS Supervisor, A.date, A.Status, A.Cv
                                 FROM Application AS A, Student AS S,  Proposal AS P, Teacher AS T
                                 WHERE A.Student_Id = S.Id AND A.Proposal_Id = P.Id AND T.Id = P.Supervisor
                                 AND A.Student_Id = ?`, [studentId]);
@@ -31,7 +31,7 @@ module.exports = {
     getApplicationsByTeacherProposals: async function (teacherId) {
         const applications =
             await db.getData(`SELECT A.Application_Id, A.Student_Id, S.Surname|| " " || S.name AS StudentName,
-                                A.Proposal_Id, P.Title, T.Surname || " " || T.name AS Supervisor, A.date, A.Status
+                                A.Proposal_Id, P.Title, T.Surname || " " || T.name AS Supervisor, A.date, A.Status, A.Cv
                                 FROM Application AS A, Student AS S,  Proposal AS P, Teacher AS T
                                 WHERE A.Student_Id = S.Id AND A.Proposal_Id = P.Id AND T.Id = P.Supervisor
                                 AND A.Proposal_Id IN (SELECT  Id FROM Proposal WHERE Supervisor = ?)`, [teacherId]);

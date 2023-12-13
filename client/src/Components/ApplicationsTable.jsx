@@ -27,6 +27,7 @@ export const ApplicationFields = {
 };
 
 const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRefresh }) => {
+  console.log(applications);
   const { user } = useContext(UserContext);
 
   return (
@@ -82,7 +83,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                 }
               })()
             )}</td>
-            <td><ViewCV  /></td>
+            <td><ViewCV cvFileName={application.Cv} /></td>
             <td>
               <ShowProposalsForm proposal={proposal} />
               {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
