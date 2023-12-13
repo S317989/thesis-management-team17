@@ -46,7 +46,7 @@ module.exports = {
     },
 
     //returns 1 if everything is okay, 0 if failed
-    createApplication: async function (proposalId, studentId, cv) {
+    createApplication: async function (proposalId, studentId, cvFileName) {
         //CHECK IF THE STUDENT HAS OTHER APPLICATIONS NOT REJECTED
         const studentApplications = await this.getStudentApplications(studentId);
         for (const a of studentApplications) {
@@ -55,7 +55,7 @@ module.exports = {
         }
         await db.executeTransaction(async () => {
             await db.executeQuery(`INSERT INTO Application (Proposal_Id, Student_Id, Status, Date, Cv)
-                                       VALUES (?, ?, "Pending", CURRENT_TIMESTAMP, ?)`, [proposalId, studentId, Cv]);
+                                       VALUES (?, ?, "Pending", CURRENT_TIMESTAMP, ?)`, [proposalId, studentId, cvFileName]);
             const proposalDetails = await ProposalsServices.getProposal(proposalId);
             await NotificationsServices.addNotification(proposalDetails.Supervisor.Id, 'New Application',
                 `A new application was made on your proposal: ${proposalDetails.Title}.`);

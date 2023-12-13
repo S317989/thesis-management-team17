@@ -32,6 +32,15 @@ const FetchAPIs = {
         });
         return request;
     },
+
+    postCustomBody:  async function (url, customBody) {
+        const request = await fetch(parentURL + url, {
+            method: 'POST',
+            credentials: "include",
+            body: customBody,
+        });
+        return request;
+    },
 }
 
 export default FetchAPIs;

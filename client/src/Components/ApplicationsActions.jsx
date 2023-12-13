@@ -17,12 +17,17 @@ export const Apply = ({ proposalId, OnComplete }) => {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setCvFile(file);
+    setCvFile(event.target.files[0]);
   };
 
   const handleApply = () => {
     handleCloseModal(); // Close the modal before making the application request
+
+    const formData = new FormData();
+    formData.append('pdfFile', cvFile);
+    formData.append('proposalId', proposalId);
+
+    console.log(cvFile, formData);
 
     sweetalert({
       title: 'Are you sure you want to apply to this proposal?',
@@ -32,7 +37,7 @@ export const Apply = ({ proposalId, OnComplete }) => {
       dangerMode: true,
     }).then((confirmed) => {
       if (confirmed) {
-        ApplicationsAPI.applyToProposal(proposalId, cvFile).then((result) => {
+        ApplicationsAPI.applyToProposal(formData).then((result) => {
           if (result.status === 200) {
             sweetalert({
               title: 'Application Made',
@@ -64,7 +69,8 @@ export const Apply = ({ proposalId, OnComplete }) => {
           <Modal.Title>Upload CV</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="file" accept=".pdf, .doc, .docx" onChange={handleFileChange} />
+          {/* <input type="file" accept=".pdf, .doc, .docx" onChange={handleFileChange} /> */}
+          <input type="file" name="pdfFile" accept=".pdf" onChange={handleFileChange} required />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
@@ -81,76 +87,76 @@ export const Apply = ({ proposalId, OnComplete }) => {
 
 
 export const Accept = ({ applicationId, OnComplete }) => {
-    const handleDelete = () => {
-        sweetalert({
-            title: "Are you sure you want to Accept this application?",
-            text: "Once accepted, the proposal will be archived and the other applications on the same proposal will be rejected.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then(confirmed => {
-            if (confirmed) {
-                ApplicationsAPI.acceptApplication(applicationId).then((result) => {
-                    if (result.status === 200) {
-                        sweetalert({
-                            title: "Application Accepted",
-                            icon: "success",
-                            button: "Ok",
-                        }).then(() => { if (OnComplete) OnComplete() });
+  const handleDelete = () => {
+    sweetalert({
+      title: "Are you sure you want to Accept this application?",
+      text: "Once accepted, the proposal will be archived and the other applications on the same proposal will be rejected.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(confirmed => {
+      if (confirmed) {
+        ApplicationsAPI.acceptApplication(applicationId).then((result) => {
+          if (result.status === 200) {
+            sweetalert({
+              title: "Application Accepted",
+              icon: "success",
+              button: "Ok",
+            }).then(() => { if (OnComplete) OnComplete() });
 
-                    }
-                    else {
-                        sweetalert({
-                            title: "Application couldn't be Accepted",
-                            icon: "error",
-                            button: "Ok",
-                        });
-                    }
-                })
-            }
-        });
-    };
-    return <>
-        <Button variant="success" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleDelete()}>
-            Accept
-        </Button>{' '}
-    </>
+          }
+          else {
+            sweetalert({
+              title: "Application couldn't be Accepted",
+              icon: "error",
+              button: "Ok",
+            });
+          }
+        })
+      }
+    });
+  };
+  return <>
+    <Button variant="success" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleDelete()}>
+      Accept
+    </Button>{' '}
+  </>
 };
 
 export const Reject = ({ applicationId, OnComplete }) => {
-    const handleReject = () => {
-        sweetalert({
-            title: "Are you sure you want to reject this application?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then(confirmed => {
-            if (confirmed) {
-                ApplicationsAPI.rejectApplication(applicationId).then((result) => {
-                    if (result.status === 200) {
-                        sweetalert({
-                            title: "Application Rejected",
-                            icon: "success",
-                            button: "Ok",
-                        }).then(() => { if (OnComplete) OnComplete() });
+  const handleReject = () => {
+    sweetalert({
+      title: "Are you sure you want to reject this application?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(confirmed => {
+      if (confirmed) {
+        ApplicationsAPI.rejectApplication(applicationId).then((result) => {
+          if (result.status === 200) {
+            sweetalert({
+              title: "Application Rejected",
+              icon: "success",
+              button: "Ok",
+            }).then(() => { if (OnComplete) OnComplete() });
 
-                    }
-                    else {
-                        sweetalert({
-                            title: "Application couldn't be rejected",
-                            icon: "error",
-                            button: "Ok",
-                        });
-                    }
-                })
-            }
-        });
-    };
-    return <>
-        <Button variant="danger" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleReject()}>
-            Reject
-        </Button>{' '}
-    </>
+          }
+          else {
+            sweetalert({
+              title: "Application couldn't be rejected",
+              icon: "error",
+              button: "Ok",
+            });
+          }
+        })
+      }
+    });
+  };
+  return <>
+    <Button variant="danger" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleReject()}>
+      Reject
+    </Button>{' '}
+  </>
 };
 
 
@@ -167,9 +173,9 @@ export const ViewCV = () => {
 
   // Dummy data for testing
   const dummyExams = [
-    { Cod_Course:'04GSPOV' , Title_Course: 'Software Engineering', CFU:'8', Grade: 26, Date:'2023-07-04' },
-    { Cod_Course:'01UDFOV' , Title_Course: 'Web Applications I', CFU:'6', Grade: 20, Date:'2023-02-22' },
-    { Cod_Course:'01SQMOV' , Title_Course: 'Data Science and Database Technology', CFU:'8', Grade: 29, Date:'2023-07-19' },  
+    { Cod_Course: '04GSPOV', Title_Course: 'Software Engineering', CFU: '8', Grade: 26, Date: '2023-07-04' },
+    { Cod_Course: '01UDFOV', Title_Course: 'Web Applications I', CFU: '6', Grade: 20, Date: '2023-02-22' },
+    { Cod_Course: '01SQMOV', Title_Course: 'Data Science and Database Technology', CFU: '8', Grade: 29, Date: '2023-07-19' },
   ];
 
   const dummyCVData = 'This is a dummy CV content.';
@@ -188,17 +194,17 @@ export const ViewCV = () => {
           <ListGroup as="ol" numbered className="mt-3 mb-3">
             {dummyExams.map((exam, index) => (
               <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">{`${exam.Title_Course}:`}{' '} <Badge bg="primary">{`${exam.Grade}`}</Badge> </div>
-                {`${exam.Cod_Course}`}
-              </div>
-              <Badge bg="secondary" pill>
-              {`${exam.CFU}`}{' '}{'CFU'}
-              </Badge>
-            </ListGroup.Item>
-            //   <li key={index}>{`${exam.subject}: ${exam.grade}`}</li>
+                <div className="ms-2 me-auto">
+                  <div className="fw-bold">{`${exam.Title_Course}:`}{' '} <Badge bg="primary">{`${exam.Grade}`}</Badge> </div>
+                  {`${exam.Cod_Course}`}
+                </div>
+                <Badge bg="secondary" pill>
+                  {`${exam.CFU}`}{' '}{'CFU'}
+                </Badge>
+              </ListGroup.Item>
+              //   <li key={index}>{`${exam.subject}: ${exam.grade}`}</li>
             ))}
-         </ListGroup>
+          </ListGroup>
           <h4>CV:</h4>
           <p>{dummyCVData}</p>
         </Modal.Body>

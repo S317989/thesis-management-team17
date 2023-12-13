@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 8000000 } });
 
 const handleFileUpload = upload.single('pdfFile');
-// export default handleFileUpload;
+module.exports = handleFileUpload;
