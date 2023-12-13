@@ -16,7 +16,7 @@ Date
 module.exports = {
     addOrUpdateThesisRequest: async function (data) {
         await db.executeTransaction(async () => {
-            var thesisId;
+            let thesisId;
             if (data.Id) {
                 // there's an Id meaning we are updating
                 thesisId = data.Id;

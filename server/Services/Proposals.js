@@ -8,7 +8,7 @@ const CustomDate = require('./CustomDate');
 module.exports = {
   addOrUpdateProposal: async function (data) {
     await db.executeTransaction(async () => {
-      var proposalId;
+      let proposalId;
 
       if (data.Id) {
         // there's an Id meaning we are updating
