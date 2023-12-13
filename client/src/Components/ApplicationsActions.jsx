@@ -160,7 +160,7 @@ export const Reject = ({ applicationId, OnComplete }) => {
 };
 
 
-export const ViewCV = () => {
+export const ViewCV = ({ cvFileName }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -177,8 +177,6 @@ export const ViewCV = () => {
     { Cod_Course: '01UDFOV', Title_Course: 'Web Applications I', CFU: '6', Grade: 20, Date: '2023-02-22' },
     { Cod_Course: '01SQMOV', Title_Course: 'Data Science and Database Technology', CFU: '8', Grade: 29, Date: '2023-07-19' },
   ];
-
-  const dummyCVData = 'This is a dummy CV content.';
 
   return (
     <>
@@ -205,8 +203,9 @@ export const ViewCV = () => {
               //   <li key={index}>{`${exam.subject}: ${exam.grade}`}</li>
             ))}
           </ListGroup>
-          <h4>CV:</h4>
-          <p>{dummyCVData}</p>
+          {cvFileName ? <Button onClick={() => {
+            window.open('http://localhost:3000/api/uploads/' + cvFileName, '_blank', 'noopener,noreferrer');
+          }}>Check the student CV</Button> : <></>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
