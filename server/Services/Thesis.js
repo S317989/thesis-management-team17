@@ -53,7 +53,7 @@ module.exports = {
     },
 
     logThesisRequestChange: async function (newData, oldData) {
-        if(!oldData) return;
+        if (!oldData) return;
         let changes = '';
         if (newData.Title !== oldData.Title)
             changes = `Title was changed from "${oldData.Title}" To "${newData.Title}".`;
@@ -83,7 +83,6 @@ module.exports = {
             FROM Teacher AS T, Thesis_Cosupervisors AS C
             WHERE T.Id = C.Cosupervisor_Id
             AND C.Thesis_Id = ?`, [thesis.Id]);
-
         thesis.changesHistory = await db.getData(
             `SELECT Change, Date FROM Thesis_Change_History WHERE Thesis_Id = ?`, [thesis.Id]);
         return thesis;
@@ -91,22 +90,26 @@ module.exports = {
 
     getThesis: async function (id) {
         let results = await db.getOne(`SELECT * FROM Thesis WHERE Id=?`, [id]);
+        if (!results) throw new Error('Data Not Found');
         return await this.getThesisLinkedData(results);
     },
 
     getThesisByStudent: async function (studentId) {
         let results = await db.getData(`SELECT * FROM Thesis WHERE Student_Id=?`, [studentId]);
+        if (!results) throw new Error('Data Not Found');
         return await this.getThesesLinkedData(results);
     },
 
     getThesisBySupervisor: async function (supervisorId) {
         let results = await db.getData(`SELECT * FROM Thesis WHERE Supervisor_Id=?`, [supervisorId]);
+        if (!results) throw new Error('Data Not Found');
         return await this.getThesesLinkedData(results);
     },
 
     getThesisByCosupervisor: async function (cosupervisorId) {
         let results = await db.getData(`SELECT * FROM Thesis WHERE Id IN 
-        (SELECT Thesis_Id FROM Thesis_Cosupervisors WHERE Cosupervisor_Id=1)`, [cosupervisorId]);
+        (SELECT Thesis_Id FROM Thesis_Cosupervisors WHERE Cosupervisor_Id=?)`, [cosupervisorId]);
+        if (!results) throw new Error('Data Not Found');
         return await this.getThesesLinkedData(results);
     },
 

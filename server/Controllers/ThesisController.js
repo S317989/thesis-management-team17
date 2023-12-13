@@ -17,7 +17,7 @@ module.exports = {
 
     deleteThesisRequest: async function (req, res) {
         await thesisServices
-            .deleteThesisRequest(req.body.thesisId)
+            .deleteThesisRequest(req.params.thesisId)
             .then(() => {
                 return res.status(200).json('deleted');
             })
@@ -42,17 +42,16 @@ module.exports = {
             const results = await thesisServices.getThesis(req.params.thesisId);
             return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
     getThesisByStudent: async function (req, res) {
-        console.log('reached');
         try {
-            const results = await thesisServices.getThesisByStudent('319976');
+            const results = await thesisServices.getThesisByStudent(req.user.id);
             return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
@@ -61,7 +60,7 @@ module.exports = {
             const results = await thesisServices.getThesisBySupervisor(req.user.id);
             return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
@@ -70,7 +69,7 @@ module.exports = {
             const results = await thesisServices.getThesisByCosupervisor(req.user.id);
             return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
