@@ -33,7 +33,7 @@ module.exports = {
                 // adding new
                 await db.executeQuery(`
           INSERT INTO Thesis (Title, Student_Id, Supervisor_Id, Description, Status) 
-          VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description, data.Status]);
+          VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description]);
 
                 thesisId = (await db.getOne('SELECT MAX(Id) AS Id FROM Thesis', [])).Id;
             }
