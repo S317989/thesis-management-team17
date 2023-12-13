@@ -1,4 +1,6 @@
 // src/components/ProposalItem.js
+import "../Stylesheets/ApplicationTableStyle.css";
+
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
@@ -30,70 +32,72 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
   const { user } = useContext(UserContext);
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Title</th>
-          {
-            user.role === 'Student' ?
-              <th>Supervisor</th> : null
-          }
-          {
-            user.role === 'Teacher' ?
-              <th>Student</th> : null
-          }
-          <th>Application Date</th>
-          <th>Expiration Date</th>
-          <th>Status</th>
-          <th>CV</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {applications.map((application) => {
-          const proposal = application[ApplicationFields.Proposal];
-          return <tr key={application[ApplicationFields.Application_Id]}>
-            <td>{proposal[ProposalFields.Title]}</td>
+    <div className="table-responsive">
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Title</th>
             {
               user.role === 'Student' ?
-                <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
-                : null
+                <th>Supervisor</th> : null
             }
             {
               user.role === 'Teacher' ?
-                <td>{application[ApplicationFields.StudentName]}</td>
-                : null
+                <th>Student</th> : null
             }
-            <td>{application[ApplicationFields.Date]}</td>
-            <td>{proposal[ProposalFields.Expiration]}</td>
-            <td>{(
-              (() => {
-                switch (application[ApplicationFields.Status]) {
-                  case ApplicationStatus.Accepted:
-                    return <Badge bg="success">Accepted</Badge>;
-                  case ApplicationStatus.Pending:
-                    return <Badge bg="warning" text="dark">Pending</Badge>;
-                  case ApplicationStatus.Rejected:
-                    return <Badge bg="danger">Rejected</Badge>;
-                  case ApplicationStatus.Canceled:
-                    return <Badge bg="danger">Canceled</Badge>;
-                  default:
-                    return <Badge bg="secondary">---</Badge>;
-                }
-              })()
-            )}</td>
-            <td><ViewCV  /></td>
-            <td>
-              <ShowProposalsForm proposal={proposal} />
-              {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
-                <Accept applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
-              {EnableReject && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
-                <Reject applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
-            </td>
+            <th>Application Date</th>
+            <th>Expiration Date</th>
+            <th>Status</th>
+            <th>CV</th>
+            <th>Actions</th>
           </tr>
-        })}
-      </tbody>
-    </Table >
+        </thead>
+        <tbody>
+          {applications.map((application) => {
+            const proposal = application[ApplicationFields.Proposal];
+            return <tr key={application[ApplicationFields.Application_Id]}>
+              <td>{proposal[ProposalFields.Title]}</td>
+              {
+                user.role === 'Student' ?
+                  <td>{proposal[ProposalFields.Supervisor].Name + ' ' + proposal[ProposalFields.Supervisor].Surname}</td>
+                  : null
+              }
+              {
+                user.role === 'Teacher' ?
+                  <td>{application[ApplicationFields.StudentName]}</td>
+                  : null
+              }
+              <td>{application[ApplicationFields.Date]}</td>
+              <td>{proposal[ProposalFields.Expiration]}</td>
+              <td>{(
+                (() => {
+                  switch (application[ApplicationFields.Status]) {
+                    case ApplicationStatus.Accepted:
+                      return <Badge bg="success">Accepted</Badge>;
+                    case ApplicationStatus.Pending:
+                      return <Badge bg="warning" text="dark">Pending</Badge>;
+                    case ApplicationStatus.Rejected:
+                      return <Badge bg="danger">Rejected</Badge>;
+                    case ApplicationStatus.Canceled:
+                      return <Badge bg="danger">Canceled</Badge>;
+                    default:
+                      return <Badge bg="secondary">---</Badge>;
+                  }
+                })()
+              )}</td>
+              <td><ViewCV /></td>
+              <td>
+                <ShowProposalsForm proposal={proposal} />
+                {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
+                  <Accept applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
+                {EnableReject && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
+                  <Reject applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
+              </td>
+            </tr>
+          })}
+        </tbody>
+      </Table >
+    </div>
   );
 };
 export default ApplicationsTable;
