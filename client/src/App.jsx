@@ -12,6 +12,7 @@ import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
 import StudentApplications from './Pages/StudentApplications.jsx';
 
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
