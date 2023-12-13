@@ -97,7 +97,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <p onClick={() => handleFieldClick(field)} className="clickable-text">{field}</p>
+                                            <p onClick={() => handleFieldClick(field)} onKeyDown={() => handleFieldClick(field)} className="clickable-text">{field}</p>
                                         )}
                                     </div>
                                 ))}
@@ -119,7 +119,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <p onClick={() => handleFieldClick(field)} className="clickable-text">{field}</p>
+                                            <p onClick={() => handleFieldClick(field)} onKeyDown={() => handleFieldClick(field)} className="clickable-text">{field}</p>
                                         )}
                                     </div>
                                 ))}

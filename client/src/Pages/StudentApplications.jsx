@@ -1,4 +1,5 @@
 import "../Stylesheets/StudentApplicationStyle.css";
+import "../Stylesheets/ApplicationTableStyle.css";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Card, Accordion, Badge, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -92,7 +93,9 @@ const StudentApplications = () => {
                                 <Col>
                                     <Accordion.Header className="text-center"><h4>Old Applications</h4> </Accordion.Header>
                                     <Accordion.Body>
-                                        <ApplicationsTable applications={applications} />
+                                        <div className="table-responsive">
+                                            <ApplicationsTable applications={applications} />
+                                        </div>
                                     </Accordion.Body>
                                 </Col>
                             </Accordion.Item>
@@ -105,10 +108,10 @@ const StudentApplications = () => {
 };
 
 const PendingApplicationAlert = ({ application, applicationStatus }) => {
+    const [show, setShow] = useState(false);
+
     if (!application)
         return null;
-
-    const [show, setShow] = useState(false);
 
     const handleCardClick = () => {
         setShow(true);
