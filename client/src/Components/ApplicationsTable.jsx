@@ -27,7 +27,6 @@ export const ApplicationFields = {
 };
 
 const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRefresh }) => {
-  console.log(applications);
   const { user } = useContext(UserContext);
 
   return (
