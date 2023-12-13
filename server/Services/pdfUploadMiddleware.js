@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-/* NOSONAR - Content length limit is handled appropriately */
+//NOSONAR - Content length limit is handled appropriately
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
