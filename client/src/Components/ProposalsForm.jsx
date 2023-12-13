@@ -1,20 +1,16 @@
 import "../Stylesheets/ProposalFormStyle.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Form, Button, Col, ButtonGroup, Row, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
-import Select, { components } from "react-select";
+import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { Delete, Archive, ShowProposalsForm } from './ProposalsActions';
-import { Apply, Reject, Accept } from "./ApplicationsActions";
+import { Apply } from "./ApplicationsActions";
 import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
-
-const { MultiValueLabel } = components;
 
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
@@ -51,7 +47,6 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
     };
 
     const handleChange = (property, newValue) => {
-
         setProposalData((old) => {
             const updatedData = { ...old };
             updatedData[property] = newValue;
