@@ -461,7 +461,7 @@ function ProposalForm({
                                             type="Input"
                                             label="Supervisor"
                                             readOnly={true}
-                                            value={"[" + proposalData.Supervisor.Id + "] " + proposalData.Supervisor.Name + " " + proposalData.Supervisor.Surname}
+                                            value={proposalData.Supervisor.Name + " " + proposalData.Supervisor.Surname + " [" + proposalData.Supervisor.Email + "] "}
                                             setProposalData={setProposalData}
                                             proposalField={ProposalFields.Supervisor}
                                         />
