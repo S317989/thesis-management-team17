@@ -77,15 +77,20 @@ function StudentRequest(props) {
         const fetchData = async () => {
             let studentApplications = await ApplicationsAPI.getMyApplications();
             const foundAcceptedApplication = studentApplications.find(application => application.Status === "Accepted");
-            foundAcceptedApplication.Proposal.cosupervisors = foundAcceptedApplication.Proposal.cosupervisors.map(t => ({
-                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            }));
-            foundAcceptedApplication.Proposal.Supervisor = {
-                ...foundAcceptedApplication.Proposal.Supervisor, value: foundAcceptedApplication.Proposal.Supervisor.Id, label: foundAcceptedApplication.Proposal.Supervisor.Name + " " + foundAcceptedApplication.Proposal.Supervisor.Surname + " (" + foundAcceptedApplication.Proposal.Supervisor.Email + ")"
-            };
-            console.log(foundAcceptedApplication);
-            setAcceptedApplication(foundAcceptedApplication);
+
+            if (foundAcceptedApplication) {
+                foundAcceptedApplication.Proposal.cosupervisors = foundAcceptedApplication.Proposal.cosupervisors.map(t => ({
+                    ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
+                }));
+                foundAcceptedApplication.Proposal.Supervisor = {
+                    ...foundAcceptedApplication.Proposal.Supervisor, value: foundAcceptedApplication.Proposal.Supervisor.Id, label: foundAcceptedApplication.Proposal.Supervisor.Name + " " + foundAcceptedApplication.Proposal.Supervisor.Surname + " (" + foundAcceptedApplication.Proposal.Supervisor.Email + ")"
+                };
+
+                setAcceptedApplication(foundAcceptedApplication);
+            }
             const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
+
+            console.log(teachersResponse)
             setTeachersData(teachersResponse);
             setTeachers(teachersResponse.map(t => ({
                 ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
