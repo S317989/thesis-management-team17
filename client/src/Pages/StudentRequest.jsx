@@ -11,8 +11,10 @@ import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { ApplicationFields } from "../Components/ApplicationsTable";
 import { ProposalFields } from "../Components/ProposalsForm";
 import { InfoCircle } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 function StudentRequest(props) {
+    const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [thesisData, setThesisData] = useState({
         "Supervisor_Id": '',
@@ -38,7 +40,6 @@ function StudentRequest(props) {
         }
 
         thesisData.Student_Id = user.id;
-        console.log(thesisData);
 
         ThesisAPI.addOrUpdateThesisRequest(thesisData).then((response) => {
             if (response.status === 200) {
@@ -48,7 +49,7 @@ function StudentRequest(props) {
                     icon: "success",
                     button: "Ok",
                 }).then(() => {
-                    props.history.push("/student");
+                    navigate("/student-applications")
                 });
             } else {
                 sweetalert({

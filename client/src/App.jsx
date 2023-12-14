@@ -55,7 +55,7 @@ function App() {
                   <Route path="/browse-proposals" element={<BrowseProposals />} />
                   <Route path="/my-proposals" element={<MyProposals />} />
                   <Route path="/student-applications" element={<StudentApplications />} />
-                  <Route path="student-request" element={<StudentRequest />} />
+                  <Route path="/student-request" element={<StudentRequest />} />
                 </Routes>
               </div>
             </UserContext.Provider>
