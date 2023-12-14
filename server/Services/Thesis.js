@@ -30,6 +30,12 @@ module.exports = {
                 await db.executeQuery('DELETE FROM Thesis_Cosupervisors WHERE Thesis_Id=?', [thesisId]);
             }
             else {
+                // check if the student has other requests
+                const otherNonRejectedRequests =
+                    await db.getData(`SELECT * FROM Thesis
+                                    WHERE Student_Id=? AND Status != "Rejected"`, [data.Student_Id])
+                if (otherNonRejectedRequests && otherNonRejectedRequests.length !== 0)
+                    throw new Error('User Already Has a Thesis Request');
                 // adding new
                 await db.executeQuery(`
           INSERT INTO Thesis (Title, Student_Id, Supervisor_Id, Description, Status) 
