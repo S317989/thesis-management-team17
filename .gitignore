@@ -7,3 +7,4 @@ Thumbs.db
 Desktop.ini
 server/coverage
 server/coverage
+server/node_modules
