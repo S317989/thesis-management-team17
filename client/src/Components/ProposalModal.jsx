@@ -7,8 +7,8 @@ function ProposalsModal({ proposal, EnableEditing, EnableArchiving, EnableDeleti
 
     return (
         <Modal show={show} fullscreen onHide={() => setShow(false)}>
-            <Modal.Header closeButton className="modal-header">
-                <Modal.Title className="modal-title">{
+            <Modal.Header style={{overflow: 'hidden'}} closeButton className="modal-header">
+                <Modal.Title style={{overflow: 'hidden'}} className="modal-title">{
                     proposal ?
                         (
                             proposal[ProposalFields.Id]
