@@ -3,7 +3,7 @@
     "start": "concurrently \"nodemon index.js\"",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --runInBand --coverage --colors",
-    "test:unit": "npx jest --runInBand --coverage --coverageDirectory=coverage/coverage_unit --colors"
+    "test:unit": "npx jest server/__tests__/unit --runInBand --coverage --coverageDirectory=coverage/coverage_unit --colors"
   },
   "dependencies": {
     "@babel/preset-env": "^7.23.2",
