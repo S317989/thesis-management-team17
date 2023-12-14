@@ -2,7 +2,8 @@
   "scripts": {
     "start": "concurrently \"nodemon index.js\"",
     "test": "jest --passWithNoTests",
-    "test:coverage": "jest --runInBand --coverage --colors",
+    "test:coverage": "jest server/__tests__/unit --runInBand --coverage --colors",
+    "test:e2e": "npx jest server/__tests__/e2e --runInBand --coverage --coverageDirectory=coverage/coverage_e2e --colors",
     "test:unit": "npx jest server/__tests__/unit --runInBand --coverage --coverageDirectory=coverage/coverage_unit --colors"
   },
   "dependencies": {
