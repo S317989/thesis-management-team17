@@ -126,3 +126,10 @@
     margin-bottom: 5px;
     font-size: 0.8rem;
 }
+
+.student-badge {
+    background-color: #23527c !important;
+    border-radius: 30px;
+    margin: 0;
+    padding: 2;
+}
