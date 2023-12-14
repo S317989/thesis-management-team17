@@ -54,7 +54,7 @@ function Header() {
         return (
             <>
 
-                <Nav.Link>
+                <Nav.Link id='BellFill-icon-button' >
                     <Notify />
                 </Nav.Link>
 
@@ -74,7 +74,7 @@ function Header() {
                     </div>
                 </Nav.Link>
 
-                <Nav.Link href="http://localhost:3000/logout">Logout</Nav.Link >
+                <Nav.Link id='link-logout-navbar-button' href="http://localhost:3000/logout">Logout</Nav.Link >
             </>
         );
     };

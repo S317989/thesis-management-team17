@@ -185,6 +185,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                     {
                         React.cloneElement(
                             <Button
+                            id={`iconButton-${label}`}
                                 className={
                                     `circle-button${value === options ? '-selected' : ''} rounded-circle`}
                                 onClick={() => handleChange(proposalField, options)}
@@ -385,6 +386,7 @@ function ProposalForm({
                         <Col xs={12} md={4}>
                             <div className="form-section">
                                 <FormInput
+                                    className='title-input-text'
                                     type="Input"
                                     label="Title"
                                     readOnly={!enableEditing}
@@ -394,6 +396,7 @@ function ProposalForm({
                                     required={true}
                                 />
                                 <FormInput
+                                className='type-input-text'
                                     type="Input"
                                     label="Type"
                                     readOnly={!enableEditing}
@@ -402,6 +405,7 @@ function ProposalForm({
                                     proposalField={ProposalFields.Type}
                                 />
                                 <FormInput
+                                id='date-input-picker'
                                     type="Date"
                                     label="Expiration"
                                     readOnly={!enableEditing}
@@ -467,6 +471,7 @@ function ProposalForm({
                                         />
                                 }
                                 <FormInput
+                                 id='description-input-textarea'
                                     type="TextArea"
                                     label="Description"
                                     readOnly={!enableEditing}
@@ -476,6 +481,7 @@ function ProposalForm({
                                     required={true}
                                 />
                                 <FormInput
+                                id='knowledge-input-textarea'
                                     type="TextArea"
                                     label="Required Knowledge"
                                     readOnly={!enableEditing}
@@ -484,6 +490,7 @@ function ProposalForm({
                                     proposalField={ProposalFields.Required_Knowledge}
                                 />
                                 <FormInput
+                                id='notes-input-textarea'
                                     type="TextArea"
                                     label="Notes"
                                     readOnly={!enableEditing}
@@ -523,6 +530,7 @@ function ProposalForm({
                                                         {enableEditing && (
                                                             <>
                                                                 <FormInput
+                                                                input='Bsc-button'
                                                                     type="IconButton"
                                                                     label="BsC"
                                                                     readOnly={!enableEditing}
@@ -532,6 +540,7 @@ function ProposalForm({
                                                                     proposalField={ProposalFields.Level}
                                                                 />
                                                                 <FormInput
+                                                                id='Msc-input-button'
                                                                     type="IconButton"
                                                                     label="MsC"
                                                                     readOnly={!enableEditing}

@@ -82,6 +82,7 @@ const Notify = () => {
       <Popover.Header as="h3">
         Notifications {unreadCount > 0 && <Badge pill bg="danger"> {unreadCount} </Badge>}
         <CloseButton
+        id='popover-close-button'
           style={{ float: 'right' }}
           onClick={() => {
             setShowNotification(false);
@@ -139,7 +140,7 @@ const Notify = () => {
         onToggle={handleToggleNotification}
       >
         <Navbar.Text>
-          <BellFill color="white" bg="info" onClick={handleToggleNotification} />
+          <BellFill id='bellFill-icon-button' color="white" bg="info" onClick={handleToggleNotification} />
           {unreadCount > 0 && <Dot color="red" className="notification-dot"></Dot>}
         </Navbar.Text>
       </OverlayTrigger>

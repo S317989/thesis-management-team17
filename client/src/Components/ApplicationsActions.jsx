@@ -188,8 +188,8 @@ export const ViewCV = ({ cvFileName, studentId }) => {
       </FilePerson>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Student Exams and CV</Modal.Title>
+        <Modal.Header style={{overflow: 'hidden'}} closeButton>
+          <Modal.Title style={{overflow: 'hidden'}}>Student Exams and CV</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>Exams:</h4>
