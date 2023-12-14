@@ -164,8 +164,6 @@ export const ViewCV = ({ cvFileName, studentId }) => {
   const [showModal, setShowModal] = useState(false);
   const [studentExams, setStudentExams] = useState([]);
 
-  console.log(cvFileName, studentId);
-
   useEffect(() => {
     async function fetchData() {
       const exams = (await UtilitesAPI.getStudentExams(studentId));
@@ -188,8 +186,8 @@ export const ViewCV = ({ cvFileName, studentId }) => {
       </FilePerson>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header style={{overflow: 'hidden'}} closeButton>
-          <Modal.Title style={{overflow: 'hidden'}}>Student Exams and CV</Modal.Title>
+        <Modal.Header style={{ overflow: 'hidden' }} closeButton>
+          <Modal.Title style={{ overflow: 'hidden' }}>Student Exams and CV</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>Exams:</h4>
@@ -207,9 +205,11 @@ export const ViewCV = ({ cvFileName, studentId }) => {
               //   <li key={index}>{`${exam.subject}: ${exam.grade}`}</li>
             ))}
           </ListGroup>
-          {cvFileName ? <Button onClick={() => {
-            window.open('http://localhost:3000/api/uploads/' + cvFileName, '_blank', 'noopener,noreferrer');
-          }}>Check the student CV</Button> : <></>}
+          {cvFileName
+            ? <Button style={{ backgroundColor: '#23527c', borderRadius: '30px' }} onClick={() => {
+              window.open('http://localhost:3000/api/uploads/' + cvFileName, '_blank', 'noopener,noreferrer');
+            }}>Check the student CV</Button>
+            : <></>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
