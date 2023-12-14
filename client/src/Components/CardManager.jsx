@@ -8,7 +8,6 @@ import { UserContext } from '../Contexts';
 
 const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, requestRefresh }) => {
     const { user } = useContext(UserContext);
-    const [searchTerm, setSearchTerm] = useState('');
     const [availableProposals, setAvailableProposals] = useState([]);
     const [filteredProposals, setFilteredProposals] = useState([]);
     const [proposalFields, setProposalFields] = useState([]);
@@ -47,7 +46,6 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     };
 
     const handleSearch = (newValue) => {
-        setSearchTerm(newValue);
         setCurrentPage(1);
 
         if (newValue === '') {

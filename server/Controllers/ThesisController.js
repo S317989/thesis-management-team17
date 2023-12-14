@@ -10,13 +10,14 @@ module.exports = {
                 return res.status(200).json(thesis);
             })
             .catch((err) => {
+                console.log(err);
                 return res.status(500).json({ message: err.message });
             });
     },
 
     deleteThesisRequest: async function (req, res) {
         await thesisServices
-            .deleteThesisRequest(req.body.thesisId)
+            .deleteThesisRequest(req.params.thesisId)
             .then(() => {
                 return res.status(200).json('deleted');
             })
@@ -39,36 +40,36 @@ module.exports = {
     getThesis: async function (req, res) {
         try {
             const results = await thesisServices.getThesis(req.params.thesisId);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
     getThesisByStudent: async function (req, res) {
         try {
             const results = await thesisServices.getThesisByStudent(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
     getThesisBySupervisor: async function (req, res) {
         try {
             const results = await thesisServices.getThesisBySupervisor(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 
     getThesisByCosupervisor: async function (req, res) {
         try {
             const results = await thesisServices.getThesisByCosupervisor(req.user.id);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         } catch (error) {
-            return res.status(500);
+            return res.status(500).json({ message: error.message });
         }
     },
 

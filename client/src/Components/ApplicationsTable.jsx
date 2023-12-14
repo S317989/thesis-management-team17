@@ -5,7 +5,7 @@ import { UserContext } from "../Contexts";
 import { useNavigate } from 'react-router-dom';
 import { ShowProposalsForm, Delete, Archive } from './ProposalsActions';
 import { ProposalFields } from './ProposalsForm';
-import { Apply, Accept, Reject } from './ApplicationsActions'
+import { Apply, Accept, Reject, ViewCV } from './ApplicationsActions'
 
 // enums
 export const ApplicationStatus = {
@@ -45,6 +45,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
           <th>Application Date</th>
           <th>Expiration Date</th>
           <th>Status</th>
+          <th>CV</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -81,6 +82,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                 }
               })()
             )}</td>
+            <td><ViewCV cvFileName={application.Cv} /></td>
             <td>
               <ShowProposalsForm proposal={proposal} />
               {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?

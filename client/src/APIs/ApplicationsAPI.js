@@ -7,7 +7,7 @@ const ApplicationsAPI = {
     rejectApplication: async (applicationId) => await FetchAPIs.post(subParentURL + '/reject', { applicationId: applicationId }),
     getMyApplications: async () => await FetchAPIs.get(subParentURL + '/mine'),
     getApplicationsByTeacherProposals: async () => await FetchAPIs.get(subParentURL + '/for-my-proposals'),
-    applyToProposal: async (proposalId) => await FetchAPIs.post(subParentURL + '/apply',  { proposalId: proposalId }),
+    applyToProposal: async (formData) => await FetchAPIs.postCustomBody(subParentURL + '/apply', formData),
 }
 
 export default ApplicationsAPI;

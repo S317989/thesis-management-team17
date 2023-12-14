@@ -131,6 +131,7 @@ CREATE TABLE Application (
     Proposal_Id INTEGER NOT NULL,
     Date DATE NOT NULL,
     Status TEXT CHECK (Status IN ('Pending', 'Accepted', 'Rejected', 'Canceled')) NOT NULL,
+    Cv TEXT,
     FOREIGN KEY (Student_Id) REFERENCES Student(Id),
     FOREIGN KEY (Proposal_Id) REFERENCES Proposal(Id),
     PRIMARY KEY (Application_Id AUTOINCREMENT) 

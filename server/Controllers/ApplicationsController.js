@@ -40,14 +40,13 @@ module.exports = {
 
   createApplication: async function (req, res) {
     try {
-      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.id);
-
+      const applicationAdded = await applicationsServices.createApplication(req.body.proposalId, req.user.id, req.file ? req.file.filename : 'NULL');
       if (!applicationAdded) {
         return res.status(400).json({ message: "The student has pending or accepted application" });
       }
-
       return res.status(200).json({ message: 'application added' });
     } catch (err) {
+      console.log(err);
       return res.status(500).json({ message: err.message || 'Internal Server Error' });
     }
   },

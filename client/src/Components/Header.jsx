@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav } from 'react-bootstrap';
 import { PersonCircle } from "react-bootstrap-icons";
 import VirtualClockComponent from "./VirtualClockComponent.jsx";
+import Notify from "./Notify";
 import { UserContext } from "../Contexts.js";
 
 function Header() {
@@ -17,7 +18,10 @@ function Header() {
                 <>
                     {
                         user.role === "Student" ? (
-                            <Nav.Link onClick={() => navigate("/student-applications")}>Thesis Proposals</Nav.Link>
+                            <>
+                                <Nav.Link onClick={() => navigate("/student-applications")}>Thesis Proposals</Nav.Link>
+                                <Nav.Link onClick={() => navigate("/student-request")}>Student Request</Nav.Link>
+                            </>
                         ) : (
                             <>
                                 <Nav.Link onClick={() => navigate("/my-proposals")}>My Proposals</Nav.Link>
@@ -49,6 +53,11 @@ function Header() {
     const InfoLinks = () => {
         return (
             <>
+
+                <Nav.Link>
+                    <Notify />
+                </Nav.Link>
+
                 <Nav.Link>
                     <VirtualClockComponent />
                 </Nav.Link>

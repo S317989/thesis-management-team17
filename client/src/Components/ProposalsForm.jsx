@@ -1,20 +1,16 @@
 import "../Stylesheets/ProposalFormStyle.css";
 import React, { useContext, useEffect, useState } from "react";
-import { Form, Button, Col, InputGroup, ButtonGroup, Row, ToggleButton, ToggleButtonGroup, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Form, Button, Col, ButtonGroup, Row, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
 import { UserContext } from "../Contexts";
 import sweetalert from "sweetalert";
-import Select, { components } from "react-select";
+import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Input } from "@mui/material";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { Delete, Archive, ShowProposalsForm } from './ProposalsActions';
-import { Apply, Reject, Accept } from "./ApplicationsActions";
+import { Apply } from "./ApplicationsActions";
 import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
-
-const { MultiValueLabel } = components;
 
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
@@ -41,7 +37,6 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
     const [isInvalid, setIsInvalid] = useState(false);
 
     const handleBlur = () => {
-        console.log(value)
         if (type === "Select" && required && value.length === 0)
             setIsInvalid(true);
         else if (required && !value) {
@@ -52,7 +47,6 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
     };
 
     const handleChange = (property, newValue) => {
-
         setProposalData((old) => {
             const updatedData = { ...old };
             updatedData[property] = newValue;
@@ -462,6 +456,20 @@ function ProposalForm({
                         </Col>
                         <Col xs={12} md={8}>
                             <div className="textarea-section">
+                                {
+                                    user.role === 'Teacher'
+                                        ? <></>
+                                        :
+
+                                        <FormInput
+                                            type="Input"
+                                            label="Supervisor"
+                                            readOnly={true}
+                                            value={proposalData.Supervisor.Name + " " + proposalData.Supervisor.Surname + " [" + proposalData.Supervisor.Email + "] "}
+                                            setProposalData={setProposalData}
+                                            proposalField={ProposalFields.Supervisor}
+                                        />
+                                }
                                 <FormInput
                                  id='description-input-textarea'
                                     type="TextArea"

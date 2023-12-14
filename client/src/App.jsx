@@ -11,6 +11,7 @@ import BrowseApplications from './Pages/BrowseApplications.jsx';
 import BrowseProposals from './Pages/BrowseProposals.jsx';
 import MyProposals from './Pages/MyProposals.jsx';
 import StudentApplications from './Pages/StudentApplications.jsx';
+import StudentRequest from './Pages/StudentRequest.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/browse-proposals" element={<BrowseProposals />} />
                   <Route path="/my-proposals" element={<MyProposals />} />
                   <Route path="/student-applications" element={<StudentApplications />} />
+                  <Route path="student-request" element={<StudentRequest />} />
                 </Routes>
               </div>
             </UserContext.Provider>

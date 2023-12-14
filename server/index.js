@@ -43,7 +43,6 @@ app.use(express.json());
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:3000'],
     credentials: true,
-    origin: true
 };
 
 app.use(cors(corsOptions));
@@ -57,6 +56,8 @@ app.use(session({
     }
 }));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('session'));
