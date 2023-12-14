@@ -6,7 +6,7 @@ import ProposalsForm, { ProposalFields } from './ProposalsForm';
 function ProposalsModal({ proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete, show, setShow }) {
 
     return (
-        <Modal show={show} fullscreen onHide={() => setShow(false)}>
+        <Modal id='#proposal-modal-id' show={show} fullscreen onHide={() => setShow(false)}>
             <Modal.Header style={{overflow: 'hidden'}} closeButton className="modal-header">
                 <Modal.Title style={{overflow: 'hidden'}} className="modal-title">{
                     proposal ?

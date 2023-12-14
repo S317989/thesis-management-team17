@@ -30,7 +30,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
   const { user } = useContext(UserContext);
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover id='applications-table'>
       <thead>
         <tr>
           <th>Title</th>

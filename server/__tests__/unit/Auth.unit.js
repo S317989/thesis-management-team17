@@ -1,6 +1,6 @@
 import "jest-extended";
 const request = require('supertest');
-const AuthenticationController = require('../Controllers/AuthenticationController');
+const AuthenticationController = require('../../Controllers/AuthenticationController');
 
 describe("Authentication Tests", () => {
     let req, res;
@@ -23,6 +23,12 @@ describe("Authentication Tests", () => {
     test("CheckSession - Success", async () => {
         AuthenticationController.session(req, res);
 
+        expect(res.status).toHaveBeenCalledWith(200);
+    });
+
+    test("CheckSession - Success, not student", async () => {
+        req.user.role = 'lecturer';
+        AuthenticationController.session(req, res);
         expect(res.status).toHaveBeenCalledWith(200);
     });
 

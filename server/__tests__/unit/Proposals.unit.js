@@ -1,9 +1,9 @@
 'use strict';
 
-const proposalsServices = require('../Services/Proposals');
-const proposalsController = require('../Controllers/ProposalsController');
+const proposalsServices = require('../../Services/Proposals');
+const proposalsController = require('../../Controllers/ProposalsController');
 
-jest.mock('../Services/Proposals');
+jest.mock('../../Services/Proposals');
 
 describe('ApplicationsController', () => {
     let req, res;
