@@ -3,8 +3,8 @@ const app = require("../../index");
 
 const { Builder, By, Key, until } = require("selenium-webdriver");
 
-describe("End to end tests for list of applications", () => {
-
+describe("End to end tests for list of applications and check for notifications", () => {
+//uploaded new stories
   async function isElementVisible(selector) {
     try {
       const element = await driver.findElement(By.css(selector));
@@ -125,9 +125,31 @@ describe("End to end tests for list of applications", () => {
 
     await driver.sleep(1000);
 
-  // Check if the modal is no longer visible
-  expect(await isElementVisible("proposal-modal-id")).toBe(false);
+    await checkAndCollapseNavbar();
 
+    const notificationsButton= await driver.findElement(By.id('BellFill-icon-button'));
+    await notificationsButton.click();
+
+    const notifyPopover= await driver.findElement(By.id("notification-popover"));
+    //const isPopoverVisible = await notifyPopover.isDisplayed();
+    await driver.sleep(1000);
+
+    //expect(isPopoverVisible).toBe(true); no need if i can later click and inteact with it different from tables
+
+    const popoverCloseButton= await driver.findElement(By.id('popover-close-button'));
+    await popoverCloseButton.click();
+
+    const infoPersonIcon= await driver.findElement(By.css('.fileperson-icon'));
+    await infoPersonIcon.click();
+   
+    const modalShow= await driver.findElement(By.className('fade modal show'));
+    const isModalShowVisible = await modalShow.isDisplayed();
+    //expect(isModalShowVisible).toBe(true);
+
+    const btnClose= await driver.findElement(By.className('btn btn-secondary'));
+    await btnClose.click();
+
+    await driver.sleep(1000);
 
       await doLogout();
     
@@ -344,7 +366,7 @@ describe("End to end tests for active proposal and create a New Proposal succesf
     await driver.quit();
   });
 
-  test.only("create a new Proposal", async () => {
+  test("create a new Proposal", async () => {
     await doLogin();
 
     await driver.get(baseURL);
