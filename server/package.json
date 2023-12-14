@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "concurrently \"nodemon index.js\" \"npm run test:coverage\"",
+    "start": "concurrently \"nodemon index.js\"",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --runInBand --coverage --colors",
     "test:unit": "npx jest --runInBand --coverage --coverageDirectory=coverage/coverage_unit --colors"
