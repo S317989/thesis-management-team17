@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, ListGroup, Badge } from 'react-bootstrap';
 import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import sweetalert from 'sweetalert';
 import { FilePerson } from "react-bootstrap-icons";
+import UtilitesAPI from '../APIs/UtilitiesAPI';
 
 export const Apply = ({ proposalId, OnComplete }) => {
   const [showModal, setShowModal] = useState(false);
@@ -67,6 +68,7 @@ export const Apply = ({ proposalId, OnComplete }) => {
           <Modal.Title>Upload CV</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>* Sending a cv is optional</p>
           {/* <input type="file" accept=".pdf, .doc, .docx" onChange={handleFileChange} /> */}
           <input type="file" name="pdfFile" accept=".pdf" onChange={handleFileChange} required />
         </Modal.Body>
@@ -158,8 +160,19 @@ export const Reject = ({ applicationId, OnComplete }) => {
 };
 
 
-export const ViewCV = ({ cvFileName }) => {
+export const ViewCV = ({ cvFileName, studentId }) => {
   const [showModal, setShowModal] = useState(false);
+  const [studentExams, setStudentExams] = useState([]);
+
+  console.log(cvFileName, studentId);
+
+  useEffect(() => {
+    async function fetchData() {
+      const exams = (await UtilitesAPI.getStudentExams(studentId));
+      setStudentExams(exams || []);
+    }
+    fetchData();
+  }, []);
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -168,13 +181,6 @@ export const ViewCV = ({ cvFileName }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  // Dummy data for testing
-  const dummyExams = [
-    { Cod_Course: '04GSPOV', Title_Course: 'Software Engineering', CFU: '8', Grade: 26, Date: '2023-07-04' },
-    { Cod_Course: '01UDFOV', Title_Course: 'Web Applications I', CFU: '6', Grade: 20, Date: '2023-02-22' },
-    { Cod_Course: '01SQMOV', Title_Course: 'Data Science and Database Technology', CFU: '8', Grade: 29, Date: '2023-07-19' },
-  ];
 
   return (
     <>
@@ -188,7 +194,7 @@ export const ViewCV = ({ cvFileName }) => {
         <Modal.Body>
           <h4>Exams:</h4>
           <ListGroup as="ol" numbered className="mt-3 mb-3">
-            {dummyExams.map((exam, index) => (
+            {studentExams.map((exam, index) => (
               <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{`${exam.Title_Course}:`}{' '} <Badge bg="primary">{`${exam.Grade}`}</Badge> </div>

@@ -10,5 +10,6 @@ utilitiesRouter.get('/external-cosupervisors', utilitiesController.getAllExterna
 utilitiesRouter.post('/external-cosupervisors', utilitiesController.addExternalCoSupervisor); 
 utilitiesRouter.get('/keywords', utilitiesController.getAllKeywords); 
 utilitiesRouter.post('/keywords', utilitiesController.addKeyword); 
+utilitiesRouter.get('/exams/:studentId', utilitiesController.getStudentExams); 
 
 module.exports = utilitiesRouter;

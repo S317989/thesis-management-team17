@@ -4,7 +4,7 @@ const utilitiesServices = require('../Services/Utilities');
 
 module.exports = {
   getAllExternalCosupervisors: async function (req, res) {
-    
+
     await utilitiesServices
       .getAllExternalCoSupervisor()
       .then((result) => {
@@ -16,7 +16,7 @@ module.exports = {
   },
 
   getAllCds: async function (req, res) {
-    
+
 
     await utilitiesServices
       .getAllDegrees()
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   getAllGroups: async function (req, res) {
-    
+
 
     await utilitiesServices
       .getAllGroups()
@@ -42,7 +42,7 @@ module.exports = {
   },
 
   getAllTeacher: async function (req, res) {
-    
+
 
     await utilitiesServices
       .getAllTeacher()
@@ -57,7 +57,7 @@ module.exports = {
   },
 
   getAllKeywords: async function (req, res) {
-    
+
 
     await utilitiesServices
       .getAllKeywords()
@@ -72,7 +72,7 @@ module.exports = {
   },
 
   addKeyword: async function (req, res) {
-    
+
 
     await utilitiesServices
       .addKeyword(req.body.keyword)
@@ -80,17 +80,30 @@ module.exports = {
         return res.status(200).json(result);
       })
       .catch((err) => {
-        
+
         return res.status(500).json({ message: err.message });
       });
   },
 
   addExternalCoSupervisor: async function (req, res) {
-    
+
 
     await utilitiesServices
       .addExternalCoSupervisor(req.body)
       .then((result) => {
+        return res.status(200).json(result);
+      })
+      .catch((err) => {
+        return res.status(500).json({ message: err.message });
+      });
+  },
+
+  getStudentExams: async function (req, res) {
+    console.log('reached');
+    await utilitiesServices
+      .getStudentExams(req.params.studentId)
+      .then((result) => {
+        console.log(result);
         return res.status(200).json(result);
       })
       .catch((err) => {

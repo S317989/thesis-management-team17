@@ -82,7 +82,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                 }
               })()
             )}</td>
-            <td><ViewCV cvFileName={application.Cv} /></td>
+            <td><ViewCV cvFileName={application.Cv} studentId={application[ApplicationFields.Student_Id]}/></td>
             <td>
               <ShowProposalsForm proposal={proposal} />
               {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?

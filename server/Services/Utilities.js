@@ -63,3 +63,9 @@ exports.addExternalCoSupervisor = async (data) => {
   });
   return result;
 };
+
+exports.getStudentExams = async (studentId) => {
+  let result;
+  result = await db.getData('SELECT * FROM Career WHERE Student_Id = ?;', [studentId]);
+  return result;
+}
