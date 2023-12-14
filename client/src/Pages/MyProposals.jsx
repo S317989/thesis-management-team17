@@ -52,7 +52,7 @@ const MyProposals = () => {
         <h3>My Active Proposals</h3>
       </Row>
       <Row className="mt-4">
-        <Col xs={12} className="text-end">
+        <Col xs={12} className="d-flex justify-content-center mb-4 text-center">
           <ShowProposalsForm OnComplete={requestRefresh} EnableEditing={false} />
         </Col>
       </Row>
