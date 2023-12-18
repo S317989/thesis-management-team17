@@ -98,14 +98,14 @@
 
 .field-item-disabled,
 .field-item-enabled {
-    border-color: rgb(255, 122, 8);
-    background-color: rgb(255, 220, 150);
+    border-color: rgb(204, 197, 200);
+    background-color: rgb(204, 197, 200);
     margin-bottom: 10px;
 }
 
 .field-item-disabled:focus {
-    border-color: rgb(255, 122, 8);
-    background-color: rgb(255, 220, 150);
+    border-color: rgb(204, 197, 200);
+    background-color: rgb(204, 197, 200);
 }
 
 .action-allowed-button {

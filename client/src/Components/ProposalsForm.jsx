@@ -117,16 +117,19 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         styles={{
                             control: (baseStyle) => ({
                                 ...baseStyle,
-                                backgroundColor: 'rgb(255, 220, 150)',
+                                backgroundColor: 'rgb(204, 197, 200)',
                             }),
                             multiValueLabel: (baseStyle, { data }) => ({
                                 ...baseStyle,
-                                backgroundColor: '#9fd2ff',
+                                backgroundColor: '#E0E0E0',
                                 color: 'black',
+                                paddingRight: '8px',
+                                paddingLeft: '8px',
                             }),
                             multiValueRemove: (baseStyle, { data }) => ({
                                 ...baseStyle,
-                                backgroundColor: '#9fd2ff',
+                                display: readOnly ? 'none' : 'block',
+                                backgroundColor: '#E0E0E0',
                                 color: 'black',
                                 '&:hover': {
                                     backgroundColor: '#9fd2ff',
@@ -155,16 +158,19 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                         styles={{
                             control: (provided, state) => ({
                                 ...provided,
-                                backgroundColor: 'rgb(255, 220, 150)',
+                                backgroundColor: 'rgb(204, 197, 200)',
                             }),
-                            multiValueLabel: (baseStyle, { data }) => ({
+                            multiValueLabel: (baseStyle) => ({
                                 ...baseStyle,
-                                backgroundColor: '#9fd2ff',
+                                backgroundColor: '#E0E0E0',
                                 color: 'black',
+                                paddingRight: '8px',
+                                paddingLeft: '8px',
                             }),
-                            multiValueRemove: (baseStyle, { data }) => ({
+                            multiValueRemove: (baseStyle) => ({
                                 ...baseStyle,
-                                backgroundColor: '#9fd2ff',
+                                display: readOnly ? 'none' : 'block',
+                                backgroundColor: '#E0E0E0',
                                 color: 'black',
                                 '&:hover': {
                                     backgroundColor: '#9fd2ff',
@@ -185,7 +191,7 @@ const FormInput = ({ type, label, readOnly, value, options, setProposalData, pro
                     {
                         React.cloneElement(
                             <Button
-                            id={`iconButton-${label}`}
+                                id={`iconButton-${label}`}
                                 className={
                                     `circle-button${value === options ? '-selected' : ''} rounded-circle`}
                                 onClick={() => handleChange(proposalField, options)}
@@ -396,7 +402,7 @@ function ProposalForm({
                                     required={true}
                                 />
                                 <FormInput
-                                className='type-input-text'
+                                    className='type-input-text'
                                     type="Input"
                                     label="Type"
                                     readOnly={!enableEditing}
@@ -405,7 +411,7 @@ function ProposalForm({
                                     proposalField={ProposalFields.Type}
                                 />
                                 <FormInput
-                                id='date-input-picker'
+                                    id='date-input-picker'
                                     type="Date"
                                     label="Expiration"
                                     readOnly={!enableEditing}
@@ -471,7 +477,7 @@ function ProposalForm({
                                         />
                                 }
                                 <FormInput
-                                 id='description-input-textarea'
+                                    id='description-input-textarea'
                                     type="TextArea"
                                     label="Description"
                                     readOnly={!enableEditing}
@@ -481,7 +487,7 @@ function ProposalForm({
                                     required={true}
                                 />
                                 <FormInput
-                                id='knowledge-input-textarea'
+                                    id='knowledge-input-textarea'
                                     type="TextArea"
                                     label="Required Knowledge"
                                     readOnly={!enableEditing}
@@ -490,7 +496,7 @@ function ProposalForm({
                                     proposalField={ProposalFields.Required_Knowledge}
                                 />
                                 <FormInput
-                                id='notes-input-textarea'
+                                    id='notes-input-textarea'
                                     type="TextArea"
                                     label="Notes"
                                     readOnly={!enableEditing}
@@ -530,7 +536,7 @@ function ProposalForm({
                                                         {enableEditing && (
                                                             <>
                                                                 <FormInput
-                                                                input='Bsc-button'
+                                                                    input='Bsc-button'
                                                                     type="IconButton"
                                                                     label="BsC"
                                                                     readOnly={!enableEditing}
@@ -540,7 +546,7 @@ function ProposalForm({
                                                                     proposalField={ProposalFields.Level}
                                                                 />
                                                                 <FormInput
-                                                                id='Msc-input-button'
+                                                                    id='Msc-input-button'
                                                                     type="IconButton"
                                                                     label="MsC"
                                                                     readOnly={!enableEditing}
