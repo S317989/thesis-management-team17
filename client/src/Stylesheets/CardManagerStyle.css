@@ -82,22 +82,3 @@
 .badge-item {
     background-color: rgb(252, 122, 8);
 }
-
-.filter-badge {
-    background-color: #808080 !important;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-#dropdown-basic {
-    background-color: #23527c;
-    border: none;
-}
-
-#dropdown-basic::after {
-    display: none;
-}
-
-#dropdown-table {
-    margin: 0;
-}

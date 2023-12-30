@@ -1,19 +1,22 @@
-// FilterComponent.jsx
+import "../Stylesheets/FilterStyle.css"
 import React, { useEffect, useState } from "react";
-import { Dropdown, Table, InputGroup, FormControl } from "react-bootstrap";
-import { FilterCircle } from "react-bootstrap-icons";
+import { Container, Row, Col, Dropdown, Table, InputGroup, FormControl, Form, FormGroup, Badge, Button } from "react-bootstrap";
+import { FilterCircle, CheckLg, XLg, Check, X } from "react-bootstrap-icons";
+import Select from 'react-select';
+import UtilitesAPI from "../APIs/UtilitiesAPI";
 
 const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter }) => {
-    const [proposalMiddle, setProposalMiddle] = useState(0);
     const [editableFields, setEditableFields] = useState({});
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeField, setActiveField] = useState({
-        type: '',
-        value: '',
+        type: null,
+        value: null,
     });
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [activeProposalFields, setActiveProposalFields] = useState([]);
+    const [options, setOptions] = useState([]);
 
-    const handleFieldClick = (field) => {
+
+    const handleFieldClick = async (field) => {
         setActiveField({
             type: field,
             value: editableFields[field] || ''
@@ -21,6 +24,67 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
         setEditableFields((prevFields) => ({
             ...prevFields,
             [field]: true,
+        }));
+
+        let list;
+
+        switch (field) {
+            case 'Level':
+                setOptions([
+                    { value: 'Bachelor', label: 'Bachelor' },
+                    { value: 'Master', label: 'Master' },
+                ]);
+                break;
+            case 'Cosupervisors':
+                list = await UtilitesAPI.getListTeacher();
+
+                setOptions(list.map((item) => {
+                    return { value: item, label: item.Name + " " + item.Surname + " (" + item.Email + ")" }
+                }))
+                break;
+            case 'ExternalCosupervisors':
+                list = await UtilitesAPI.getExternalCosupervisorList();
+
+                setOptions(list.map((item) => {
+                    return { value: item, label: item.Name + " " + item.Surname + " (" + item.Email + ")" }
+                }))
+                break;
+            case 'Degrees':
+                list = await UtilitesAPI.getListCds()
+
+                setOptions(list.map((item) => {
+                    return { value: item, label: item.Title_Degree }
+                }))
+                break;
+            case 'Keywords':
+                list = await UtilitesAPI.getKeywordsList();
+
+                setOptions(list.map((item) => {
+                    return { value: item, label: item.Name }
+                }))
+                break;
+            case 'Groups':
+                list = await UtilitesAPI.getAllGroups();
+
+                setOptions(list.map((item) => {
+                    return { value: item, label: item.Name }
+                }))
+                break;
+            default:
+                setOptions([])
+                break;
+        }
+    };
+
+
+    const handleDropdownToggle = (isOpen) => {
+        setIsDropdownOpen(isOpen);
+    };
+
+    const handleSelectChange = (newValue) => {
+        setEditableFields((prevFields) => ({
+            ...prevFields,
+            [activeField.type]: newValue,
         }));
     };
 
@@ -31,9 +95,18 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
         }));
     };
 
-    const handleInputBlur = (field) => {
-        if (activeField && editableFields[activeField.value] && editableFields[activeField.value] !== true) {
-            onAddFilter(activeField.type, editableFields[activeField.value]);
+    /**
+     * IT MIGHT DON'T BE NEEDED ANYMORE
+     * const handleInputBlur = (event) => {
+        console.log(event);
+        if (activeField.type && editableFields[activeField.type] && editableFields[activeField.type] !== true) {
+            if (activeField.type === 'Cosupervisors' || activeField.type === 'ExternalCosupervisors') {
+                onAddFilter(activeField.type, editableFields[activeField.type].label.substring(0, editableFields[activeField.type].label.indexOf('(') - 1));
+            } else if (activeField.type === 'Keywords' || activeField.type === 'Level' || activeField.type === 'Degrees' || activeField.type === 'Groups') {
+                onAddFilter(activeField.type, editableFields[activeField.type].label);
+            } else {
+                onAddFilter(activeField.type, editableFields[activeField.type]);
+            }
             setActiveProposalFields((prevFields) => prevFields.filter((field) => field !== activeField.type));
         }
 
@@ -47,90 +120,120 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
             [activeField.type]: false,
         }));
 
-        setDropdownOpen(false);
-    };
+        setIsDropdownOpen(false);
+    };*/
 
     const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-            if (activeField.type && editableFields[activeField.type] && editableFields[activeField.type] !== true) {
-                onAddFilter(activeField.type, editableFields[activeField.type]);
-                setActiveProposalFields((prevFields) => prevFields.filter((field) => field !== activeField.type));
-            }
-            setActiveField({
-                type: null,
-                value: null,
-            });
-            setEditableFields((prevFields) => ({ ...prevFields, [activeField.type]: false }));
-            setDropdownOpen(false);
-        }
+        if (e.key === "Enter") handleConfirmFilter();
+
+        setIsDropdownOpen(false);
     };
 
+    const handleConfirmFilter = () => {
+        if (activeField.type && editableFields[activeField.type] && editableFields[activeField.type] !== true) {
+            if (activeField.type === 'Cosupervisors' || activeField.type === 'ExternalCosupervisors') {
+                onAddFilter(activeField.type, editableFields[activeField.type].label.substring(0, editableFields[activeField.type].label.indexOf('(') - 1));
+            } else if (activeField.type === 'Keywords' || activeField.type === 'Level' || activeField.type === 'Degrees' || activeField.type === 'Groups') {
+                onAddFilter(activeField.type, editableFields[activeField.type].label);
+            } else {
+                onAddFilter(activeField.type, editableFields[activeField.type]);
+            }
+            setActiveProposalFields((prevFields) => prevFields.filter((field) => field !== activeField.type));
+        }
+
+        setActiveField({
+            type: null,
+            value: null,
+        });
+        setEditableFields((prevFields) => ({ ...prevFields, [activeField.type]: false }));
+    }
+
     useEffect(() => {
-        setProposalMiddle(Math.ceil(proposalFields.length / 2));
         setActiveProposalFields(proposalFields);
     }, [proposalFields]);
 
     return (
-        <Dropdown style={{ zIndex: 1, position: 'relative' }} show={dropdownOpen} onToggle={(isOpen) => setDropdownOpen(isOpen)} drop={'down-centered'}>
-            <Dropdown.Toggle id="dropdown-basic">
-                Filters
-                <FilterCircle style={{ marginLeft: '5px' }} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Table hover borderless id="dropdown-table">
-                    <tbody>
-                        <tr>
-                            <td>
-                                {activeProposalFields.slice(0, proposalMiddle).map((field, index) => (
-                                    <div key={index}>
-                                        {editableFields[field] ? (
-                                            <InputGroup>
-                                                <FormControl
-                                                id={`input-${field}`}
-                                                    type={field === "Expiration" ? "date" : "text"}
-                                                    placeholder={field}
-                                                    value={editableFields[field] !== true ? editableFields[field] : ""}
-                                                    onChange={handleInputChange}
-                                                    onBlur={() => handleInputBlur(field)}
-                                                    onKeyPress={handleKeyPress}
-                                                    style={{ cursor: "pointer" }}
-                                                    autoFocus
-                                                />
-                                            </InputGroup>
-                                        ) : (
-                                            <p onClick={() => handleFieldClick(field)} id={`clickable-${field}`} onKeyDown={() => handleFieldClick(field)} className="clickable-text">{field}</p>
-                                        )}
-                                    </div>
-                                ))}
-                            </td>
-                            <td>
-                                {activeProposalFields.slice(proposalMiddle).map((field, index) => (
-                                    <div key={index}>
-                                        {editableFields[field] ? (
-                                            <InputGroup>
-                                                <FormControl
-                                                    id={`input-${field}`}
-                                                    type="text"
-                                                    placeholder={field}
-                                                    value={editableFields[field] !== true ? editableFields[field] : ""}
-                                                    onChange={handleInputChange}
-                                                    onBlur={() => handleInputBlur(field)}
-                                                    onKeyPress={handleKeyPress}
-                                                    style={{ cursor: "pointer" }}
-                                                    autoFocus
-                                                />
-                                            </InputGroup>
-                                        ) : (
-                                            <p onClick={() => handleFieldClick(field)} id={`clickable-${field}`} onKeyDown={() => handleFieldClick(field)} className="clickable-text">{field}</p>
-                                        )}
-                                    </div>
-                                ))}
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
-            </Dropdown.Menu>
-        </Dropdown>
+        <Container fluid className={`filter-container`}>
+            <Row>
+                <Col>
+                    <div className="mb-2">
+                        {filters.length > 1 &&
+                            <Badge className="filter-badge-all" onClick={() => {
+                                filters.forEach((filter) => {
+                                    onRemoveFilter(filter.field);
+                                });
+                            }}>
+                                {`All`} &#10005;
+                            </Badge>
+                        }
+                        {filters.map((filter, index) => (
+                            <Badge
+                                key={index}
+                                className="filter-badge"
+                                onClick={() => onRemoveFilter(filter.field)}
+                            >
+                                {`${filter.field} - ${filter.value}`} &#10005;
+                            </Badge>
+                        ))}
+
+                    </div>
+                </Col>
+            </Row>
+            <Row className={`filter-row`}>
+                <Col md={activeField.type !== null ? 4 : ''} className={`filter-col${activeField.type === null ? '-cen' : '-end'}`}>
+                    <Dropdown className={`filter-dropdown${isDropdownOpen ? '-open' : ''}`} onToggle={(isOpen, event) => handleDropdownToggle(isOpen, event)} show={isDropdownOpen} drop='down-centered'>
+                        <Dropdown.Toggle id="dropdown-basic">
+                            {activeField.type ? activeField.type : 'Filters'} <FilterCircle size={20} />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className="filters-list">
+                            {
+                                activeProposalFields.map((field, index) => (
+                                    <Dropdown.Item key={index} onClick={() => handleFieldClick(field)} className="drop-items">{field}</Dropdown.Item>
+                                ))
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+
+                {
+                    activeField.type &&
+                    <Col className={`input-col${isDropdownOpen ? '-open' : '-closed'}`}>
+                        <Form.Group className="input-field">
+                            <InputGroup>
+                                {
+                                    activeField.type === 'Level' || activeField.type === 'Cosupervisors' || activeField.type === 'ExternalCosupervisors' || activeField.type === 'Degrees' || activeField.type === 'Keywords' || activeField.type === 'Groups' ?
+                                        <Select
+                                            name={activeField.type}
+                                            classNamePrefix="select"
+                                            placeholder={`Filter for ${activeField.type}`}
+                                            onChange={handleSelectChange}
+                                            onKeyDown={handleKeyPress}
+                                            options={options}
+                                            styles={{
+                                                control: (provided) => ({
+                                                    ...provided,
+                                                    width: '250px',
+                                                }),
+                                            }}
+                                        /> :
+                                        <Form.Control
+                                            as={activeField.type === 'Description' || activeField.type === 'Required_Knowledge' ? 'textarea' : 'input'}
+                                            type={activeField.type === 'Expiration' ? 'date' : 'text'}
+                                            placeholder={`Filter for ${activeField.type}`}
+                                            onChange={handleInputChange}
+                                            onKeyDown={handleKeyPress}
+                                            style={{ resize: 'both', maxWidth: '20rem' }}
+                                        />
+                                }
+                                <InputGroup.Text style={{ color: "green" }} onClick={handleConfirmFilter}><CheckLg size={20} /></InputGroup.Text>
+                                <InputGroup.Text style={{ color: "red" }} onMouseDown={() => setActiveField({ type: null, value: null })}><XLg size={20} /></InputGroup.Text>
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
+                }
+            </Row>
+        </Container >
     );
 };
 

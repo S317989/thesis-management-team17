@@ -1,6 +1,6 @@
 import "../Stylesheets/CardManagerStyle.css";
 import React, { useState, useEffect, useContext } from 'react';
-import { Col, Form, Container, Row, Badge, Button } from 'react-bootstrap';
+import { Col, Form, Container, Row, Badge, Button, Dropdown } from 'react-bootstrap';
 import CustomCard from './CustomCard';
 import ProposalPagination from './ProposalPagination';
 import FilterComponent from './FilterComponent';
@@ -115,9 +115,9 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         <Container className="card-manager-container">
             {
                 proposalFields.length > 0 && (
-                    <Container fluid style={{ zIndex: 1, position: 'static' }}>
-                        <Row className="mb-3" style={{ zIndex: 1, position: 'relative' }}>
-                            <Col style={{ zIndex: 1, position: 'relative' }}>
+                    <Container fluid>
+                        <Row className="mb-3">
+                            <Col>
                                 <FilterComponent
                                     proposalFields={proposalFields}
                                     onAddFilter={addFilter}
@@ -126,56 +126,42 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
                                 />
                             </Col>
                         </Row>
-                        <Row>
-                            <Col>
-                                <div className="mb-2">
-                                    {filters.map((filter, index) => (
-                                        <Badge
-                                            key={index}
-                                            className="filter-badge"
-                                            onClick={() => removeFilter(filter.field)}
-                                        >
-                                            {`${filter.field} - ${filter.value}`} &#10005;
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </Col>
-                        </Row>
                     </Container>
                 )
-
             }
-            {
-                filteredProposals.length === 0 ? (
-                    <p>No Found Proposals</p>
-                ) : (
-                    <>
-                        {groupCardsIntoRows(currentProposals).map((row, rowIndex) => (
-                            <Row key={rowIndex} className="card-manager-row">
-                                {row.map((proposal, colIndex) => (
-                                    <CustomCard
-                                        key={colIndex}
-                                        proposal={proposal}
-                                        EnableApplying={EnableApplying}
-                                        EnableArchiving={EnableArchiving}
-                                        EnableDeleting={EnableDeleting}
-                                        EnableEditing={EnableEditing !== undefined ? !EnableEditing : undefined}
-                                        OnComplete={requestRefresh}
-                                    />
-                                ))}
-                            </Row>
-                        ))}
-                        <Col xs={12} className="pagination-container">
-                            <ProposalPagination
-                                proposalsPerPage={proposalsPerPage}
-                                totalProposals={filteredProposals.length}
-                                currentPage={currentPage}
-                                setCurrentPage={setCurrentPage}
-                            />
-                        </Col>
-                    </>
-                )
-            }
+            <Container fluid>
+                {
+                    filteredProposals.length === 0 ? (
+                        <p>No Found Proposals</p>
+                    ) : (
+                        <>
+                            {groupCardsIntoRows(currentProposals).map((row, rowIndex) => (
+                                <Row key={rowIndex} className="card-manager-row">
+                                    {row.map((proposal, colIndex) => (
+                                        <CustomCard
+                                            key={colIndex}
+                                            proposal={proposal}
+                                            EnableApplying={EnableApplying}
+                                            EnableArchiving={EnableArchiving}
+                                            EnableDeleting={EnableDeleting}
+                                            EnableEditing={EnableEditing !== undefined ? !EnableEditing : undefined}
+                                            OnComplete={requestRefresh}
+                                        />
+                                    ))}
+                                </Row>
+                            ))}
+                            <Col xs={12} className="pagination-container">
+                                <ProposalPagination
+                                    proposalsPerPage={proposalsPerPage}
+                                    totalProposals={filteredProposals.length}
+                                    currentPage={currentPage}
+                                    setCurrentPage={setCurrentPage}
+                                />
+                            </Col>
+                        </>
+                    )
+                }
+            </Container>
         </Container>
     );
 }
