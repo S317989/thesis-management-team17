@@ -87,7 +87,7 @@ const StudentApplications = () => {
                         }
                     </Row>
 
-                    <Row className="accordion-card-column">
+                    <Row className="accordion-card-column-Old-Applications">
                         <Accordion>
                             <Accordion.Item eventKey="0">
                                 <Col>
