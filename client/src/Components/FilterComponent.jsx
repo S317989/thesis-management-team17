@@ -182,7 +182,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
             </Row>
             <Row className={`filter-row`}>
                 <Col md={activeField.type !== null ? 4 : ''} className={`filter-col${activeField.type === null ? '-cen' : '-end'}`}>
-                    <Dropdown className={`filter-dropdown${isDropdownOpen ? '-open' : ''}`} onToggle={(isOpen, event) => handleDropdownToggle(isOpen, event)} show={isDropdownOpen} drop='down-centered'>
+                    <Dropdown className={`filter-dropdown${isDropdownOpen ? '-open' : ''}`} onToggle={(isOpen) => handleDropdownToggle(isOpen)} show={isDropdownOpen} drop='down-centered'>
                         <Dropdown.Toggle id="dropdown-basic">
                             {activeField.type ? activeField.type : 'Filters'} <FilterCircle size={20} />
                         </Dropdown.Toggle>
