@@ -1,5 +1,6 @@
 'use strict';
 const db = require("../Database/DAO");
+const NotificationsServices = require('./Notifications');
 
 /*
 Thesis table fields
@@ -42,6 +43,8 @@ module.exports = {
           VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description]);
 
                 thesisId = (await db.getOne('SELECT MAX(Id) AS Id FROM Thesis', [])).Id;
+                await NotificationsServices.addNotification(data.Supervisor_Id, 'New Start Thesis Request',
+                `A new Start Thesis Request was made to you with the title: ${data.Title}.`);
             }
 
             if (data.cosupervisors && data.cosupervisors.length > 0) {
