@@ -190,7 +190,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                         <Dropdown.Menu className="filters-list">
                             {
                                 activeProposalFields.map((field, index) => (
-                                    <Dropdown.Item key={index} onClick={() => handleFieldClick(field)} className="drop-items">{field}</Dropdown.Item>
+                                    <Dropdown.Item key={index} onClick={() => handleFieldClick(field)} className={`drop-items-${field}`} >{field}</Dropdown.Item>
                                 ))
                             }
                         </Dropdown.Menu>

@@ -41,7 +41,7 @@ describe("End to end tests for list of applications and check for notifications"
 
     await driver.sleep(1000);
 
-    const submitButton = await driver.findElement(By.css("button.c1939bbc3.cc78b8bf3.ce1155df5.c1d2ca6e3.c331afe93"));
+    const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
 
     // remove disabled property from button
     await driver.executeScript(
@@ -192,11 +192,11 @@ afterAll(async () => {
     await filterButton.click();
 
     // Click on the "Title" clickable text
-    const titleClickableText = await driver.findElement(By.id("clickable-Title"));
+    const titleClickableText = await driver.findElement(By.className("drop-items-Title dropdown-item"));
     await titleClickableText.click();
 
     // Insert an input text in the "Title" field
-    const titleInput = await driver.findElement(By.id("input-Title"));
+    const titleInput = await driver.findElement(By.className("form-control"));
     await titleInput.sendKeys("Ex");
 
     // Press Enter on the keyboard
@@ -305,6 +305,7 @@ afterAll(async () => {
      await driver.sleep(1000);
     //can add check on errors on fields input in other tests
      await doLogout();
+     await driver.sleep(1000);
     
   }, 20000);
 
