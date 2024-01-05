@@ -44,7 +44,7 @@ function Home() {
                                             <strong>Nationality:</strong> {user.nationality}
                                         </Card.Text>
                                     </>
-                                ) : (
+                                ) : user.role === 'Teacher' ? (
                                     <>
                                         <Card.Title>Teacher Informations</Card.Title>
                                         <Card.Text>
@@ -55,6 +55,15 @@ function Home() {
                                             <strong>Group:</strong> {user.cod_group}
                                             <br />
                                             <strong>Department:</strong> {user.cod_department}
+                                        </Card.Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Card.Title>Secretary Informations</Card.Title>
+                                        <Card.Text>
+                                            <strong>Surname:</strong> {user.surname}
+                                            <br />
+                                            <strong>Name:</strong> {user.name}
                                         </Card.Text>
                                     </>
                                 )}

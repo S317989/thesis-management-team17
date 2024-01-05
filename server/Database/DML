@@ -42,6 +42,9 @@ INSERT INTO Student VALUES
     (314140, 'Irmak', 'Gizem', 'Female', 'Turkish', 's314140@studenti.polito.it', 1, 2022),
     (319572, 'Di Paolo', 'Domenico', 'Male', 'Italian', 's319572@studenti.polito.it', 1, 2022);
 
+--Secretary
+INSERT INTO Secretary VALUES (00001, 'Smith', 'Linda', 'c00001@secretary-email.com'):
+
 --Career
 INSERT INTO Career VALUES
     (317989, '01SQMOV', 'Data Science e Tecnologie per le Basi di Dati', 8, 26, '2023-07-19'),

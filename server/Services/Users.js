@@ -30,7 +30,7 @@ module.exports = {
 
     getTeacherInfos: async function (id) {
         try {
-            
+
             const sql = 'SELECT * FROM Teacher WHERE Id = ?';
             const row = await db.getOne(sql, [id]);
             if (row === undefined) return { status: 404, message: 'Teacher not found' };
@@ -52,17 +52,45 @@ module.exports = {
         }
     },
 
+    getSecretaryInfos: async function (id) {
+        try {
+            const sql = 'SELECT * FROM Secretary WHERE Id = ?';
+
+            const row = await db.getOne(sql, [id]);
+
+            if (row === undefined) return { status: 404, message: 'Secretary not found' };
+            else {
+                const secretaryInfos = {
+                    id: row.Id,
+                    surname: row.Surname,
+                    name: row.Name,
+                    email: row.Email,
+                    role: 'Secretary'
+                };
+
+                return secretaryInfos;
+            }
+        } catch (e) {
+            return { status: 500, message: 'Error during secretary infos retrieving' };
+        }
+    },
+
     getUserById: async function (id) {
         try {
             const sql = 'SELECT * FROM User WHERE Id = ?';
             const row = await db.getOne(sql, [id]);
             if (row === undefined) return { status: 404, message: 'User not found' };
             else {
-                const userInfos =
-                    row.Role === 'Student'
-                        ? await this.getStudentInfos(row.Id)
-                        : await this.getTeacherInfos(row.Id);
+                let userInfos;
 
+                if (row.Role === 'Student')
+                    userInfos = await this.getStudentInfos(row.Id);
+                else if (row.Role === 'Teacher')
+                    userInfos = await this.getTeacherInfos(row.Id);
+                else if (row.Role === 'Secretary')
+                    userInfos = await this.getSecretaryInfos(row.Id);
+
+                console.log(userInfos)
                 return userInfos;
             }
         } catch (e) {

@@ -22,11 +22,15 @@ function Header() {
                                 <Nav.Link onClick={() => navigate("/student-applications")}>Thesis Proposals</Nav.Link>
                                 <Nav.Link onClick={() => navigate("/student-request")}>Student Request</Nav.Link>
                             </>
-                        ) : (
+                        ) : user.role === "Teacher" ? (
                             <>
                                 <Nav.Link onClick={() => navigate("/my-proposals")}>My Proposals</Nav.Link>
                                 <Nav.Link onClick={() => navigate("/browse-proposals")}>All Proposals</Nav.Link>
                                 <Nav.Link onClick={() => navigate("/browse-applications")}>Applications</Nav.Link>
+                            </>
+                        ) : (
+                            <>
+                                <Nav.Link onClick={() => navigate("secretary-requests")}>Secretary Requests</Nav.Link>
                             </>
                         )}
                 </>

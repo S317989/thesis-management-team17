@@ -80,6 +80,15 @@ CREATE TABLE Student (
     PRIMARY KEY (Id)
 );
 
+CREATE TABLE Secretary (
+    Id INTEGER NOT NULL UNIQUE,
+    Surname CHAR(50),
+    Name CHAR(100),
+    Email CHAR(320),
+    FOREIGN KEY (Id) REFERENCES User(Id),
+    PRIMARY KEY (Id)
+)
+
 CREATE TABLE Keyword (
     Id INTEGER NOT NULL,
     Name TEXT NOT NULL UNIQUE,

@@ -92,6 +92,8 @@ app.post('/login/callback', bodyParser.urlencoded({ extended: false }), (req, re
                     redirectURL = "http://localhost:5173/student-applications";
                 else if (userData.role === "Teacher")
                     redirectURL = "http://localhost:5173/my-proposals";
+                else if (userData.role === "Secretary")
+                    redirectURL = "http://localhost:5173/";
 
                 return res.redirect(redirectURL);
             });

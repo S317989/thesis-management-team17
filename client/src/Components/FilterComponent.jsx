@@ -21,9 +21,10 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
             type: field,
             value: editableFields[field] || ''
         });
+
         setEditableFields((prevFields) => ({
             ...prevFields,
-            [field]: true,
+            [field]: '',
         }));
 
         let list;
@@ -130,7 +131,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
     };
 
     const handleConfirmFilter = () => {
-        if (activeField.type && editableFields[activeField.type] && editableFields[activeField.type] !== true) {
+        if (activeField.type && editableFields[activeField.type] && editableFields[activeField.type] !== '') {
             if (activeField.type === 'Cosupervisors' || activeField.type === 'ExternalCosupervisors') {
                 onAddFilter(activeField.type, editableFields[activeField.type].label.substring(0, editableFields[activeField.type].label.indexOf('(') - 1));
             } else if (activeField.type === 'Keywords' || activeField.type === 'Level' || activeField.type === 'Degrees' || activeField.type === 'Groups') {
@@ -195,7 +196,6 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                         </Dropdown.Menu>
                     </Dropdown>
                 </Col>
-
                 {
                     activeField.type &&
                     <Col className={`input-col${isDropdownOpen ? '-open' : '-closed'}`}>
@@ -216,6 +216,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                                     width: '250px',
                                                 }),
                                             }}
+                                            value={editableFields[activeField.type]}
                                         /> :
                                         <Form.Control
                                             as={activeField.type === 'Description' || activeField.type === 'Required_Knowledge' ? 'textarea' : 'input'}
@@ -223,7 +224,8 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
                                             placeholder={`Filter for ${activeField.type}`}
                                             onChange={handleInputChange}
                                             onKeyDown={handleKeyPress}
-                                            style={{ resize: 'both', maxWidth: '20rem' }}
+                                            style={activeField.type === 'Description' || activeField.type === 'Required_Knowledge' ? { resize: 'both', maxWidth: '20rem' } : null}
+                                            value={editableFields[activeField.type]}
                                         />
                                 }
                                 <InputGroup.Text style={{ color: "green" }} onClick={handleConfirmFilter}><CheckLg size={20} /></InputGroup.Text>
