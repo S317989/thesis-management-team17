@@ -99,11 +99,9 @@ module.exports = {
   },
 
   getStudentExams: async function (req, res) {
-    console.log('reached');
     await utilitiesServices
       .getStudentExams(req.params.studentId)
       .then((result) => {
-        console.log(result);
         return res.status(200).json(result);
       })
       .catch((err) => {

@@ -90,7 +90,6 @@ function StudentRequest(props) {
             }
             const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
 
-            console.log(teachersResponse)
             setTeachersData(teachersResponse);
             setTeachers(teachersResponse.map(t => ({
                 ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
