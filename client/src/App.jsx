@@ -13,6 +13,7 @@ import MyProposals from './Pages/MyProposals.jsx';
 import StudentApplications from './Pages/StudentApplications.jsx';
 import StudentRequest from './Pages/StudentRequest.jsx';
 import SecretaryRequests from './Pages/SecretaryRequests.jsx';
+import ProfRequests from './Pages/ProfRequests.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -58,6 +59,7 @@ function App() {
                   <Route path="/student-applications" element={<StudentApplications />} />
                   <Route path="/student-request" element={<StudentRequest />} />
                   <Route path="/secretary-requests" element={<SecretaryRequests />} />
+                  <Route path="/prof-requests" element={<ProfRequests />} />
                 </Routes>
               </div>
             </UserContext.Provider>

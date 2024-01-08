@@ -5,34 +5,36 @@ import { UserContext } from "../Contexts";
 import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import RequestsTable from '../Components/RequestsTable';
 
-const SecretaryRequests = () => {
+const ProfRequests = () => {
 
-//    // State to store applications
-//    const [applications, setApplications] = useState([]);
+  //  // State to store applications
+  //  const [applications, setApplications] = useState([]);
 
-  const { user } = React.useContext(UserContext);
+   const { user } = React.useContext(UserContext);
 
-//    async function fetchData() {
-//      setApplications(await ApplicationsAPI.getApplicationsByTeacherProposals());
-//    }
+  //  async function fetchData() {
+  //    setApplications(await ApplicationsAPI.getApplicationsByTeacherProposals());
+  //  }
 
-//    useEffect(() => {
-//      fetchData();
-//    }, []);
+  //  useEffect(() => {
+  //    fetchData();
+  //  }, []);
 
    useEffect(() => {
      const checkAuthentication = async () => {
-       if (!user || user.role !== 'Secretary') {
+       if (!user || user.role !== 'Teacher') {
          sweetalert({
            title: "You are not authorized to access this page",
-           icon: "error",
+          icon: "error",
            button: "Ok",
          }).then(() => {
            window.location.href = "http://localhost:3000/login";
          });
        }
      };
+
      checkAuthentication();
+
    }, [user]);
 
   return (
@@ -51,4 +53,4 @@ const SecretaryRequests = () => {
   );
 };
 
-export default SecretaryRequests;
+export default ProfRequests;
