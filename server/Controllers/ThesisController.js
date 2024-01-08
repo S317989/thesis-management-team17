@@ -46,6 +46,15 @@ module.exports = {
         }
     },
 
+    getTheses: async function (req, res) {
+        try {
+            const results = await thesisServices.getTheses();
+            return res.status(200).json(results);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
     getThesisByStudent: async function (req, res) {
         try {
             const results = await thesisServices.getThesisByStudent(req.user.id);

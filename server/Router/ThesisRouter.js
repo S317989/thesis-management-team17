@@ -13,6 +13,11 @@ thesisRouter.get('/current-student', thesisController.getThesisByStudent);
 //TEACHER ONLY ROUTES
 thesisRouter.get('/current-supervisor', thesisController.getThesisBySupervisor);
 thesisRouter.get('/current-cosupervisor', thesisController.getThesisByCosupervisor);
+
+//SECRETARY ONLY
+thesisRouter.get('/all', thesisController.getTheses)
+
+//TEACHER AND SECRETARY
 thesisRouter.post('/set-status', thesisController.setThesisRequestStatus)
 
 module.exports = thesisRouter;
