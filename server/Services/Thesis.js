@@ -97,6 +97,12 @@ module.exports = {
         return thesis;
     },
 
+    getTheses: async function () {
+        let results = await db.getOne(`SELECT * FROM Thesis`, []);
+        if (!results) throw new Error('Data Not Found');
+        return await this.getThesisLinkedData(results);
+    },
+
     getThesis: async function (id) {
         let results = await db.getOne(`SELECT * FROM Thesis WHERE Id=?`, [id]);
         if (!results) throw new Error('Data Not Found');
