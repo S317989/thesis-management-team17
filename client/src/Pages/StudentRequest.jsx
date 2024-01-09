@@ -20,7 +20,7 @@ function StudentRequest(props) {
     const navigate = useNavigate();
 
     const { user } = useContext(UserContext);
-    
+
     const [thesisData, setThesisData] = useState({
         "Supervisor_Id": '',
         "Title": '',
@@ -129,7 +129,7 @@ function StudentRequest(props) {
                 <Row>
                     <Col>
                         <h1>Student Request</h1>
-                        {acceptedApplication
+                        {user.role === "Student" && acceptedApplication
                             ? <div className="mt-3 mb-3">
                                 <div className="d-flex flex-wrap align-items-center justify-content-center text-center">
                                     <Badge className="student-badge">
@@ -155,7 +155,7 @@ function StudentRequest(props) {
                     </Col>
                 </Row>
                 <br></br>
-                <RequestForm/>
+                <RequestForm />
                 <Button className="action-allowed-button" onClick={() => insertRequest()}>Send Request</Button>
             </Container>
         </div >
