@@ -101,7 +101,8 @@ const Notify = () => {
                         <span>{notification.Title}</span>
                         : <strong>{notification.Title}</strong>
                     }
-                    <small> made at {notification.Date}</small>
+                    <br/>
+                    <small>{notification.Date}</small>
                   </p>
                   {<hr />}
                 </div>
