@@ -135,6 +135,7 @@ function RequestForm({ request }) {
     }
 
     return (
+        <Container className="form-container" fluid>
         <Row>
             <Col xs={12} md={4}>
                 <div className="form-section">
@@ -251,6 +252,7 @@ function RequestForm({ request }) {
                 </div>
             </Col>
         </Row>
+        </Container>
 
     );
 }

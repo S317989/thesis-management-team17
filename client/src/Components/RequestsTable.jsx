@@ -18,23 +18,13 @@ export const RequestFields = {
   Id: 'Id',
   Student_Id: 'Student_Id',
   Supervisor_Id: 'Supervisor_Id',
+  Supervisor: 'Supervisor',
   Title: 'Title',
   Description: 'Description',
   Status: 'Status',
-  Date: 'Date'
+  Date: 'Date',
+  student: 'student'
 };
-
-// const Thesis = {
-//   Id: '1',
-//   Student_Id: '319976',
-//   Supervisor_Id: '12571',
-//   StudentName:'Gizem Irmak',
-//   SupervisorName:'Mario Rossi',
-//   Title: 'Dummy Request',
-//   Description: 'Dummy Description',
-//   Status: 'Pending',
-//   Date: '2024-01-05'
-// }
 
 const RequestsTable = ({ requests, requestRefresh }) => {
   const { user } = useContext(UserContext);
@@ -60,10 +50,10 @@ const RequestsTable = ({ requests, requestRefresh }) => {
             <td>{request[RequestFields.Title]}</td>
             {
               user.role === 'Secretary' ?
-                <td>{request[RequestFields.Supervisor_Id]}</td>
+                <td>{request[RequestFields.Supervisor].Email}</td>
                 : null
             }
-            <td>{request[RequestFields.Student_Id]}</td>     
+            <td>{request[RequestFields.student].Email}</td>     
             <td>{request[RequestFields.Date]}</td>
             <td>{(
               (() => {
