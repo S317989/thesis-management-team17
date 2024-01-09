@@ -171,7 +171,7 @@ export const RequestChange = ({ requestId, OnComplete }) => {
     
         return <>
             <InfoSquareFill className='info-icon' onClick={ShowRequestModal} />             
-            <RequestModal request={request} OnComplete={OnComplete} show={show} setShow={setShow} />
+            <RequestModal request={request} show={show} setShow={setShow} />
         </>;
     };
     
