@@ -2,23 +2,25 @@ import "../Stylesheets/ApplicationTableStyle.css";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import ApplicationsAPI from '../APIs/ApplicationsAPI';
+import ThesisAPI from '../APIs/ThesisAPI';
 import RequestsTable from '../Components/RequestsTable';
 
 const ProfRequests = () => {
 
-  //  // State to store applications
-  //  const [applications, setApplications] = useState([]);
+    // State to store applications
+    const [requests, setRequests] = useState([]);
 
    const { user } = React.useContext(UserContext);
 
-  //  async function fetchData() {
-  //    setApplications(await ApplicationsAPI.getApplicationsByTeacherProposals());
-  //  }
+    async function fetchData() {
+      const data = await ThesisAPI.getThesisBySupervisor()
+      console.log(data);
+      setRequests(data);
+    }
 
-  //  useEffect(() => {
-  //    fetchData();
-  //  }, []);
+    useEffect(() => {
+      fetchData();
+    }, []);
 
    useEffect(() => {
      const checkAuthentication = async () => {
@@ -45,7 +47,7 @@ const ProfRequests = () => {
         </Row>
         <Row>
           <div className="table-responsive">
-            <RequestsTable/>
+            <RequestsTable requests={requests} requestRefresh={fetchData}/>
           </div>
         </Row>
       </Col>
