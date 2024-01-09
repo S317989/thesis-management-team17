@@ -98,7 +98,7 @@ module.exports = {
     },
 
     getTheses: async function () {
-        let results = await db.getOne(`SELECT * FROM Thesis`, []);
+        let results = await db.getData(`SELECT * FROM Thesis`, []);
         if (!results) throw new Error('Data Not Found');
         return await this.getThesisLinkedData(results);
     },

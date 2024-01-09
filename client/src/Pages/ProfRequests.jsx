@@ -14,7 +14,7 @@ const ProfRequests = () => {
 
     async function fetchData() {
       const data = await ThesisAPI.getThesisBySupervisor()
-      console.log(data);
+      //console.log(data);
       setRequests(data);
     }
 

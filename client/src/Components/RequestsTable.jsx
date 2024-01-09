@@ -24,17 +24,17 @@ export const RequestFields = {
   Date: 'Date'
 };
 
-const Thesis = {
-  Id: '1',
-  Student_Id: '319976',
-  Supervisor_Id: '12571',
-  StudentName:'Gizem Irmak',
-  SupervisorName:'Mario Rossi',
-  Title: 'Dummy Request',
-  Description: 'Dummy Description',
-  Status: 'Pending',
-  Date: '2024-01-05'
-}
+// const Thesis = {
+//   Id: '1',
+//   Student_Id: '319976',
+//   Supervisor_Id: '12571',
+//   StudentName:'Gizem Irmak',
+//   SupervisorName:'Mario Rossi',
+//   Title: 'Dummy Request',
+//   Description: 'Dummy Description',
+//   Status: 'Pending',
+//   Date: '2024-01-05'
+// }
 
 const RequestsTable = ({ requests, requestRefresh }) => {
   const { user } = useContext(UserContext);
@@ -75,16 +75,16 @@ const RequestsTable = ({ requests, requestRefresh }) => {
                   case RequestStatus.Rejected:
                     return <Badge bg="danger">Rejected</Badge>;
                   case RequestStatus.ChangeRequested:
-                    return <Badge bg="danger">Change Requested</Badge>;
+                    return <Badge bg="secondary">Change Requested</Badge>;
                   case RequestStatus.SecretaryAccepted:
-                    return <Badge bg="secondary">Secretary Approved</Badge>;
+                    return <Badge bg="primary">Secretary Approved</Badge>;
                   default:
                     return <Badge bg="secondary">---</Badge>;
                 }
               })()
             )}</td>
             <td>
-              <ShowRequestForm request={request} />
+              <ShowRequestForm request={request}/>
               {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
                 <ProfApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
               {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?

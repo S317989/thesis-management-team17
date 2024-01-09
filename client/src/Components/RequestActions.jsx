@@ -6,7 +6,7 @@ import { InfoSquareFill } from "react-bootstrap-icons";
 import RequestModal from './RequestModal';
 
 
-export const SecApprove = ({ requestId, requestStatus, OnComplete }) => {
+export const SecApprove = ({ requestId, OnComplete }) => {
 
        const handleSecApprove = () => {
          sweetalert({
@@ -17,7 +17,7 @@ export const SecApprove = ({ requestId, requestStatus, OnComplete }) => {
            dangerMode: true,
          }).then(confirmed => {
            if (confirmed) {
-             ThesisAPI.setThesisRequestStatus(requestId, requestStatus).then((result) => {
+             ThesisAPI.setThesisRequestStatus(requestId, 'SecretaryAccepted').then((result) => {
                if (result.status === 200) {
                  sweetalert({
                    title: "Request Approved",
@@ -46,7 +46,7 @@ export const SecApprove = ({ requestId, requestStatus, OnComplete }) => {
     };
 
 
-export const ProfApprove = ({ requestId, requestStatus, OnComplete }) => {
+export const ProfApprove = ({ requestId, OnComplete }) => {
 
    const handleProfApprove = () => {
      sweetalert({
@@ -57,7 +57,7 @@ export const ProfApprove = ({ requestId, requestStatus, OnComplete }) => {
        dangerMode: true,
      }).then(confirmed => {
        if (confirmed) {
-         ThesisAPI.setThesisRequestStatus(requestId, requestStatus).then((result) => {
+         ThesisAPI.setThesisRequestStatus(requestId, 'Accepted').then((result) => {
            if (result.status === 200) {
              sweetalert({
                title: "Request Approved",
@@ -85,7 +85,7 @@ export const ProfApprove = ({ requestId, requestStatus, OnComplete }) => {
   </>
 };
 
-export const RejectRequest = ({ requestId, requestStatus, OnComplete }) => {
+export const RejectRequest = ({ requestId, OnComplete }) => {
 
    const handleReject = () => {
      sweetalert({
@@ -95,7 +95,7 @@ export const RejectRequest = ({ requestId, requestStatus, OnComplete }) => {
        dangerMode: true,
      }).then(confirmed => {
        if (confirmed) {
-         ThesisAPI.setThesisRequestStatus(requestId, requestStatus).then((result) => {
+         ThesisAPI.setThesisRequestStatus(requestId, 'Rejected').then((result) => {
            if (result.status === 200) {
              sweetalert({
                title: "Request Rejected",
@@ -123,7 +123,7 @@ export const RejectRequest = ({ requestId, requestStatus, OnComplete }) => {
   </>
 };
 
-export const RequestChange = ({ requestId, requestStatus, OnComplete }) => {
+export const RequestChange = ({ requestId, OnComplete }) => {
 
        const RequestChange = () => {
          sweetalert({
@@ -133,7 +133,7 @@ export const RequestChange = ({ requestId, requestStatus, OnComplete }) => {
            dangerMode: true,
          }).then(confirmed => {
            if (confirmed) {
-             ThesisAPI.setThesisRequestStatus(requestId, requestStatus).then((result) => {
+             ThesisAPI.setThesisRequestStatus(requestId, 'ChangeRequested').then((result) => {
                if (result.status === 200) {
                  sweetalert({
                    title: "Change Requested!",
