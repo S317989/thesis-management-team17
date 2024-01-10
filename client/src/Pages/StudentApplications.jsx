@@ -71,7 +71,7 @@ const StudentApplications = () => {
                 }
 
                 <Col md={pendingOrActiveApplication ? 9 : 12}>
-                    <Row className="accordion-card-column mb-3">
+                    <Row className="accordion-card-column mb-3 Available-Proposals">
                         {
                             pendingOrActiveApplication ?
                                 <Accordion>
@@ -87,7 +87,7 @@ const StudentApplications = () => {
                         }
                     </Row>
 
-                    <Row className="accordion-card-column-Old-Applications">
+                    <Row className="accordion-card-column mb-3 Old-Applications">
                         <Accordion>
                             <Accordion.Item eventKey="0">
                                 <Col>

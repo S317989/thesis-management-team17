@@ -41,16 +41,17 @@ describe("End to end tests for list of applications and check for notifications"
 
     await driver.sleep(1000);
 
-    const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
-
-    // remove disabled property from button
-    await driver.executeScript(
-      "arguments[0].removeAttribute('disabled')",
-      submitButton
-    );
-
-    // click submit button with js
-    await submitButton.click();
+    //const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
+    const submitButton=await driver.findElement(By.css("button[data-action-button-primary='true']"));
+        
+        // remove disabled property from button
+       /* await driver.executeScript(
+          "arguments[0].removeAttribute('disabled')",
+          submitButton
+        );*/
+    
+        // click submit button with js
+        await driver.executeScript("arguments[0].click();", submitButton);
 
     await driver.sleep(1000);
 

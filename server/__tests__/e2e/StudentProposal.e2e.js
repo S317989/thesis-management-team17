@@ -41,16 +41,17 @@ describe("End to end tests for proposals by student", () => {
     
         await driver.sleep(1000);
     
-        const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
-    
+        //const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
+        const submitButton=await driver.findElement(By.css("button[data-action-button-primary='true']"));
+        
         // remove disabled property from button
-        await driver.executeScript(
+       /* await driver.executeScript(
           "arguments[0].removeAttribute('disabled')",
           submitButton
-        );
+        );*/
     
         // click submit button with js
-        await submitButton.click();
+        await driver.executeScript("arguments[0].click();", submitButton);
     
         await driver.sleep(1000);
     
@@ -107,7 +108,7 @@ describe("End to end tests for proposals by student", () => {
          await driver.wait(until.urlContains("/student-applications"), 5000);
     
           // Verify the presence of a specific table on the page
-          const oldApplicationsAccordion = await driver.findElement(By.className('accordion-card-column-Old-Applications'));
+          const oldApplicationsAccordion = await driver.findElement(By.className('accordion-card-column mb-3 Old-Applications'));
     
           // Check if the table element is present
           await oldApplicationsAccordion.click();
@@ -117,57 +118,108 @@ describe("End to end tests for proposals by student", () => {
 
           await driver.wait(until.elementIsVisible(tableApplications), 5000);
     
-            // Assuming driver is your Selenium WebDriver instance
-      const filepersonIcon = await driver.findElement(By.css('.fileperson-icon'));
+      // Step 1: Locate the row containing "Mobile App Development Project"
+    const projectRow = await driver.wait(until.elementLocated(By.xpath("//tr[td[contains(text(), 'Mobile App Development Project')]]")), 10000);
 
-      // Click the info icon
-      await filepersonIcon.click();
+    // Step 2: Find the file icon within this row
+    const fileIcon = await projectRow.findElement(By.css(".fileperson-icon"));
 
-      const cvButton = await driver.findElement(By.className('btn btn-primary'));
+    await driver.sleep(1000);
+
+    // Step 3: Click on the file icon
+    await fileIcon.click();
+
+      await driver.sleep(1000);
+
+      const cvButton= await driver.findElement(By.className('btn btn-primary'));
+
+      await driver.sleep(1000);
+/*
       await cvButton.click();
+
   
       // Wait for the new window or tab to open (adjust as needed)
       await driver.wait(until.windowIsOpen());
+      */
 
       const greyButton = await driver.findElement(By.className('btn btn-secondary'));
       await greyButton.click();
       //CONTINUE FROM HERE
 
-        // Check if the modal is visible
-        const modalContent = await driver.findElement(By.css(".modal-content"));
+       // Verify the presence of a specific table on the page
+       const AvailableProposalsAccordion = await driver.findElement(By.className('accordion-card-column mb-3 Available-Proposals'));
     
-        // Check if the modal content is visible
-        const isModalVisible = await modalContent.isDisplayed();
-        expect(isModalVisible).toBe(true);
+       // Check if the table element is present
+       await AvailableProposalsAccordion.click();
     
-        const closeButton = await driver.findElement(By.css(".modal-header [aria-label='Close']"));
-        await closeButton.click();
+       const newCardItem= await driver.findElement(By.className("card-item card"));
+       await driver.sleep(1000);
+       await newCardItem.click();
+    
+        await driver.sleep(1000);
+
+        const whiteCloseButton= await driver.findElement(By.className("btn-close btn-close-white"));
+
+        await whiteCloseButton.click();
+    
+        
+        await driver.sleep(1000);
+    
+          await doLogout();
+        
+      }, 20000);
+
+      test.only("The page allows students to make a new request, after input filled", async () => {
+        
+        await doLogin();
+    
+        await driver.get(baseURL);
     
         await driver.sleep(1000);
     
         await checkAndCollapseNavbar();
-    
-        const notificationsButton= await driver.findElement(By.id('BellFill-icon-button'));
-        await notificationsButton.click();
-    
-        const notifyPopover= await driver.findElement(By.id("notification-popover"));
-        //const isPopoverVisible = await notifyPopover.isDisplayed();
+
+        //passo alla student request, finito le applications available and old nav-link student-request
+
         await driver.sleep(1000);
+          // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
+          await driver.wait(until.elementLocated(By.css('.nav-link')), 5000);
     
-        //expect(isPopoverVisible).toBe(true); no need if i can later click and inteact with it different from tables
     
-        const popoverCloseButton= await driver.findElement(By.id('popover-close-button'));
-        await popoverCloseButton.click();
+         // Find the "Applications" link by its text
+         const studentRequestLink = await driver.findElement(By.linkText('Student Request'));
     
-        const infoPersonIcon= await driver.findElement(By.css('.fileperson-icon'));
-        await infoPersonIcon.click();
-       
-        const modalShow= await driver.findElement(By.className('fade modal show'));
-        const isModalShowVisible = await modalShow.isDisplayed();
-        //expect(isModalShowVisible).toBe(true);
-    
-        const btnClose= await driver.findElement(By.className('btn btn-secondary'));
-        await btnClose.click();
+         // Click the "Applications" link
+         await studentRequestLink.click();
+
+         await driver.wait(until.urlContains("/student-request"), 5000);
+
+         // Fill out the form
+        const titleInput=await driver.findElement(By.css('input[aria-label="Title"]'));
+        titleInput.click();
+        titleInput.sendKeys('Thesis Title');
+
+        const descInput=await driver.findElement(By.css('textarea[aria-label="Description"]'));
+        descInput.click();
+        descInput.sendKeys('This is a detailed description of the thesis.');
+
+        // Selecting from dropdowns might require specific handling depending on how your dropdowns are implemented.
+        // Here's an example of clicking a dropdown and selecting an option:
+        await driver.findElement(By.className('css-j5z5tw-control')).click();
+        //await driver.findElement(By.css('div[id^="react-select-"][id*="-option-"]')).click(); // Adjust the selector as needed
+        // Wait for the dropdown options to be visible
+        let optionLocator = By.xpath("//div[contains(@class, 'field-item mb-3')]//div[contains(text(), 'Mario Rossi')]");
+        const optionElement = await driver.findElement(optionLocator);
+        await optionElement.click();
+
+        //await driver.findElement(By.csss('div[placeholder="No Co-Supervisor Selected"]')).click();
+        //await driver.findElement(By.css('div[id^="react-select-"][id*="-option-"]')).click(); // Adjust the selector as needed
+        // Wait for the dropdown options to be visible
+       // let optionLocator2 = By.xpath("//div[contains(@class, 'field-item mb-3')]//div[contains(text(), 'Mario Rossi')]");
+       await driver.sleep(1000);
+        // Click the "Send Request" button
+        await driver.findElement(By.css('button')).click();
+
     
         await driver.sleep(1000);
     
