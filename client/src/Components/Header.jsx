@@ -27,10 +27,11 @@ function Header() {
                                 <Nav.Link onClick={() => navigate("/my-proposals")}>My Proposals</Nav.Link>
                                 <Nav.Link onClick={() => navigate("/browse-proposals")}>All Proposals</Nav.Link>
                                 <Nav.Link onClick={() => navigate("/browse-applications")}>Applications</Nav.Link>
+                                <Nav.Link onClick={() => navigate("/prof-requests")}>Student Requests</Nav.Link>
                             </>
                         ) : (
                             <>
-                                <Nav.Link onClick={() => navigate("secretary-requests")}>Secretary Requests</Nav.Link>
+                                <Nav.Link onClick={() => navigate("secretary-requests")}>Student Requests</Nav.Link>
                             </>
                         )}
                 </>

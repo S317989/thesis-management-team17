@@ -5,16 +5,16 @@ import { UserContext } from "../Contexts";
 import ThesisAPI from '../APIs/ThesisAPI';
 import RequestsTable from '../Components/RequestsTable';
 
-const SecretaryRequests = () => {
+const ProfRequests = () => {
 
     // State to store applications
     const [requests, setRequests] = useState([]);
 
-    const { user } = React.useContext(UserContext);
+   const { user } = React.useContext(UserContext);
 
     async function fetchData() {
-      const data = await ThesisAPI.getTheses()
-      console.log('gizem', data);
+      const data = await ThesisAPI.getThesisBySupervisor()
+      //console.log(data);
       setRequests(data);
     }
 
@@ -24,17 +24,19 @@ const SecretaryRequests = () => {
 
    useEffect(() => {
      const checkAuthentication = async () => {
-       if (!user || user.role !== 'Secretary') {
+       if (!user || user.role !== 'Teacher') {
          sweetalert({
            title: "You are not authorized to access this page",
-           icon: "error",
+          icon: "error",
            button: "Ok",
          }).then(() => {
            window.location.href = "http://localhost:3000/login";
          });
        }
      };
+
      checkAuthentication();
+
    }, [user]);
 
   return (
@@ -53,4 +55,4 @@ const SecretaryRequests = () => {
   );
 };
 
-export default SecretaryRequests;
+export default ProfRequests;
