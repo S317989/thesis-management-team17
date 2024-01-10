@@ -128,16 +128,22 @@ export const RequestChange = ({ requestId, OnComplete }) => {
       icon: "warning",
       buttons: true,
       dangerMode: true,
-    }).then(confirmed => {
-      if (confirmed) {
-        ThesisAPI.setThesisRequestStatus(requestId, 'ChangeRequested').then((result) => {
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Type your reason here",
+          type: "text",
+        },
+      }
+    }).then(reason => {
+      if (reason)
+        ThesisAPI.setThesisRequestStatus(requestId, 'ChangeRequested', reason).then((result) => {
           if (result.status === 200) {
             sweetalert({
               title: "Change Requested!",
               icon: "success",
               button: "Ok",
             }).then(() => { if (OnComplete) OnComplete() });
-
           }
           else {
             sweetalert({
@@ -147,7 +153,6 @@ export const RequestChange = ({ requestId, OnComplete }) => {
             });
           }
         })
-      }
     });
   };
 

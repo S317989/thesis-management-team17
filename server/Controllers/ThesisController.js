@@ -27,8 +27,10 @@ module.exports = {
     },
 
     setThesisRequestStatus: async function (req, res) {
+        console.log(req.body)
+
         await thesisServices
-            .setThesisRequestStatus(req.body.thesisId, req.body.status)
+            .setThesisRequestStatus(req.body.thesisId, req.body.status, req.body.reason)
             .then(() => {
                 return res.status(200).json('status updated');
             })

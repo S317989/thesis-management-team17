@@ -57,7 +57,7 @@ module.exports = {
         });
     },
 
-    setThesisRequestStatus: async function (thesisId, newStatus) {
+    setThesisRequestStatus: async function (thesisId, newStatus, reason) {
         await db.executeQuery('UPDATE Thesis SET Status=? WHERE Id=?', [newStatus, thesisId]);
     },
 
