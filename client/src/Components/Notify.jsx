@@ -94,14 +94,14 @@ const Notify = () => {
           (
             <div>
               {notifications.slice(0, visibleNotifications).map((notification, index) => (
-                <div key={index} onClick={() => { handleNotificationClick(index) }} style={{ cursor: 'pointer' }}>
+                <div tabIndex={0} key={index} onKeyDown={(event) => { event.key === 'Enter' ? handleNotificationClick(index) : null }} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
                   <p>
                     {
                       notification.Read ?
                         <span>{notification.Title}</span>
                         : <strong>{notification.Title}</strong>
                     }
-                    <br/>
+                    <br />
                     <small>{notification.Date}</small>
                   </p>
                   {<hr />}
@@ -109,13 +109,13 @@ const Notify = () => {
               ))}
               {notifications.length > visibleNotifications ? (
                 <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onClick={showMoreNotifications}>
+                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => { event.key === 'Enter' ? showMoreNotifications() : null }} onClick={showMoreNotifications}>
                     View More
                   </a>
                 </div>
               ) : (
                 <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onClick={() => setVisibleNotifications(3)}>
+                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => { event.key === 'Enter' ? setVisibleNotifications(3) : null }} onClick={() => setVisibleNotifications(3)}>
                     View Less
                   </a>
                 </div>

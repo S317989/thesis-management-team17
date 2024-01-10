@@ -136,122 +136,123 @@ function RequestForm({ request }) {
 
     return (
         <Container className="form-container" fluid>
-        <Row>
-            <Col xs={12} md={4}>
-                <div className="form-section">
-                    <Form.Group className="input-item mb-3">
-                        <Form.Label className="label-item" id="basic-addon1">Title</Form.Label>
-                        <Form.Control
-                            className="field-item-enabled"
-                            placeholder="Title"
-                            aria-label="Title"
-                            aria-describedby="basic-addon1"
-                            value={thesisData.Title}
-                            onChange={(e) => changeThesisData('Title', e.target.value)}
-                            disabled={user.role === "Teacher"}
-                        />
-                    </Form.Group>
+            <Row>
+                <Col xs={12} md={4}>
+                    <div className="form-section">
+                        <Form.Group className="input-item mb-3">
+                            <Form.Label className="label-item" id="basic-addon1">Title</Form.Label>
+                            <Form.Control
+                                className={`field-item-${user.role !== "Student" ? 'disabled' : 'enabled'}`}
+                                placeholder="Title"
+                                aria-label="Title"
+                                aria-describedby="basic-addon1"
+                                value={thesisData.Title}
+                                onChange={(e) => changeThesisData('Title', e.target.value)}
+                                readOnly={user.role !== "Student"}
+                            />
+                        </Form.Group>
 
-                    <Form.Group className="input-item mb-3">
-                        <Form.Label className="label-item" id="basic-addon1">Supervisor</Form.Label>
-                        <Select
-                            className="field-item mb-3"
-                            styles={{
-                                control: (baseStyle) => ({
-                                    ...baseStyle,
-                                    backgroundColor: 'rgb(255, 220, 150)',
-                                }),
-                                multiValueLabel: (baseStyle, { data }) => ({
-                                    ...baseStyle,
-                                    backgroundColor: '#9fd2ff',
-                                    color: 'black',
-                                }),
-                                multiValueRemove: (baseStyle, { data }) => ({
-                                    ...baseStyle,
-                                    backgroundColor: '#9fd2ff',
-                                    color: 'black',
-                                    '&:hover': {
+                        <Form.Group className="input-item mb-3">
+                            <Form.Label className="label-item" id="basic-addon1">Supervisor</Form.Label>
+                            <Select
+                                className="field-item mb-3"
+                                styles={{
+                                    control: (baseStyle) => ({
+                                        ...baseStyle,
+                                        backgroundColor: user.role !== "Student" ? 'rgb(204, 197, 200)' : 'rgb(255, 220, 150)',
+                                    }),
+                                    multiValueLabel: (baseStyle, { data }) => ({
+                                        ...baseStyle,
                                         backgroundColor: '#9fd2ff',
-                                    },
-                                }),
-                                singleValue: (baseStyle, { data }) => ({
-                                    ...baseStyle,
-                                    color: 'black',
-                                }),
-                                indicatorsContainer: (baseStyle) => ({
-                                    ...baseStyle,
-                                    display: user.role === "Teacher" ? 'none' : null,
-                                }),
-
-                            }}
-                            placeholder="No Supervisor Selected"
-                            options={teachers}
-                            onChange={(newSelection) => {
-                                changeThesisData('Supervisor_Id', newSelection.Id);
-                                setSelectedSupervisor(newSelection);
-                                setCosupervisorsForSelect(newSelection);
-                            }}
-                            value={selectedSupervisor}
-                            isDisabled={user.role === "Teacher"}
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="input-item mb-3">
-                        <Form.Label className="label-item" id="basic-addon1">Co-Supervisors</Form.Label>
-                        <Select
-                            className="field-item mb-3"
-                            styles={{
-                                control: (baseStyle) => ({
-                                    ...baseStyle,
-                                    backgroundColor: 'rgb(255, 220, 150)',
-                                }),
-                                multiValueLabel: (baseStyle, { data }) => ({
-                                    ...baseStyle,
-                                    backgroundColor: '#9fd2ff',
-                                    color: 'black',
-                                }),
-                                multiValueRemove: (baseStyle, { data }) => ({
-                                    ...baseStyle,
-                                    backgroundColor: '#9fd2ff',
-                                    color: 'black',
-                                    '&:hover': {
+                                        color: 'black',
+                                    }),
+                                    multiValueRemove: (baseStyle, { data }) => ({
+                                        ...baseStyle,
                                         backgroundColor: '#9fd2ff',
-                                    },
-                                }),
-                                indicatorsContainer: (baseStyle) => ({
-                                    ...baseStyle,
-                                    display: user.role === "Teacher" ? 'none' : null,
-                                }),
-                            }}
-                            isMulti
-                            placeholder="No Co-Supervisor Selected (Select Supervisor First)"
-                            options={cosupervisorsData}
-                            onChange={(newSelection) => { changeThesisData('cosupervisors', newSelection) }}
-                            value={thesisData.cosupervisors}
-                            isDisabled={user.role === "Teacher"}
-                        />
-                    </Form.Group>
-                </div>
-            </Col>
-            <Col xs={12} md={8}>
-                <div className="textarea-section">
-                    <Form.Group className="input-item mb-3">
-                        <Form.Label id="label-item basic-addon1">Description</Form.Label>
-                        <Form.Control
-                            className="field-item-enabled"
-                            as="textarea"
-                            rows={5}
-                            placeholder="Description"
-                            aria-label="Description"
-                            aria-describedby="basic-addon1"
-                            value={thesisData.Description}
-                            onChange={(e) => changeThesisData('Description', e.target.value)}
-                            disabled={user.role === "Teacher"}
-                        />
-                    </Form.Group>
-                </div>
-            </Col>
-        </Row>
+                                        color: 'black',
+                                        '&:hover': {
+                                            backgroundColor: '#9fd2ff',
+                                        },
+                                    }),
+                                    singleValue: (baseStyle, { data }) => ({
+                                        ...baseStyle,
+                                        color: 'black',
+                                    }),
+                                    indicatorsContainer: (baseStyle) => ({
+                                        ...baseStyle,
+                                        display: user.role !== "Student" ? 'none' : null,
+                                    }),
+
+                                }}
+                                placeholder="No Supervisor Selected"
+                                options={teachers}
+                                onChange={(newSelection) => {
+                                    changeThesisData('Supervisor_Id', newSelection.Id);
+                                    setSelectedSupervisor(newSelection);
+                                    setCosupervisorsForSelect(newSelection);
+                                }}
+                                value={selectedSupervisor}
+                                isDisabled={user.role !== "Student"}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="input-item mb-3">
+                            <Form.Label className="label-item" id="basic-addon1">Co-Supervisors</Form.Label>
+                            <Select
+                                className="field-item mb-3"
+                                styles={{
+                                    control: (baseStyle) => ({
+                                        ...baseStyle,
+                                        backgroundColor: 'rgb(204, 197, 200)',
+                                    }),
+                                    multiValueLabel: (baseStyle, { data }) => ({
+                                        ...baseStyle,
+                                        backgroundColor: '#E0E0E0',
+                                        color: 'black',
+                                    }),
+                                    multiValueRemove: (baseStyle, { data }) => ({
+                                        ...baseStyle,
+                                        backgroundColor: '#E0E0E0',
+                                        display: user.role !== "Student" ? 'none' : 'block',
+                                        color: 'black',
+                                        '&:hover': {
+                                            backgroundColor: '#9fd2ff',
+                                        },
+                                    }),
+                                    indicatorsContainer: (baseStyle) => ({
+                                        ...baseStyle,
+                                        display: user.role !== "Student" ? 'none' : null,
+                                    }),
+                                }}
+                                isMulti
+                                placeholder="No Co-Supervisor Selected (Select Supervisor First)"
+                                options={cosupervisorsData}
+                                onChange={(newSelection) => { changeThesisData('cosupervisors', newSelection) }}
+                                value={thesisData.cosupervisors}
+                                isDisabled={user.role !== "Student"}
+                            />
+                        </Form.Group>
+                    </div>
+                </Col>
+                <Col xs={12} md={8}>
+                    <div className="textarea-section">
+                        <Form.Group className="input-item mb-3">
+                            <Form.Label id="label-item basic-addon1">Description</Form.Label>
+                            <Form.Control
+                                className={`field-item-${user.role !== "Student" ? 'disabled' : 'enabled'}`}
+                                as="textarea"
+                                rows={5}
+                                placeholder="Description"
+                                aria-label="Description"
+                                aria-describedby="basic-addon1"
+                                value={thesisData.Description}
+                                onChange={(e) => changeThesisData('Description', e.target.value)}
+                                readOnly={user.role !== "Student"}
+                            />
+                        </Form.Group>
+                    </div>
+                </Col>
+            </Row>
         </Container>
 
     );
