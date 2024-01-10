@@ -12,7 +12,15 @@ const BrowseRequests = () => {
     const { user } = React.useContext(UserContext);
 
     async function fetchData() {
-        const data = user.role === "Secretary" ? await ThesisAPI.getTheses() : await ThesisAPI.getThesisBySupervisor();
+        let data;
+
+        if (user.role === "Secretary")
+            data = await ThesisAPI.getTheses();
+        else if (user.role === "Teacher") {
+            data = await ThesisAPI.getThesisBySupervisor();
+            data = data.filter((thesis) => thesis.Status === "SecretaryAccepted" || thesis.Status === "ChangeRequested");
+        }
+
         setRequests(data);
     }
 

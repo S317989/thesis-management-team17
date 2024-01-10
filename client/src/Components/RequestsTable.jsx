@@ -1,8 +1,7 @@
 // src/components/ProposalItem.js
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Table, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import { useNavigate } from 'react-router-dom';
 import { ShowRequestForm, ProfApprove, SecApprove, RejectRequest, RequestChange } from './RequestActions';
 
 // enums
@@ -38,58 +37,64 @@ const RequestsTable = ({ requests, requestRefresh }) => {
             user.role === 'Secretary' ?
               <th>Supervisor</th> : null
           }
-          <th>Student</th> 
+          <th>Student</th>
           <th>Request Date</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {requests.map((request) => {
-          return <tr key={request[RequestFields.Id]}>
-            <td>{request[RequestFields.Title]}</td>
-            {
-              user.role === 'Secretary' ?
-                <td>{request[RequestFields.Supervisor].Email}</td>
-                : null
-            }
-            <td>{request[RequestFields.student].Email}</td>     
-            <td>{request[RequestFields.Date]}</td>
-            <td>{(
-              (() => {
-                switch (request[RequestFields.Status]) {
-                  case RequestStatus.Accepted:
-                    return <Badge bg="success">Approved</Badge>;
-                  case RequestStatus.Pending:
-                    return <Badge bg="warning" text="dark">Pending</Badge>;
-                  case RequestStatus.Rejected:
-                    return <Badge bg="danger">Rejected</Badge>;
-                  case RequestStatus.ChangeRequested:
-                    return <Badge bg="secondary">Change Requested</Badge>;
-                  case RequestStatus.SecretaryAccepted:
-                    return <Badge bg="primary">Secretary Approved</Badge>;
-                  default:
-                    return <Badge bg="secondary">---</Badge>;
+        {
+          requests.length === 0 ?
+            <tr>
+              <td colSpan={6}>No requests found</td>
+            </tr>
+            :
+            requests.map((request) => {
+              return <tr key={request[RequestFields.Id]}>
+                <td>{request[RequestFields.Title]}</td>
+                {
+                  user.role === 'Secretary' ?
+                    <td>{request[RequestFields.Supervisor].Email}</td>
+                    : null
                 }
-              })()
-            )}</td>
-            <td>
-              <ShowRequestForm request={request}/>
-              {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
-                <ProfApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
-              {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
-                <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
-              {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
-                <RequestChange requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
-              {user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending ?
-                <SecApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
-              {user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending ?
-                <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}              
-            </td>
-          </tr>
-        })}
+                <td>{request[RequestFields.student].Email}</td>
+                <td>{request[RequestFields.Date]}</td>
+                <td>{(
+                  (() => {
+                    switch (request[RequestFields.Status]) {
+                      case RequestStatus.Accepted:
+                        return <Badge bg="success">Approved</Badge>;
+                      case RequestStatus.Pending:
+                        return <Badge bg="warning" text="dark">Pending</Badge>;
+                      case RequestStatus.Rejected:
+                        return <Badge bg="danger">Rejected</Badge>;
+                      case RequestStatus.ChangeRequested:
+                        return <Badge bg="secondary">Change Requested</Badge>;
+                      case RequestStatus.SecretaryAccepted:
+                        return <Badge bg="primary">Secretary Approved</Badge>;
+                      default:
+                        return <Badge bg="secondary">---</Badge>;
+                    }
+                  })()
+                )}</td>
+                <td>
+                  <ShowRequestForm request={request} />
+                  {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
+                    <ProfApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
+                  {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
+                    <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
+                  {user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted ?
+                    <RequestChange requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
+                  {user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending ?
+                    <SecApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
+                  {user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending ?
+                    <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} /> : <></>}
+                </td>
+              </tr>
+            })}
       </tbody>
-      
+
     </Table >
   );
 };

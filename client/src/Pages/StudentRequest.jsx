@@ -1,9 +1,7 @@
 import "../Stylesheets/ProposalFormStyle.css"
-import { Button, InputGroup, Container, Row, Col, FormControl, Dropdown, Form, Badge, OverlayTrigger, Tooltip } from "react-bootstrap"
-import Select, { components } from "react-select"
+import { Button, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
-import ProposalsAPI from "../APIs/ProposalsAPI";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import ThesisAPI from "../APIs/ThesisAPI";
 import sweetalert from 'sweetalert';
@@ -12,15 +10,11 @@ import { ApplicationFields } from "../Components/ApplicationsTable";
 import { ProposalFields } from "../Components/ProposalsForm";
 import { InfoCircle } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-
 import RequestForm from "../Components/RequestForm";
 
-function StudentRequest(props) {
-
+function StudentRequest() {
     const navigate = useNavigate();
-
     const { user } = useContext(UserContext);
-
     const [thesisData, setThesisData] = useState({
         "Supervisor_Id": '',
         "Title": '',
@@ -99,8 +93,6 @@ function StudentRequest(props) {
             setTeachers(teachersResponse.map(t => ({
                 ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
             })));
-
-
         };
 
         fetchData();

@@ -1,7 +1,7 @@
 import "../Stylesheets/FilterStyle.css"
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Dropdown, Table, InputGroup, FormControl, Form, FormGroup, Badge, Button } from "react-bootstrap";
-import { FilterCircle, CheckLg, XLg, Check, X } from "react-bootstrap-icons";
+import { Container, Row, Col, Dropdown, InputGroup, Form, Badge } from "react-bootstrap";
+import { FilterCircle, CheckLg, XLg } from "react-bootstrap-icons";
 import Select from 'react-select';
 import UtilitesAPI from "../APIs/UtilitiesAPI";
 

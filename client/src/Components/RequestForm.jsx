@@ -1,6 +1,6 @@
 import "../Stylesheets/ProposalFormStyle.css"
-import { Container, Row, Col, FormControl, Dropdown, Form, Badge, OverlayTrigger, Tooltip } from "react-bootstrap"
-import Select, { components } from "react-select"
+import { Container, Row, Col, Form } from "react-bootstrap"
+import Select from "react-select"
 import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";

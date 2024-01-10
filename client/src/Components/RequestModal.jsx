@@ -1,13 +1,13 @@
 import "../Stylesheets/ProposalModalStyle.css";
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal, Container, Row, Col } from 'react-bootstrap';
 import RequestForm from "./RequestForm";
 import { RequestFields } from './RequestsTable';
 
 function RequestModal({ request, OnComplete, show, setShow }) {
 
-    // Dummy student information (replace with actual data)
- const dummyStudent = {
+  // Dummy student information (replace with actual data)
+  const dummyStudent = {
     name: 'John',
     surname: 'Doe',
     email: 'john.doe@example.com',
@@ -46,25 +46,25 @@ function RequestModal({ request, OnComplete, show, setShow }) {
       </Col>
     </Row>
   );
-  
-    return (
-        <Modal id='#proposal-modal-id' show={show} fullscreen onHide={() => setShow(false)}>
-            <Modal.Header style={{ overflow: 'hidden' }} closeButton className="modal-header" closeVariant="white">
-                <Modal.Title style={{ overflow: 'hidden' }} className="modal-title">
-                    {request[RequestFields.Title]}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Container>
-                    <StudentInfo student={request[RequestFields.student]} /> {/* Pass student information to the StudentInfo component */}
-                    <RequestForm request={request} OnComplete={() => {
-                        if (OnComplete) OnComplete();
-                        setShow(false);
-                    }} />
-                </Container>
-            </Modal.Body>
-        </Modal >
-    )
+
+  return (
+    <Modal id='#proposal-modal-id' show={show} fullscreen onHide={() => setShow(false)}>
+      <Modal.Header style={{ overflow: 'hidden' }} closeButton className="modal-header" closeVariant="white">
+        <Modal.Title style={{ overflow: 'hidden' }} className="modal-title">
+          {request[RequestFields.Title]}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Container>
+          <StudentInfo student={request[RequestFields.student]} /> {/* Pass student information to the StudentInfo component */}
+          <RequestForm request={request} OnComplete={() => {
+            if (OnComplete) OnComplete();
+            setShow(false);
+          }} />
+        </Container>
+      </Modal.Body>
+    </Modal >
+  )
 }
 
 export default RequestModal;

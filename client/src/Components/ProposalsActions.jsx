@@ -1,11 +1,10 @@
-import { Modal } from 'react-bootstrap';
-import ProposalsForm, { ProposalFields } from './ProposalsForm';
-import React, { useEffect, useState } from 'react';
+import { ProposalFields } from './ProposalsForm';
+import React, { useState } from 'react';
 import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 import ActionButtons from './ActionButtons';
 import ProposalsModal from './ProposalModal';
- 
+
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
 }) => {

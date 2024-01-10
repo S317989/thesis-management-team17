@@ -1,7 +1,7 @@
 import "../Stylesheets/NotificationStyle.css"
 import React, { useState, useContext, useEffect } from 'react';
-import { Navbar, OverlayTrigger, Popover, Badge, Button, CloseButton, Col, Row } from 'react-bootstrap';
-import { ArrowLeft, ArrowLeftCircle, BellFill, Dot } from 'react-bootstrap-icons';
+import { Navbar, OverlayTrigger, Popover, Badge, CloseButton, Col, Row } from 'react-bootstrap';
+import { ArrowLeftCircle, BellFill, Dot } from 'react-bootstrap-icons';
 import { UserContext } from "../Contexts";
 import NotificationsAPI from '../APIs/NotificationsAPI';
 
