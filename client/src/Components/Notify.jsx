@@ -105,7 +105,7 @@ const Notify = () => {
           (
             <div>
               {notifications.slice(0, visibleNotifications).map((notification, index) => (
-                <div key={notification.Id} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
+                <div role="button" key={notification.Id} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
                   <p>
                     {
                       notification.Read ?
