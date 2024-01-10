@@ -105,7 +105,7 @@ const Notify = () => {
           (
             <div>
               {notifications.slice(0, visibleNotifications).map((notification, index) => (
-                <div key={index} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
+                <div key={notification.Id} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
                   <p>
                     {
                       notification.Read ?
@@ -120,15 +120,15 @@ const Notify = () => {
               ))}
               {notifications.length > visibleNotifications ? (
                 <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-more')} onClick={showMoreNotifications}>
+                  <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-more')} onClick={showMoreNotifications}>
                     View More
-                  </a>
+                  </button>
                 </div>
               ) : (
                 <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <a style={{ cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-less')} onClick={() => setVisibleNotifications(3)}>
+                  <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-less')} onClick={() => setVisibleNotifications(3)}>
                     View Less
-                  </a>
+                  </button>
                 </div>
               )}
             </div>
