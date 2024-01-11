@@ -134,8 +134,8 @@ describe("End to end tests for proposals by student", () => {
       const cvButton= await driver.findElement(By.className('btn btn-primary'));
 
       await driver.sleep(1000);
-/*
-      await cvButton.click();
+
+ /*     await cvButton.click();
 
   
       // Wait for the new window or tab to open (adjust as needed)
@@ -165,11 +165,11 @@ describe("End to end tests for proposals by student", () => {
         
         await driver.sleep(1000);
     
-          await doLogout();
+        await doLogout();
         
       }, 20000);
 
-      test.only("The page allows students to make a new request, after input filled", async () => {
+      test("The page allows students to make a new request, after input filled", async () => {
         
         await doLogin();
     
@@ -209,6 +209,7 @@ describe("End to end tests for proposals by student", () => {
         //await driver.findElement(By.css('div[id^="react-select-"][id*="-option-"]')).click(); // Adjust the selector as needed
         // Wait for the dropdown options to be visible
         let optionLocator = By.xpath("//div[contains(@class, 'field-item mb-3')]//div[contains(text(), 'Mario Rossi')]");
+        //check wrong or succesfull with this supervisor
         const optionElement = await driver.findElement(optionLocator);
         await optionElement.click();
 
@@ -218,10 +219,9 @@ describe("End to end tests for proposals by student", () => {
        // let optionLocator2 = By.xpath("//div[contains(@class, 'field-item mb-3')]//div[contains(text(), 'Mario Rossi')]");
        await driver.sleep(1000);
         // Click the "Send Request" button
-        await driver.findElement(By.css('button')).click();
-
+        await driver.findElement(By.className('action-allowed-button btn btn-primary')).click();
     
-        await driver.sleep(1000);
+        await driver.sleep(2000);
     
           await doLogout();
         
