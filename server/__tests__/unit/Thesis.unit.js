@@ -1,23 +1,28 @@
 'use strict';
-const utilitiesServices = require('../../Services/Utilities');
-const utilitiesController = require('../../Controllers/UtilitiesController');
-jest.mock('../../Services/Utilities');
 
-describe('ApplicationsController', () => {
+const thesisServices = require('../../Services/Thesis');
+const thesisController = require('../../Controllers/ThesisController');
+
+jest.mock('../../Services/Thesis');
+
+describe('ThesisController', () => {
     let req, res;
   
     beforeEach(() => {
       req = {
         isAuthenticated: jest.fn(),
-        body: {
-          keyword: '',
-          name: '',
-          surname: '',
-          email:''
+
+        body: {},
+
+        params: {
+            thesisId: 0
+
         },
-        params:{
-          studentId : 0
-        }
+
+        user: {
+            id: 0,
+        },
+        
       };
       res = {
         status: jest.fn().mockReturnThis(),
@@ -25,238 +30,224 @@ describe('ApplicationsController', () => {
       };
     });
 
-    describe('getAllExternalCosupervisors', () => {
-        it('should return 200 and the list of AllExternalCosupervisors when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [
-            { id: 1, surname: 'surname 1', name:'alex 1', email:'alex1@gmail.com' },
-            { id: 2, surname: 'surname 2', name:'alex 2', email:'alex2@gmail.com' },
-          ];
-          utilitiesServices.getAllExternalCoSupervisor.mockResolvedValue(fakeResponse);
+
+    describe('addOrUpdateThesisRequest', () => {
+        it('should return 200 and addOrUpdateThesisRequest is successful', async () => {
+          // Mock the implementation of addOrUpdateThesisRequest to simulate a successful retrieval
+          thesisServices.addOrUpdateThesisRequest.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllExternalCosupervisors(req, res);
+          await thesisController.addOrUpdateThesisRequest(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getAllExternalCoSupervisor.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.addOrUpdateThesisRequest.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllExternalCosupervisors(req, res);
+          await thesisController.addOrUpdateThesisRequest(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
+        });  
+    });  
 
-      describe('getAllCds', () => {
-        it('should return 200 and the list of AllCds when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [];
-          utilitiesServices.getAllDegrees.mockResolvedValue(fakeResponse);
+    describe('deleteThesisRequest', () => {
+        it('should return 200 and deleteThesisRequest is successful', async () => {
+          // Mock the implementation of addOrUpdateThesisRequest to simulate a successful retrieval
+          thesisServices.deleteThesisRequest.mockResolvedValue('deleted');
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllCds(req, res);
+          await thesisController.deleteThesisRequest(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith('deleted');
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getAllDegrees.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.deleteThesisRequest.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllCds(req, res);
+          await thesisController.deleteThesisRequest(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
-      
+        });  
+    });
+    
 
-      describe('getAllGroups', () => {
-        it('should return 200 and the list of AllGroups when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [
-            {id: 1, name:'Alex', cod_department: '1'},
-            {id: 2, name:'Alex', cod_department: '2'},
-
-          ];
-          utilitiesServices.getAllGroups.mockResolvedValue(fakeResponse);
+    describe('setThesisRequestStatus', () => {
+        it('should return 200 and setThesisRequestStatus is successful', async () => {
+          // Mock the implementation of addOrUpdateThesisRequest to simulate a successful retrieval
+          thesisServices.setThesisRequestStatus.mockResolvedValue('status updated');
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllGroups(req, res);
+          await thesisController.setThesisRequestStatus(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith('status updated');
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getAllGroups.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.setThesisRequestStatus.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllGroups(req, res);
+          await thesisController.setThesisRequestStatus(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
-      
+        });  
+    });
 
-      describe('getAllTeacher', () => {
-        it('should return 200 and the list of AllTeacher when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [
-            {id: 1, surname: 'Alex', name: 'John', email:'alex@gmail.com', cod_group: 1, cod_department: 3 },
-            {id: 2, surname: 'Alex', name: 'John', email:'alex@gmail.com', cod_group: 2, cod_department: 2 },
-          ];
-          utilitiesServices.getAllTeacher.mockResolvedValue(fakeResponse);
+
+    describe('getThesis', () => {
+        it('should return 200 and getThesis is successful', async () => {
+          // Mock the implementation of getThesis to simulate a successful retrieval
+          thesisServices.getThesis.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllTeacher(req, res);
+          await thesisController.getThesis(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getAllTeacher.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.getThesis.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllTeacher(req, res);
+          await thesisController.getThesis(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
+        });  
+    }); 
 
-      describe('getAllKeywords', () => {
-        it('should return 200 and the list of AllKeywords when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [
-            {id: 1, name: 'keyword1' },
-            {id: 2, name: 'keyword1' },
-          ];
-          utilitiesServices.getAllKeywords.mockResolvedValue(fakeResponse);
+
+    describe('getTheses', () => {
+        it('should return 200 and getTheses is successful', async () => {
+          // Mock the implementation of getTheses to simulate a successful retrieval
+          thesisServices.getTheses.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllKeywords(req, res);
+          await thesisController.getTheses(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getAllKeywords.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.getTheses.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getAllKeywords(req, res);
+          await thesisController.getTheses(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
-      
+        });  
+    });
 
-      describe('addKeyword', () => {
-        it('should return 200 and addKeyword when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [];
-          utilitiesServices.addKeyword.mockResolvedValue(fakeResponse);
+
+    describe('getThesisByStudent', () => {
+        it('should return 200 and getThesisByStudent is successful', async () => {
+          // Mock the implementation of getThesisByStudent to simulate a successful retrieval
+          thesisServices.getThesisByStudent.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.addKeyword(req, res);
+          await thesisController.getThesisByStudent(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.addKeyword.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.getThesisByStudent.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.addKeyword(req, res);
+          await thesisController.getThesisByStudent(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
+        });  
+    });
 
-      describe('addExternalCoSupervisor', () => {
-        it('should return 200 and addExternalCoSupervisor when is successful', async () => {
-          // Mock the implementation of getAllApplications to simulate a successful retrieval
-          const fakeResponse = [];
-          utilitiesServices.addExternalCoSupervisor.mockResolvedValue(fakeResponse);
+    
+
+    describe('getThesisBySupervisor', () => {
+        it('should return 200 and getThesisBySupervisor is successful', async () => {
+          // Mock the implementation of getThesisBySupervisor to simulate a successful retrieval
+          thesisServices.getThesisBySupervisor.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.addExternalCoSupervisor(req, res);
+          await thesisController.getThesisBySupervisor(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.addExternalCoSupervisor.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.getThesisBySupervisor.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.addExternalCoSupervisor(req, res);
+          await thesisController.getThesisBySupervisor(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
+        });  
+    });
 
-      
     
-      describe('getStudentExams', () => {
-        it('should return 200 and getStudentExams when is successful', async () => {
-          // Mock the implementation of getStudentExams to simulate a successful retrieval
-          const fakeResponse = [];
-          utilitiesServices.getStudentExams.mockResolvedValue(fakeResponse);
+
+    describe('getThesisByCosupervisor', () => {
+        it('should return 200 and getThesisByCosupervisor is successful', async () => {
+          // Mock the implementation of getThesisByCosupervisor to simulate a successful retrieval
+          thesisServices.getThesisByCosupervisor.mockResolvedValue({});
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getStudentExams(req, res);
+          await thesisController.getThesisByCosupervisor(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments
           expect(res.status).toHaveBeenCalledWith(200);
-          expect(res.json).toHaveBeenCalledWith(fakeResponse);
+          expect(res.json).toHaveBeenCalledWith({});
         });
 
         it('should handle 500 Internal Server Error and return the appropriate response', async () => {
           // Mock the implementation of getAllProposals to simulate a 500 Internal Server Error
-          utilitiesServices.getStudentExams.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
+          thesisServices.getThesisByCosupervisor.mockRejectedValue({ status: 500, message: 'Internal Server Error' });
     
           // Call the method and pass in the mocked request and response objects
-          await utilitiesController.getStudentExams(req, res);
+          await thesisController.getThesisByCosupervisor(req, res);
     
           // Verify that the status and JSON methods were called with the correct arguments for the error case
           expect(res.status).toHaveBeenCalledWith(500);
           expect(res.json).toHaveBeenCalledWith({ message: 'Internal Server Error' });
-        });
-      });
+        });  
+    });
+
+
+
 
 });
