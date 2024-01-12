@@ -10,7 +10,7 @@ describe('get_date', () => {
     jest.resetModules();
     });
   
-    it('should return 200 and the date when detter of date is successful', async () => {
+    it('should return 200 and the date when getter of date is successful', async () => {
       const res = {
         status: jest.fn(() => res),
         json: jest.fn(),
@@ -23,7 +23,7 @@ describe('get_date', () => {
     });
 
 
-    it('should return 200 and the date when detter of date is successful', async () => {
+    it('should return 200 and the date when setter of date is successful', async () => {
         const res = {
           status: jest.fn(() => res),
           json: jest.fn(),
