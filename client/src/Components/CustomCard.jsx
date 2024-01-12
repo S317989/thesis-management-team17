@@ -1,7 +1,6 @@
 import "../Stylesheets/CardManagerStyle.css";
-import React, { useEffect, useState } from "react";
-import { Badge, Card, Modal } from "react-bootstrap";
-import ProposalsForm, { ProposalFields } from "./ProposalsForm";
+import React, { useState } from "react";
+import { Badge, Card } from "react-bootstrap";
 import ProposalsModal from "./ProposalModal";
 
 

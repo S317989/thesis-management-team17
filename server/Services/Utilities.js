@@ -68,4 +68,12 @@ exports.getStudentExams = async (studentId) => {
   let result;
   result = await db.getData('SELECT * FROM Career WHERE Student_Id = ?;', [studentId]);
   return result;
-}
+};
+
+exports.checkIfWeekRemaining = (date1, date2) => {
+  const utcDate1 = new Date(date1);
+  const utcDate2 = new Date(date2);
+  const timeDifference = Math.abs(utcDate1 - utcDate2);
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  return daysDifference === 7;
+};

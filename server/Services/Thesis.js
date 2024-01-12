@@ -1,5 +1,6 @@
 'use strict';
 const db = require("../Database/DAO");
+const NotificationsServices = require('./Notifications');
 
 /*
 Thesis table fields
@@ -42,6 +43,8 @@ module.exports = {
           VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description]);
 
                 thesisId = (await db.getOne('SELECT MAX(Id) AS Id FROM Thesis', [])).Id;
+                await NotificationsServices.addNotification(data.Supervisor_Id, 'New Start Thesis Request',
+                    `A new Start Thesis Request was made to you with the title: ${data.Title}.`);
             }
 
             if (data.cosupervisors && data.cosupervisors.length > 0) {
@@ -54,7 +57,7 @@ module.exports = {
         });
     },
 
-    setThesisRequestStatus: async function (thesisId, newStatus) {
+    setThesisRequestStatus: async function (thesisId, newStatus, reason) {
         await db.executeQuery('UPDATE Thesis SET Status=? WHERE Id=?', [newStatus, thesisId]);
     },
 
@@ -84,6 +87,10 @@ module.exports = {
             `SELECT Id, Surname, Name, Email, Cod_Group, Cod_Department
               FROM Teacher
               WHERE Id = ?`, [thesis.Supervisor_Id]));
+        thesis.student = (await db.getOne(
+            `SELECT S.Surname, S.Name, S.Email, S.Cod_Degree, S.Enrollment_Year, D.Title_Degree
+            FROM Student AS S, Degree AS D
+            WHERE S.Cod_Degree = D.Cod_Degree AND S.Id = ?`, [thesis.Student_Id]));
         thesis.cosupervisors = await db.getData(
             `SELECT T.Id, T.Surname, T.Name, T.Email, T.Cod_Group, T.Cod_Department
             FROM Teacher AS T, Thesis_Cosupervisors AS C
@@ -92,6 +99,12 @@ module.exports = {
         thesis.changesHistory = await db.getData(
             `SELECT Change, Date FROM Thesis_Change_History WHERE Thesis_Id = ?`, [thesis.Id]);
         return thesis;
+    },
+
+    getTheses: async function () {
+        let results = await db.getData(`SELECT * FROM Thesis`, []);
+        if (!results) throw new Error('Data Not Found');
+        return await this.getThesesLinkedData(results);
     },
 
     getThesis: async function (id) {

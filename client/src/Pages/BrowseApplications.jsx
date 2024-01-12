@@ -1,6 +1,6 @@
 import "../Stylesheets/ApplicationTableStyle.css";
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import ApplicationsTable from '../Components/ApplicationsTable';

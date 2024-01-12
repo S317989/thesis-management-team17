@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Card } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import sweetalert from "sweetalert";

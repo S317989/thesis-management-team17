@@ -1,6 +1,6 @@
 import "../Stylesheets/CardManagerStyle.css";
 import React, { useState, useEffect, useContext } from 'react';
-import { Col, Form, Container, Row, Badge, Button, Dropdown } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import CustomCard from './CustomCard';
 import ProposalPagination from './ProposalPagination';
 import FilterComponent from './FilterComponent';
