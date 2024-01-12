@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const { pass } = require('jest-extended');
 const bodyParser = require('body-parser');
+const PeriodicDataCheck = require('./Services/DataChecks');
 
 passport.use(new SamlStrategy({
     entryPoint: 'https://thesis-management-team17.eu.auth0.com/samlp/fgIV2JAWJdjmSQPXK9GrtR4FgFomIqLS',
@@ -93,7 +94,7 @@ app.post('/login/callback', bodyParser.urlencoded({ extended: false }), (req, re
                 else if (userData.role === "Teacher")
                     redirectURL = "http://localhost:5173/my-proposals";
                 else if (userData.role === "Secretary")
-                    redirectURL = "http://localhost:5173/";
+                    redirectURL = "http://localhost:5173/secretary-requests";
 
                 return res.redirect(redirectURL);
             });
@@ -117,3 +118,6 @@ app.get('/logout', (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+
+//Start the periodic check for the expiring proposals
+const PeriodicDataChecksIntervalId = setInterval(PeriodicDataCheck.checkForMidnight, 60000);

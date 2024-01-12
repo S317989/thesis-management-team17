@@ -1,11 +1,10 @@
 // src/components/ProposalItem.js
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row, Col, Table, Button, Badge } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Table, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
-import { useNavigate } from 'react-router-dom';
 import { ShowProposalsForm, Delete, Archive } from './ProposalsActions';
 import { ProposalFields } from './ProposalsForm';
-import { Apply, Accept, Reject, ViewCV } from './ApplicationsActions'
+import { Accept, Reject, ViewCV } from './ApplicationsActions'
 
 // enums
 export const ApplicationStatus = {
@@ -82,7 +81,7 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                 }
               })()
             )}</td>
-            <td><ViewCV cvFileName={application.Cv} studentId={application[ApplicationFields.Student_Id]}/></td>
+            <td><ViewCV cvFileName={application.Cv} studentId={application[ApplicationFields.Student_Id]} /></td>
             <td>
               <ShowProposalsForm proposal={proposal} />
               {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?

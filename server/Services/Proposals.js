@@ -235,4 +235,15 @@ module.exports = {
     return proposal;
   },
 
+  checkExpiringProposal: async function () {
+    let allActiveProposals = await db.getData(`SELECT * FROM Proposal
+    WHERE Archived == 0 AND Expiration >= ?`, [CustomDate.date]);
+    for (const p of allActiveProposals) {
+      if (UtilitiesServices.checkIfWeekRemaining(p.Expiration, CustomDate.date)) {
+        await NotificationsServices.addNotification(p.Supervisor, 'Proposal Is About To Expire (Important)',
+          `Your Proposal (${p.Title}) is going to expire next week (${p.Expiration}).`);
+      }
+    }
+  },
+
 };

@@ -1,9 +1,7 @@
 import "../Stylesheets/ProposalFormStyle.css"
-import { Button, InputGroup, Container, Row, Col, FormControl, Dropdown, Form, Badge, OverlayTrigger, Tooltip } from "react-bootstrap"
-import Select, { components } from "react-select"
+import { Button, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
-import ProposalsAPI from "../APIs/ProposalsAPI";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import ThesisAPI from "../APIs/ThesisAPI";
 import sweetalert from 'sweetalert';
@@ -12,8 +10,9 @@ import { ApplicationFields } from "../Components/ApplicationsTable";
 import { ProposalFields } from "../Components/ProposalsForm";
 import { InfoCircle } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import RequestForm from "../Components/RequestForm";
 
-function StudentRequest(props) {
+function StudentRequest() {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [thesisData, setThesisData] = useState({
@@ -90,13 +89,10 @@ function StudentRequest(props) {
             }
             const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
 
-            console.log(teachersResponse)
             setTeachersData(teachersResponse);
             setTeachers(teachersResponse.map(t => ({
                 ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
             })));
-
-
         };
 
         fetchData();
@@ -125,7 +121,7 @@ function StudentRequest(props) {
                 <Row>
                     <Col>
                         <h1>Student Request</h1>
-                        {acceptedApplication
+                        {user.role === "Student" && acceptedApplication
                             ? <div className="mt-3 mb-3">
                                 <div className="d-flex flex-wrap align-items-center justify-content-center text-center">
                                     <Badge className="student-badge">
@@ -151,105 +147,7 @@ function StudentRequest(props) {
                     </Col>
                 </Row>
                 <br></br>
-                <Row>
-                    <Col xs={12} md={4}>
-                        <div className="form-section">
-                            <Form.Group className="input-item mb-3">
-                                <Form.Label className="label-item" id="basic-addon1">Title</Form.Label>
-                                <Form.Control
-                                    className="field-item-enabled"
-                                    placeholder="Title"
-                                    aria-label="Title"
-                                    aria-describedby="basic-addon1"
-                                    value={thesisData.Title}
-                                    onChange={(e) => changeThesisData('Title', e.target.value)}
-                                />
-                            </Form.Group>
-
-
-                            <Form.Group className="input-item mb-3">
-                                <Form.Label className="label-item" id="basic-addon1">Supervisor</Form.Label>
-                                <Select
-                                    className="field-item mb-3"
-                                    styles={{
-                                        control: (baseStyle) => ({
-                                            ...baseStyle,
-                                            backgroundColor: 'rgb(255, 220, 150)',
-                                        }),
-                                        multiValueLabel: (baseStyle, { data }) => ({
-                                            ...baseStyle,
-                                            backgroundColor: '#9fd2ff',
-                                            color: 'black',
-                                        }),
-                                        multiValueRemove: (baseStyle, { data }) => ({
-                                            ...baseStyle,
-                                            backgroundColor: '#9fd2ff',
-                                            color: 'black',
-                                            '&:hover': {
-                                                backgroundColor: '#9fd2ff',
-                                            },
-                                        }),
-                                    }}
-                                    placeholder="No Supervisor Selected"
-                                    options={teachers}
-                                    onChange={(newSelection) => {
-                                        changeThesisData('Supervisor_Id', newSelection.Id);
-                                        setSelectedSupervisor(newSelection);
-                                        setCosupervisorsForSelect(newSelection);
-                                    }}
-                                    value={selectedSupervisor} />
-                            </Form.Group>
-
-                            <Form.Group className="input-item mb-3">
-                                <Form.Label className="label-item" id="basic-addon1">Co-Supervisors</Form.Label>
-                                <Select
-                                    className="field-item mb-3"
-                                    styles={{
-                                        control: (baseStyle) => ({
-                                            ...baseStyle,
-                                            backgroundColor: 'rgb(255, 220, 150)',
-                                        }),
-                                        multiValueLabel: (baseStyle, { data }) => ({
-                                            ...baseStyle,
-                                            backgroundColor: '#9fd2ff',
-                                            color: 'black',
-                                        }),
-                                        multiValueRemove: (baseStyle, { data }) => ({
-                                            ...baseStyle,
-                                            backgroundColor: '#9fd2ff',
-                                            color: 'black',
-                                            '&:hover': {
-                                                backgroundColor: '#9fd2ff',
-                                            },
-                                        }),
-                                    }}
-                                    isMulti
-                                    placeholder="No Co-Supervisor Selected (Select Supervisor First)"
-                                    options={cosupervisorsData}
-                                    onChange={(newSelection) => { changeThesisData('cosupervisors', newSelection) }}
-                                    value={thesisData.cosupervisors}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                    <Col xs={12} md={8}>
-                        <div className="textarea-section">
-                            <Form.Group className="input-item mb-3">
-                                <Form.Label id="label-item basic-addon1">Description</Form.Label>
-                                <Form.Control
-                                    className="field-item-enabled"
-                                    as="textarea"
-                                    rows={5}
-                                    placeholder="Description"
-                                    aria-label="Description"
-                                    aria-describedby="basic-addon1"
-                                    value={thesisData.Description}
-                                    onChange={(e) => changeThesisData('Description', e.target.value)}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                </Row>
+                <RequestForm />
                 <Button className="action-allowed-button" onClick={() => insertRequest()}>Send Request</Button>
             </Container>
         </div >

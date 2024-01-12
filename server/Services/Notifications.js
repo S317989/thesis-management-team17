@@ -1,12 +1,13 @@
 'use strict';
 const db = require("../Database/DAO");
 const nodemailer = require('nodemailer');
+const CustomDate = require('./CustomDate');
 
 //User_Id,Title,Message
 
 module.exports = {
     addNotification: async function (userId, title, message) {
-        await db.executeQuery(`Insert Into Notifications (User_Id, Title, Message) Values (?, ?, ?)`, [userId, title, message]);
+        await db.executeQuery(`Insert Into Notifications (User_Id, Title, Message, Date) Values (?, ?, ?, ?)`, [userId, title, message, CustomDate.dateTime]);
         const userEmail = (await db.getOne(`SELECT Email FROM 
                                             (SELECT Id, Email FROM Teacher UNION SELECT Id, Email FROM Student)
                                             WHERE Id = ?`, [userId])).Email

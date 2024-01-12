@@ -90,7 +90,6 @@ module.exports = {
                 else if (row.Role === 'Secretary')
                     userInfos = await this.getSecretaryInfos(row.Id);
 
-                console.log(userInfos)
                 return userInfos;
             }
         } catch (e) {

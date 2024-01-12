@@ -1,20 +1,18 @@
 import "../Stylesheets/StudentApplicationStyle.css";
 import "../Stylesheets/ApplicationTableStyle.css";
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Card, Accordion, Badge, Alert } from 'react-bootstrap';
+import { Row, Col, Card, Accordion, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../Contexts";
 import ProposalsAPI from "../APIs/ProposalsAPI";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import sweetalert from "sweetalert";
-import { ShowProposalsForm } from '../Components/ProposalsActions';
 import { ApplicationFields, ApplicationStatus } from '../Components/ApplicationsTable';
 import { ProposalFields } from '../Components/ProposalsForm';
 import ApplicationsTable from '../Components/ApplicationsTable';
 import AuthenticationAPI from '../APIs/AuthenticationAPI';
 import { Pages } from '../APIs/AuthenticationAPI';
 import CardManager from '../Components/CardManager';
-import CustomCard from "../Components/CustomCard";
 import ProposalsModal from "../Components/ProposalModal";
 
 const StudentApplications = () => {

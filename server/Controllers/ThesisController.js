@@ -27,8 +27,10 @@ module.exports = {
     },
 
     setThesisRequestStatus: async function (req, res) {
+        console.log(req.body)
+
         await thesisServices
-            .setThesisRequestStatus(req.body.thesisId, req.body.status)
+            .setThesisRequestStatus(req.body.thesisId, req.body.status, req.body.reason)
             .then(() => {
                 return res.status(200).json('status updated');
             })
@@ -40,6 +42,15 @@ module.exports = {
     getThesis: async function (req, res) {
         try {
             const results = await thesisServices.getThesis(req.params.thesisId);
+            return res.status(200).json(results);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
+    getTheses: async function (req, res) {
+        try {
+            const results = await thesisServices.getTheses();
             return res.status(200).json(results);
         } catch (error) {
             return res.status(500).json({ message: error.message });

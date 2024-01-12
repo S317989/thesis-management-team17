@@ -1,5 +1,5 @@
 import "../Stylesheets/ProposalModalStyle.css";
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal } from 'react-bootstrap';
 import ProposalsForm, { ProposalFields } from './ProposalsForm';
 
