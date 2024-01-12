@@ -34,7 +34,7 @@ describe("End to end tests for handling requests by secretary", () => {
         // perform login
         let usernameBox = await driver.findElement(By.id("username"));
         usernameBox.clear();
-        usernameBox.sendKeys("c00001@secretary-email.co");
+        usernameBox.sendKeys("c00001@secretary-email.com");
         let passwordBox = await driver.findElement(By.id("password"));
         passwordBox.clear();
         passwordBox.sendKeys("c00001");
@@ -95,7 +95,7 @@ describe("End to end tests for handling requests by secretary", () => {
     
     
          // Find the "Applications" link by its text
-         const linkSecretaryRequests = await driver.findElement(By.linkText('Secretary Requests'));
+         const linkSecretaryRequests = await driver.findElement(By.id('nav-link secretary-requests'));
     
          // Click the "Applications" link
          await linkSecretaryRequests.click();
@@ -108,7 +108,7 @@ describe("End to end tests for handling requests by secretary", () => {
          await driver.wait(until.urlContains("/secretary-requests"), 5000);
     
            // Verify the presence of a specific table on the page
-      const tableElement = await driver.findElement(By.id("table-responsive"));
+      const tableElement = await driver.findElement(By.className("table-responsive"));
 
       // Check if the table element is present
       await driver.wait(until.elementIsVisible(tableElement), 5000); //locate table 

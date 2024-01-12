@@ -31,7 +31,7 @@ function Header() {
                             </>
                         ) : (
                             <>
-                                <Nav.Link onClick={() => navigate("secretary-requests")}>Student Requests</Nav.Link>
+                                <Nav.Link id='nav-link secretary-requests' onClick={() => navigate("secretary-requests")}>Student Requests</Nav.Link>
                             </>
                         )}
                 </>
