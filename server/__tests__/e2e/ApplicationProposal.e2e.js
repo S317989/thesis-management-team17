@@ -41,16 +41,17 @@ describe("End to end tests for list of applications and check for notifications"
 
     await driver.sleep(1000);
 
-    const submitButton = await driver.findElement(By.css("button.c1939bbc3.cc78b8bf3.ce1155df5.c1d2ca6e3.c331afe93"));
-
-    // remove disabled property from button
-    await driver.executeScript(
-      "arguments[0].removeAttribute('disabled')",
-      submitButton
-    );
-
-    // click submit button with js
-    await submitButton.click();
+    //const submitButton = await driver.findElement(By.className("cf4ff3b5d c5faccce1 cfccd0b2a c901653c3 cd1bb01a0"));
+    const submitButton=await driver.findElement(By.css("button[data-action-button-primary='true']"));
+        
+        // remove disabled property from button
+       /* await driver.executeScript(
+          "arguments[0].removeAttribute('disabled')",
+          submitButton
+        );*/
+    
+        // click submit button with js
+        await driver.executeScript("arguments[0].click();", submitButton);
 
     await driver.sleep(1000);
 
@@ -192,18 +193,18 @@ afterAll(async () => {
     await filterButton.click();
 
     // Click on the "Title" clickable text
-    const titleClickableText = await driver.findElement(By.id("clickable-Title"));
+    const titleClickableText = await driver.findElement(By.className("drop-items-Title dropdown-item"));
     await titleClickableText.click();
 
     // Insert an input text in the "Title" field
-    const titleInput = await driver.findElement(By.id("input-Title"));
-    await titleInput.sendKeys("Ex");
+    const titleInput = await driver.findElement(By.className("form-control"));
+    await titleInput.sendKeys("soft");
 
     // Press Enter on the keyboard
     await titleInput.sendKeys(Key.RETURN);
 
      // Find the card element by its text content
-     const cardElement = await driver.findElement(By.xpath('//div[@class="card-header" and text()="AI Research Project"]'));
+     const cardElement = await driver.findElement(By.xpath('//div[@class="card-header" and text()="Software Development Project"]'));
 
      // Click on the card
      await cardElement.click();
@@ -305,7 +306,62 @@ afterAll(async () => {
      await driver.sleep(1000);
     //can add check on errors on fields input in other tests
      await doLogout();
+     await driver.sleep(1000);
     
   }, 20000);
+
+  test("create a new Proposal starting from a previous one already existing", async () => {
+    await doLogin();
+
+    await driver.get(baseURL);
+    await checkAndCollapseNavbar();
+
+    await driver.sleep(1000);
+      // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
+      await driver.wait(until.elementLocated(By.css('.nav-link')), 5000);
+
+
+     // Find the "Applications" link by its text
+     const proposalsLink = await driver.findElement(By.linkText('My Proposals'));
+
+     // Click the "Applications" link
+     await proposalsLink.click();
+ 
+     // Wait for some time (you can replace this with proper waits)
+     await driver.sleep(1000);
+ 
+     // Assert that the navigation to the correct route occurred
+     //const currentUrl = await driver.getCurrentUrl();
+     await driver.wait(until.urlContains("/my-proposals"), 5000);
+
+     await driver.sleep(1000);
+
+     const accordionButton = await driver.findElement(By.className('accordion-button'));
+     await accordionButton.click();
+
+     const newCardBody=await driver.findElement(By.className('card-body'));
+     await newCardBody.click();
+
+     await driver.sleep(3000);
+
+     const modifyButton=await driver.findElement(By.className("action-allowed-button btn btn-primary"));
+     await modifyButton.click();
+
+     const editIcon= await driver.findElement(By.css(".edit-icon"));
+
+     await editIcon.click();
+
+     await driver.sleep(2000);
+
+  // Find and interact with the Save button
+const whiteButton = await driver.findElement(By.className("btn-close btn-close-white"));
+
+     await driver.sleep(1000);
+    //can add check on errors on fields input in other tests
+     await doLogout();
+     await driver.sleep(1000);
+    
+  }, 20000);
+
 
 });

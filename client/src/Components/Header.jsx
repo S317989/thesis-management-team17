@@ -20,7 +20,7 @@ function Header() {
                         user.role === "Student" ? (
                             <>
                                 <Nav.Link onClick={() => navigate("/student-applications")}>Thesis Proposals</Nav.Link>
-                                <Nav.Link onClick={() => navigate("/student-request")}>Student Request</Nav.Link>
+                                <Nav.Link id='nav-link student-request' onClick={() => navigate("/student-request")}>Student Request</Nav.Link>
                             </>
                         ) : user.role === "Teacher" ? (
                             <>
@@ -31,7 +31,7 @@ function Header() {
                             </>
                         ) : (
                             <>
-                                <Nav.Link onClick={() => navigate("secretary-requests")}>Student Requests</Nav.Link>
+                                <Nav.Link id='nav-link secretary-requests' onClick={() => navigate("secretary-requests")}>Student Requests</Nav.Link>
                             </>
                         )}
                 </>
