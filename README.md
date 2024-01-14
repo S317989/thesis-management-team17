@@ -3,15 +3,16 @@ Software Engineering II Project 2023-2024
 
 # Thesis Management: requirements description
 
-Date: 14/12/2023
+Date: 18/01/2024
 
-Version for Demo 3
+Version for Demo 4
 
 | Demo Version | Changes                                                                                                                                                                              |
 | ------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Demo 1       | Implemented Search Proposals and SAML 2.0 authentication                                                                                                                             |
 | Demo 2       | Implemented Insert Proposal, Apply for Proposal, Browse Applications, Accept Application, Browse Applications Decisions, Browse, Update, Delete, Archive Proposal and Search Archive |
 | Demo 3       | Implemented Notify Application and Application Decision, Copy Proposal, Access Applicant CV, Insert Student Request |
+| Demo 4       | Implemented Secretary and Professor Approve Student Request, Notify Professor Thesis Request, Proposal Expiration and Add Accademic Co-Supervisor |
 
 ## Contents
 
@@ -38,6 +39,7 @@ Version for Demo 3
         - [`get`](#get)
         - [`delete`](#delete)
         - [`post`](#post)
+        - [`postCustomBody`](#postcustombody)
       - [ApplicationsAPI.js](#applicationsapijs)
         - [`getAllApplications`](#getallapplications)
         - [`acceptApplication`](#acceptapplication)
@@ -52,6 +54,7 @@ Version for Demo 3
         - [`getKeywordsList`](#getkeywordslist)
         - [`getAllGroups`](#getallgroups)
         - [`getListTeacher`](#getlistteacher)
+        - [`getStudentExams`](#getstudentexams)
       - [ProposalsAPI.js](#proposalsapijs)
         - [`addOrUpdateProposal`](#addorupdateproposal)
         - [`deleteProposal`](#deleteproposal)
@@ -62,6 +65,15 @@ Version for Demo 3
         - [`getActiveProposals`](#getactiveproposals)
         - [`getArchivedProposals`](#getarchivedproposals)
         - [`searchProposals`](#searchproposals)
+      - [ThesisAPI.js](#thesisapijs)
+        - [`addOrUpdateThesisRequest`](#addorupdatethesisrequest)
+        - [`getThesisBySupervisor`](#getthesisbysupervisor)
+        - [`setThesisRequestStatus`](#setthesisrequeststatus)
+        - [`getThesis`](#getthesis)
+        - [`getTheses`](#gettheses)
+      - [NotificationsAPI.js](#notificationsapijs)
+        - [`getMyNotifications`](#getmynotifications)
+        - [`setNotificationAsRead`](#setnotificationasread)
       - [DateAPI.js](#dateapijs)
         - [`getDate`](#getdate)
         - [`setDate`](#setdate)
@@ -89,8 +101,14 @@ The Thesis Management is a web application designed for the proper management of
 | TM-12    |       Archive Proposal        |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
 | TM-13    |        Access Applicant CV        |                                                                        As a **Professor** I want to see the applicant student CV so that I can assess the suitability for the thesis |
 | TM-14    |        Notify Application        |                                                                        As a **Professor** I want to be notified when a new applicant is sent so that I can evaluate it |
+| TM-15    |    Proposal Expiration    |                                      As a **Professor** I want to automatically archive a thesis on the expiration date |
 | TM-16    |        Search Archive         |                                      As a **Professor** I want to archive a thesis proposals. So that I can later consult it |
+| TM-17    |     Add Academic Co-Supervisor     |                                      As a **Professor** I want to add co-supervisors to a thesis proposal so that their assistance is formally recognized |
 | TM-26    |    Insert Student Request     |                                      As a **Student** I want to make a new thesis start request so that it can be approved |
+| TM-27    |   Secretary Approve Student Requests   |                                      As a **Secretary Clerk** I want to approve or reject a student thesis request so that it can be later approved by the professor |
+| TM-28    |   Professor Approve Student Request   |                                      As a **Professor** I want to approve/request change/reject a student thesis request so that they can officially start working |
+| TM-29    |    Notify Professor Thesis Request    |                                      As a **Professor** I want to be notified when a new thesis request is made by a student with me as supervisor so that I can accept or reject it |
+
 
 ## Use case diagram
 
@@ -101,27 +119,33 @@ The Thesis Management is a web application designed for the proper management of
 | Role          | Actions                                                                                                                                                                                                                                                    |
 | ------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Student**   | A generic Student can search for an existing thesis proposal, submit an application and view the decision made by a professor regarding their application and consequently make a request (to be approved by the professor) to start working on a thesis proposal. When a teacher take a decision on one of the student applications, the student is notified. |
-| **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, after beeing notified, they can access a list of applications for existing thesis proposals (made by a student) and make decisions on whether to accept or reject them. Moreover a professor can update, delete or archive a thesis proposal or copy a new one starting from another already existing. A teacher can also see a student's CV when evaluating an application for a thesis proposal to assess its suitability. |
+| **Professor** | The primary actions a teacher can perform include inserting new thesis proposals and reviewing all active ones. Additionally, after beeing notified, they can access a list of applications for existing thesis proposals (made by a student) and make decisions on whether to accept or reject them. Moreover a professor can update, delete or archive a thesis proposal (with automatic archiving on the proposal's expiration date) or copy a new one starting from another already existing. The Professor can add a co-supervisor to assist a student with their proposal as well. After the acceptance of a student request (made by a secretary), the professor is notified so that he can decide to approve, reject or request some changes on that student request. A teacher can also see a student's CV when evaluating an application for a thesis proposal to assess its suitability. |
+| **Secretary Clerk**   | A Secretary Clerk is able to approve or reject a student thesis request so that the professor can later approve it and the student can start working on it. |
 
 ### User Privileges
-|    Story    | Student | Professor |
-| :---------: | :-----: | :-------: |
-| TM story 1  |         |     X     |
-| TM story 2  |    X    |           |
-| TM story 3  |    X    |           |
-| TM story 4  |         |     X     |
-| TM story 5  |         |     X     |
-| TM story 6  |    X    |           |
-| TM story 7  |         |     X     |
-| TM story 8  |         |     X     |
-| TM story 9  |    X    |           |
-| TM story 10 |         |     X     |
-| TM story 11 |         |     X     |
-| TM story 12 |         |     X     |
-| TM story 13 |         |     X     |
-| TM story 14 |         |     X     |
-| TM story 16 |         |     X     |
-| TM story 26 |    X    |           |
+|    Story    | Student | Professor | Secretary |
+| :---------: | :-----: | :-------: | :-------: |
+| TM story 1  |         |     X     |           |
+| TM story 2  |    X    |           |           |
+| TM story 3  |    X    |           |           |
+| TM story 4  |         |     X     |           |
+| TM story 5  |         |     X     |           |
+| TM story 6  |    X    |           |           |
+| TM story 7  |         |     X     |           |
+| TM story 8  |         |     X     |           |
+| TM story 9  |    X    |           |           |
+| TM story 10 |         |     X     |           |
+| TM story 11 |         |     X     |           |
+| TM story 12 |         |     X     |           |
+| TM story 13 |         |     X     |           |
+| TM story 14 |         |     X     |           |
+| TM story 15 |         |     X     |           |
+| TM story 16 |         |     X     |           |
+| TM story 17 |         |     X     |           |
+| TM story 26 |    X    |           |           |
+| TM story 27 |         |           |     X     |
+| TM story 28 |         |     X     |           |
+| TM story 29 |         |     X     |           |
 
 ### Users Credentials
 
@@ -138,6 +162,7 @@ The Thesis Management is a web application designed for the proper management of
 |      d54723@polito.it      |   d54723 | **Professor** |
 |      d78912@polito.it      |   d78912 | **Professor** |
 |      d96970@polito.it      |   d96970 | **Professor** |
+| c00001@secretary-email.com |   c0001  | **Secretary** |
 
 ## General Information about the Project Management 
 
@@ -228,6 +253,14 @@ This part of the document lists all the expected behaviors for the APIs that com
 - URL: http://localhost:3000/api/`url`
 - Method: POST
 - Body content: content of the `body` parameter
+- Returns an error message status if not performed correctly
+
+##### `postCustomBody`
+
+- Request Parameters: `url`, `customBody`
+- URL: http://localhost:3000/api/`url`
+- Method: POST
+- Body content: content of the `customBody` parameter
 - Returns an error message status if not performed correctly
 
 #### ApplicationsAPI.js
@@ -330,6 +363,14 @@ This part of the document lists all the expected behaviors for the APIs that com
 - Body content: None
 - Returns an error message status if not performed correctly
 
+##### `getStudentExams`
+
+- Request Parameters: `studentId`
+- URL: http://localhost:3000/api/utilities/exams/`studentId`
+- Method: GET
+- Body content: None
+- Returns an error message status if not performed correctly
+
 #### ProposalsAPI.js
 
 ##### `addOrUpdateProposal`
@@ -402,6 +443,66 @@ This part of the document lists all the expected behaviors for the APIs that com
 - URL: http://localhost:3000/api/proposals/search/`searchTerm`
 - Method: GET
 - Body content: None
+- Returns an error message status if not performed correctly
+
+#### ThesisAPI.js
+
+##### `addOrUpdateThesisRequest`
+
+- Request Parameters: `thesis`
+- URL: http://localhost:3000/api/thesis/edit
+- Method: POST
+- Body content: content of the `thesis` parameter
+- Returns an error message status if not performed correctly
+
+##### `getThesisBySupervisor`
+
+- Request Parameters: None
+- URL: http://localhost:3000/api/thesis/current-supervisor
+- Method: GET
+- Body content: None
+- Returns an error message status if not performed correctly
+
+##### `setThesisRequestStatus`
+
+- Request Parameters: `thesisId`, `status`, `reason`
+- URL: http://localhost:3000/api/thesis/set-status
+- Method: POST
+- Body content: content of the parameters: `thesisId`, `status`, `reason`
+- Returns an error message status if not performed correctly
+
+##### `getThesis`
+
+- Request Parameters: `thesisId`
+- URL: http://localhost:3000/api/thesis/get/`thesisId`
+- Method: GET
+- Body content: None
+- Returns an error message status if not performed correctly
+
+##### `getTheses`
+
+- Request Parameters: None
+- URL: http://localhost:3000/api/thesis/all
+- Method: GET
+- Body content: None
+- Returns an error message status if not performed correctly
+
+#### NotificationsAPI.js
+
+##### `getMyNotifications`
+
+- Request Parameters: None
+- URL: http://localhost:3000/api/notifications/get
+- Method: GET
+- Body content: None
+- Returns an error message status if not performed correctly
+
+##### `setNotificationAsRead`
+
+- Request Parameters: `notificationId`
+- URL: http://localhost:3000/api/notifications/read
+- Method: POST
+- Body content: content of the `notificationId` parameter
 - Returns an error message status if not performed correctly
 
 #### DateAPI.js
