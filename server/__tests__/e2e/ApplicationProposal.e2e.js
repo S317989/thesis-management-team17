@@ -172,9 +172,9 @@ afterAll(async () => {
 
     await driver.sleep(1000);
       // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
-      await driver.wait(until.elementLocated(By.css('.nav-link')), 5000);
+      await driver.wait(until.elementLocated(By.css('.nav-link')), 8000);
 
-
+await driver.sleep(2000);
      // Find the "Applications" link by its text
      const proposalsLink = await driver.findElement(By.linkText('All Proposals'));
 
@@ -237,8 +237,9 @@ afterAll(async () => {
 
     await driver.sleep(1000);
       // Explicit wait for the menu to be fully expanded (adjust timeout as needed)
-      await driver.wait(until.elementLocated(By.css('.nav-link')), 5000);
+      await driver.wait(until.elementLocated(By.css('.nav-link')), 8000);
 
+      await driver.sleep(2000);
 
      // Find the "Applications" link by its text
      const proposalsLink = await driver.findElement(By.linkText('My Proposals'));
