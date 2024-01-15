@@ -153,9 +153,10 @@ describe("End to end tests for handling requests by secretary", () => {
        await driver.sleep(1000);
         //success modal appears
 
-        const confirmButton= await driver.findElement(By.className("swal-button swal-button--confirm"));
-
-        await confirmButton.click();
+        const successToast= await driver.findElement(By.className('Toastify'));
+        // Check if the modal content is visible, SUCCESS MODAL displayed
+        const isToastVisible = await successToast.isDisplayed();
+        expect(isToastVisible).toBe(true);
         
         await driver.sleep(1000);
     

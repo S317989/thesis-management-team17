@@ -220,6 +220,11 @@ describe("End to end tests for proposals by student", () => {
        await driver.sleep(1000);
         // Click the "Send Request" button
         await driver.findElement(By.className('action-allowed-button btn btn-primary')).click();
+
+        const successToast= await driver.findElement(By.className('Toastify'));
+        // Check if the modal content is visible, SUCCESS MODAL displayed
+        const isToastVisible = await successToast.isDisplayed();
+           expect(isToastVisible).toBe(true);
     
         await driver.sleep(2000);
     

@@ -298,12 +298,11 @@ await driver.sleep(2000);
     await saveButton.click();
 
     await driver.sleep(1000);
+    const successToast= await driver.findElement(By.className('Toastify'));
      // Check if the modal content is visible, SUCCESS MODAL displayed
-     const isModalClosed = await modalContent.isDisplayed();
-     expect(isModalClosed).toBe(true);
+     const isToastVisible = await successToast.isDisplayed();
+     expect(isToastVisible).toBe(true);
 
-     const swalButton= await driver.findElement(By.className("swal-button swal-button--confirm"));
-     await swalButton.click();
      await driver.sleep(1000);
     //can add check on errors on fields input in other tests
      await doLogout();
