@@ -51,7 +51,14 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
         if (newValue === '') {
             setFilteredProposals(availableProposals);
         } else {
-            setFilteredProposals(availableProposals.filter(p => p.searchableFormat.includes(newValue.toLowerCase())));
+            let field = newValue.field;
+            let value = newValue.value.toLowerCase();
+
+            let filteredProposals = availableProposals.filter((proposal) => {
+                return proposal[field].toLowerCase().includes(value);
+            });
+
+            setFilteredProposals(filteredProposals);
         }
     };
 
@@ -105,7 +112,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     useEffect(() => {
         if (filters.length > 0)
             filters.forEach((filter) => {
-                handleSearch(filter.value);
+                handleSearch(filter);
             });
         else
             fetchData();
