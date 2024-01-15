@@ -4,6 +4,7 @@ import ThesisAPI from '../APIs/ThesisAPI';
 import sweetalert from 'sweetalert';
 import { InfoSquareFill } from "react-bootstrap-icons";
 import RequestModal from './RequestModal';
+import { Slide, toast } from "react-toastify";
 
 export const SecApprove = ({ requestId, OnComplete }) => {
   const handleSecApprove = () => {
@@ -17,18 +18,28 @@ export const SecApprove = ({ requestId, OnComplete }) => {
       if (confirmed) {
         ThesisAPI.setThesisRequestStatus(requestId, 'SecretaryAccepted').then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Request Approved",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
-
+            toast.success('Request Approved', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Request couldn't be Approved",
-              icon: "error",
-              button: "Ok",
+            toast.error('Request Couldn\'t be Approved', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })
@@ -56,18 +67,28 @@ export const ProfApprove = ({ requestId, OnComplete }) => {
       if (confirmed) {
         ThesisAPI.setThesisRequestStatus(requestId, 'Accepted').then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Request Approved",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
-
+            toast.success('Request Approved', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Request couldn't be Approved",
-              icon: "error",
-              button: "Ok",
+            toast.error('Request Couldn\'t be approved', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })
@@ -94,18 +115,28 @@ export const RejectRequest = ({ requestId, OnComplete }) => {
       if (confirmed) {
         ThesisAPI.setThesisRequestStatus(requestId, 'Rejected').then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Request Rejected",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
-
+            toast.success('Request Rejected', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Request couldn't be rejected",
-              icon: "error",
-              button: "Ok",
+            toast.error('Request Couldn\'t be rejected', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })
@@ -139,17 +170,28 @@ export const RequestChange = ({ requestId, OnComplete }) => {
       if (reason)
         ThesisAPI.setThesisRequestStatus(requestId, 'ChangeRequested', reason).then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Change Requested!",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
+            toast.success('Change request sent', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Change couldn't be Requested",
-              icon: "error",
-              button: "Ok",
+            toast.error('Change Request Couldn\'t be sent', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })

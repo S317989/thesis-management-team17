@@ -4,7 +4,7 @@ import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import sweetalert from 'sweetalert';
 import { FilePerson } from "react-bootstrap-icons";
 import UtilitesAPI from '../APIs/UtilitiesAPI';
-
+import { Slide, toast } from "react-toastify";
 export const Apply = ({ proposalId, OnComplete }) => {
   const [showModal, setShowModal] = useState(false);
   const [cvFile, setCvFile] = useState(null);
@@ -38,18 +38,27 @@ export const Apply = ({ proposalId, OnComplete }) => {
       if (confirmed) {
         ApplicationsAPI.applyToProposal(formData).then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: 'Application Made',
-              icon: 'success',
-              button: 'Ok',
-            }).then(() => {
-              if (OnComplete) OnComplete();
+            toast.success('Application Made', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
+            if (OnComplete) OnComplete();
           } else {
-            sweetalert({
-              title: "Application couldn't be made.",
-              icon: 'error',
-              button: 'Ok',
+            toast.error('Application Couldn\'t be made', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         });
@@ -98,18 +107,28 @@ export const Accept = ({ applicationId, OnComplete }) => {
       if (confirmed) {
         ApplicationsAPI.acceptApplication(applicationId).then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Application Accepted",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
-
+            toast.success('Application Accepted', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Application couldn't be Accepted",
-              icon: "error",
-              button: "Ok",
+            toast.error('Application Couldn\'t be Accepted', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })
@@ -134,18 +153,28 @@ export const Reject = ({ applicationId, OnComplete }) => {
       if (confirmed) {
         ApplicationsAPI.rejectApplication(applicationId).then((result) => {
           if (result.status === 200) {
-            sweetalert({
-              title: "Application Rejected",
-              icon: "success",
-              button: "Ok",
-            }).then(() => { if (OnComplete) OnComplete() });
-
+            toast.success('Application rejected', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
+            });
+            if (OnComplete) OnComplete();
           }
           else {
-            sweetalert({
-              title: "Application couldn't be rejected",
-              icon: "error",
-              button: "Ok",
+            toast.error('Application Couldn\'t be rejected', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+              transition: Slide,
             });
           }
         })

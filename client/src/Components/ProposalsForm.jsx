@@ -2,7 +2,6 @@ import "../Stylesheets/ProposalFormStyle.css";
 import React, { useContext, useEffect, useState } from "react";
 import { Form, Button, Col, ButtonGroup, Row, Container, OverlayTrigger, Tooltip, Alert } from "react-bootstrap";
 import { UserContext } from "../Contexts";
-import sweetalert from "sweetalert";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import ProposalsAPI from "../APIs/ProposalsAPI";
@@ -11,7 +10,7 @@ import { Delete, Archive, ShowProposalsForm } from './ProposalsActions';
 import { Apply } from "./ApplicationsActions";
 import { Eye, Mortarboard, Pencil } from "react-bootstrap-icons";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
-
+import { Slide, toast } from "react-toastify";
 // Enums
 const Levels = { Bachelor: "Bachelor", Master: "Master" };
 
@@ -320,18 +319,27 @@ function ProposalForm({
 
         ProposalsAPI.addOrUpdateProposal(readyProposalData).then((response) => {
             if (response.status === 200) {
-                sweetalert({
-                    title: "Proposal Saved",
-                    icon: "success",
-                    button: "Ok",
-                }).then(() => {
-                    if (OnComplete) OnComplete();
+                toast.success('Proposal Saved', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Slide,
                 });
+                if (OnComplete) OnComplete();
             } else {
-                sweetalert({
-                    title: "Proposal Not Saved",
-                    icon: "error",
-                    button: "Ok",
+                toast.error('Proposal Couldn\'t be saved', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Slide,
                 });
             }
         }).catch((error) => {

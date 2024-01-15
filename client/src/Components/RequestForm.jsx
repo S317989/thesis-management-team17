@@ -5,12 +5,12 @@ import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import ThesisAPI from "../APIs/ThesisAPI";
-import sweetalert from 'sweetalert';
+
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { ApplicationFields } from "../Components/ApplicationsTable";
 import { ProposalFields } from "../Components/ProposalsForm";
 import { useNavigate } from "react-router-dom";
-
+import { Slide, toast } from "react-toastify";
 
 function RequestForm({ request }) {
     const navigate = useNavigate();
@@ -29,11 +29,15 @@ function RequestForm({ request }) {
 
     const insertRequest = async () => {
         if (thesisData.Title === '' || thesisData.Supervisor_Id === '' || thesisData.Description === '') {
-            sweetalert({
-                title: "Error!",
-                text: "Please, insert the required details!",
-                icon: "error",
-                button: "Ok",
+            toast.error('Please, insert the required details!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+                transition: Slide,
             });
             return;
         }
@@ -42,20 +46,27 @@ function RequestForm({ request }) {
 
         ThesisAPI.addOrUpdateThesisRequest(thesisData).then((response) => {
             if (response.status === 200) {
-                sweetalert({
-                    title: "Success!",
-                    text: "Your request has been sent!",
-                    icon: "success",
-                    button: "Ok",
-                }).then(() => {
-                    navigate("/student-applications")
+                toast.success('Request sent', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Slide,
                 });
+                navigate("/student-applications");
             } else {
-                sweetalert({
-                    title: "Error!",
-                    text: "Something went wrong!",
-                    icon: "error",
-                    button: "Ok",
+                toast.error('Request Couldn\'t be sent', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Slide,
                 });
             }
         }).catch((error) => {

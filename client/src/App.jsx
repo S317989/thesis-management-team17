@@ -1,5 +1,6 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Header from './Components/Header'
 import Home from './Pages/Home'
@@ -13,6 +14,8 @@ import MyProposals from './Pages/MyProposals.jsx';
 import StudentApplications from './Pages/StudentApplications.jsx';
 import StudentRequest from './Pages/StudentRequest.jsx';
 import BrowseRequests from './Pages/BrowseRequests.jsx';
+import { ToastContainer} from 'react-toastify';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,6 +63,7 @@ function App() {
                   <Route path="/secretary-requests" element={<BrowseRequests />} />
                   <Route path="/prof-requests" element={<BrowseRequests />} />
                 </Routes>
+                <ToastContainer />
               </div>
             </UserContext.Provider>
           </Router>

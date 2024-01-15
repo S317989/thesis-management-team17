@@ -4,6 +4,7 @@ import sweetalert from "sweetalert";
 import ProposalsAPI from '../APIs/ProposalsAPI';
 import ActionButtons from './ActionButtons';
 import ProposalsModal from './ProposalModal';
+import { Slide, toast } from 'react-toastify';
 
 export const ShowProposalsForm = ({
     proposal, EnableEditing, EnableArchiving, EnableDeleting, EnableApplying, OnComplete
@@ -41,18 +42,28 @@ export const Delete = ({ proposalId, OnComplete }) => {
             if (confirmed) {
                 ProposalsAPI.deleteProposal(proposalId).then((result) => {
                     if (result.status === 200) {
-                        sweetalert({
-                            title: "Proposal Deleted",
-                            icon: "success",
-                            button: "Ok",
-                        }).then(() => { if (OnComplete) OnComplete() });
-
+                        toast.success('Proposal Deleted', {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            theme: "colored",
+                            transition: Slide,
+                        });
+                        if (OnComplete) OnComplete();
                     }
                     else {
-                        sweetalert({
-                            title: "Proposal couldn't be deleted",
-                            icon: "error",
-                            button: "Ok",
+                        toast.error('Proposal couldn\'t be deleted', {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            theme: "colored",
+                            transition: Slide,
                         });
                     }
                 })
@@ -75,19 +86,29 @@ export const Archive = ({ proposalId, OnComplete }) => {
             if (confirmed) {
                 ProposalsAPI.archiveProposal(proposalId).then((result) => {
                     if (result.status === 200) {
-                        sweetalert({
-                            title: "Proposal Archived",
-                            icon: "success",
-                            button: "Ok",
-                        }).then(() => { if (OnComplete) OnComplete() });
+                        toast.success('Proposal Archived', {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            theme: "colored",
+                            transition: Slide,
+                        });
+                        if (OnComplete) OnComplete();
                     }
                     else {
-                        sweetalert({
-                            title: "Proposal couldn't be archived",
-                            icon: "error",
-                            button: "Ok",
-                        });
-                    }
+                        toast.error('Proposal couldn\'t be archived', {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            theme: "colored",
+                            transition: Slide,
+                        });                    }
                 })
             }
         });

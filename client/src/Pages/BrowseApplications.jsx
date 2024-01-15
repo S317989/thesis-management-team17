@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import ApplicationsAPI from '../APIs/ApplicationsAPI';
 import ApplicationsTable from '../Components/ApplicationsTable';
-
+import { sweetalert } from "sweetalert";
 const BrowseApplications = () => {
 
   // State to store applications
