@@ -1,6 +1,8 @@
 # thesis-management-team17
 Software Engineering II Project 2023-2024
 
+This project is licensed under the terms of the MIT license.
+
 # Thesis Management: requirements description
 
 Date: 18/01/2024
@@ -26,6 +28,7 @@ Version for Demo 4
     - [User Privileges](#user-privileges)
     - [Users Credentials](#users-credentials)
   - [General Information about the Project Management](#general-information-about-the-project-management)
+    - [Licensing](#licensing)
     - [Authentication with SAML2.0](#authentication-with-saml20)
     - [Docker Implementation](#docker-implementation)
       - [Docker Pull and Run commands](#docker-pull-and-run-commands)
@@ -165,6 +168,36 @@ The Thesis Management is a web application designed for the proper management of
 | c00001@secretary-email.com |   c0001  | **Secretary** |
 
 ## General Information about the Project Management 
+
+### Licensing
+
+For the licensing of the Thesis Management project, we opted for the **MIT License** due to its widespread use as a permissive, no-copyleft open-source license. This license is known for its simplicity, shortness and its usefulness in a variety of contexts, including commercial applications, proprietary projects, and open-source endeavors.
+
+The MIT License is concise yet comprehensive, granting users the flexibility to engage in virtually unrestricted activities with the project, including the creation and distribution of closed-source versions. Notably, this license does not delve into patent grants and has minimal impact on derivative works.
+
+The text of the above-mentioned license is provided below for greater clarity and understanding:
+
+"MIT License
+
+Copyright (c) 2024 Software Engineering 2 Group 17
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE."
 
 ### Authentication with SAML2.0
 
