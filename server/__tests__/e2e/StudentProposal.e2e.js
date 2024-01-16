@@ -205,7 +205,7 @@ describe("End to end tests for proposals by student", () => {
 
         // Selecting from dropdowns might require specific handling depending on how your dropdowns are implemented.
         // Here's an example of clicking a dropdown and selecting an option:
-        await driver.findElement(By.className('css-j5z5tw-control')).click();
+        await driver.findElement(By.className(' css-art2ul-ValueContainer2')).click();
         //await driver.findElement(By.css('div[id^="react-select-"][id*="-option-"]')).click(); // Adjust the selector as needed
         // Wait for the dropdown options to be visible
         let optionLocator = By.xpath("//div[contains(@class, 'field-item mb-3')]//div[contains(text(), 'Mario Rossi')]");

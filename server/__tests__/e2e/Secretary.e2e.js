@@ -129,7 +129,7 @@ describe("End to end tests for handling requests by secretary", () => {
        const isModalVisible = await modalContent.isDisplayed();
        expect(isModalVisible).toBe(true);
 
-       await driver.sleep(2000);
+       await driver.sleep(1000);
    
        const closeButton = await driver.findElement(By.css(".modal-header [aria-label='Close']"));
        await closeButton.click();
@@ -139,7 +139,7 @@ describe("End to end tests for handling requests by secretary", () => {
       const greenButton = await driver.findElement(By.className('btn btn-success btn-sm'));
       await greenButton.click(); //try to approve REQUEST
 
-      await driver.sleep(2000);
+      await driver.sleep(1000);
        // wait until the modal appears
        const warningSwalModal = await driver.findElement(By.className('swal-modal'));
 
@@ -150,12 +150,15 @@ describe("End to end tests for handling requests by secretary", () => {
     
        await dangerButton.click();
     
-       await driver.sleep(1000);
+       
         //success modal appears
+        await driver.sleep(2000);
 
         const successToast= await driver.findElement(By.className('Toastify'));
         // Check if the modal content is visible, SUCCESS MODAL displayed
         const isToastVisible = await successToast.isDisplayed();
+
+        await driver.sleep(1000);
         expect(isToastVisible).toBe(true);
         
         await driver.sleep(1000);
