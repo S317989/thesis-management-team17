@@ -18,7 +18,7 @@ const BrowseRequests = () => {
             data = await ThesisAPI.getTheses();
         else if (user.role === "Teacher") {
             data = await ThesisAPI.getThesisBySupervisor();
-            data = data.filter((thesis) => thesis.Status === "SecretaryAccepted" || thesis.Status === "ChangeRequested");
+            data = data.filter((thesis) => thesis.Status !== "Pending");
         }
 
         setRequests(data);
