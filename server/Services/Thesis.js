@@ -43,8 +43,6 @@ module.exports = {
           VALUES (?, ?, ?, ?, "Pending")`, [data.Title, data.Student_Id, data.Supervisor_Id, data.Description]);
 
                 thesisId = (await db.getOne('SELECT MAX(Id) AS Id FROM Thesis', [])).Id;
-                await NotificationsServices.addNotification(data.Supervisor_Id, 'New Start Thesis Request',
-                    `A new Start Thesis Request was made to you with the title: ${data.Title}.`);
             }
 
             if (data.cosupervisors && data.cosupervisors.length > 0) {
@@ -59,6 +57,12 @@ module.exports = {
 
     setThesisRequestStatus: async function (thesisId, newStatus, reason) {
         await db.executeQuery('UPDATE Thesis SET Status=? WHERE Id=?', [newStatus, thesisId]);
+
+        if (newStatus === "SecretaryAccepted") {
+            const data = await db.getOne(`SELECT * FROM Thesis WHERE Id=?`, [thesisId]);
+            await NotificationsServices.addNotification(data.Supervisor_Id, 'Thesis Request Accepted',
+                `Your Thesis Request with the title: ${data.Title} was accepted by the Secretary.`);
+        }
     },
 
     logThesisRequestChange: async function (newData, oldData) {

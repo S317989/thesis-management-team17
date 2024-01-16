@@ -170,7 +170,7 @@ function RequestForm({ request, copiedData }) {
                         <Form.Group className="input-item mb-3">
                             <Form.Label className="label-item" id="basic-addon1">Title</Form.Label>
                             <Form.Control
-                                className={`field-item-${user.role !== "Student" ? 'disabled' : 'enabled'}`}
+                                className={`field-item-${user.role !== "Student" ? 'disabled' : null}`}
                                 placeholder="Title"
                                 aria-label="Title"
                                 aria-describedby="basic-addon1"
@@ -187,7 +187,7 @@ function RequestForm({ request, copiedData }) {
                                 styles={{
                                     control: (baseStyle) => ({
                                         ...baseStyle,
-                                        backgroundColor: user.role !== "Student" ? 'rgb(204, 197, 200)' : 'rgb(255, 220, 150)',
+                                        backgroundColor: user.role !== "Student" ? 'rgb(204, 197, 200)' : null,
                                     }),
                                     multiValueLabel: (baseStyle, { data }) => ({
                                         ...baseStyle,
@@ -231,7 +231,7 @@ function RequestForm({ request, copiedData }) {
                                 styles={{
                                     control: (baseStyle) => ({
                                         ...baseStyle,
-                                        backgroundColor: 'rgb(204, 197, 200)',
+                                        backgroundColor: user.role !== "Student" ? 'rgb(204, 197, 200)' : null,
                                     }),
                                     multiValueLabel: (baseStyle, { data }) => ({
                                         ...baseStyle,
@@ -267,7 +267,7 @@ function RequestForm({ request, copiedData }) {
                         <Form.Group className="input-item mb-3">
                             <Form.Label id="label-item basic-addon1">Description</Form.Label>
                             <Form.Control
-                                className={`field-item-${user.role !== "Student" ? 'disabled' : 'enabled'}`}
+                                className={`field-item-${user.role !== "Student" ? 'disabled' : null}`}
                                 as="textarea"
                                 rows={5}
                                 placeholder="Description"
