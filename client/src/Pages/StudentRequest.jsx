@@ -3,17 +3,12 @@ import { Button, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from "rea
 import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
 import ApplicationsAPI from "../APIs/ApplicationsAPI";
-import ThesisAPI from "../APIs/ThesisAPI";
-import UtilitiesAPI from "../APIs/UtilitiesAPI";
 import { ApplicationFields } from "../Components/ApplicationsTable";
 import { ProposalFields } from "../Components/ProposalsForm";
 import { InfoCircle } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
 import RequestForm from "../Components/RequestForm";
-import { Slide, toast } from "react-toastify";
 
 function StudentRequest() {
-    const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [thesisData, setThesisData] = useState({
         "Supervisor_Id": '',
@@ -22,66 +17,6 @@ function StudentRequest() {
         "cosupervisors": [],
     });
     const [acceptedApplication, setAcceptedApplication] = useState(null);
-    const [teachersData, setTeachersData] = useState([]);
-    const [teachers, setTeachers] = useState([]);
-    const [cosupervisorsData, setCosupervisorsData] = useState([]);
-    const [selectedSupervisor, setSelectedSupervisor] = useState(null);
-
-    const insertRequest = async () => {
-        if (thesisData.Title === '' || thesisData.Supervisor_Id === '' || thesisData.Description === '') {
-            toast.error('Please insert the required details!', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "colored",
-                transition: Slide,
-            });
-            return;
-        }
-
-        thesisData.Student_Id = user.id;
-
-        ThesisAPI.addOrUpdateThesisRequest(thesisData).then((response) => {
-            if (response.status === 200) {
-                toast.success('Request Sent', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "colored",
-                    transition: Slide,
-                });
-                navigate("/student-applications");
-            } else {
-                toast.error('Request Couldn\'t be sent', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "colored",
-                    transition: Slide,
-                });
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
-    };
-
-    function setCosupervisorsForSelect(supervisor) {
-        if (supervisor) {
-            setCosupervisorsData(teachersData.filter(t => t.Id !== supervisor.Id).map(t => ({
-                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            })));
-            changeThesisData('cosupervisors', thesisData.cosupervisors.filter(t => t.Id !== supervisor.Id));
-        }
-    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,12 +33,6 @@ function StudentRequest() {
 
                 setAcceptedApplication(foundAcceptedApplication);
             }
-            const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
-
-            setTeachersData(teachersResponse);
-            setTeachers(teachersResponse.map(t => ({
-                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            })));
         };
 
         fetchData();
@@ -119,8 +48,6 @@ function StudentRequest() {
 
     const copyApplicationData = function () {
         changeThesisData('Supervisor_Id', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor].Id);
-        setSelectedSupervisor(acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor]);
-        setCosupervisorsForSelect(acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor]);
         changeThesisData('Title', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Title]);
         changeThesisData('Description', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Description]);
         changeThesisData('cosupervisors', acceptedApplication[ApplicationFields.Proposal][ProposalFields.cosupervisors]);
@@ -158,8 +85,7 @@ function StudentRequest() {
                     </Col>
                 </Row>
                 <br></br>
-                <RequestForm />
-                <Button className="action-allowed-button" onClick={() => insertRequest()}>Send Request</Button>
+                <RequestForm copiedData={thesisData} />
             </Container>
         </div >
     )

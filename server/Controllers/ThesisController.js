@@ -10,7 +10,9 @@ module.exports = {
                 return res.status(200).json(thesis);
             })
             .catch((err) => {
-                console.log(err);
+                if (err.message === 'User Already Has a Thesis Request')
+                    return res.status(400).json({ message: err });
+
                 return res.status(500).json({ message: err.message });
             });
     },

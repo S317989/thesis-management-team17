@@ -1,18 +1,14 @@
 import "../Stylesheets/ProposalFormStyle.css"
-import { Container, Row, Col, Form } from "react-bootstrap"
+import { Container, Row, Col, Form, Button } from "react-bootstrap"
 import Select from "react-select"
 import { UserContext } from "../Contexts"
 import { useState, useEffect, useContext } from "react";
-import ApplicationsAPI from "../APIs/ApplicationsAPI";
 import ThesisAPI from "../APIs/ThesisAPI";
-
 import UtilitiesAPI from "../APIs/UtilitiesAPI";
-import { ApplicationFields } from "../Components/ApplicationsTable";
-import { ProposalFields } from "../Components/ProposalsForm";
 import { useNavigate } from "react-router-dom";
 import { Slide, toast } from "react-toastify";
 
-function RequestForm({ request }) {
+function RequestForm({ request, copiedData }) {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [thesisData, setThesisData] = useState({
@@ -21,15 +17,66 @@ function RequestForm({ request }) {
         "Description": '',
         "cosupervisors": [],
     });
-    const [acceptedApplication, setAcceptedApplication] = useState(null);
     const [teachersData, setTeachersData] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [cosupervisorsData, setCosupervisorsData] = useState([]);
     const [selectedSupervisor, setSelectedSupervisor] = useState(null);
 
+
+    const setCosupervisorsForSelect = (supervisor) => {
+        if (supervisor) {
+            setCosupervisorsData(teachersData.filter(t => t.Id !== supervisor.Id).map(t => ({
+                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
+            })));
+            changeThesisData('cosupervisors', thesisData.cosupervisors.filter(t => t.Id !== supervisor.Id));
+        }
+    }
+
+    useEffect(() => {
+        setCosupervisorsForSelect(selectedSupervisor);
+    }, [selectedSupervisor]);
+
+    useEffect(() => {
+        const fetchStudentData = async () => {
+            const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
+
+            setTeachersData(teachersResponse);
+            setTeachers(teachersResponse.map(t => ({
+                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
+            })));
+        };
+
+        const fetchTeacherData = async () => {
+            let cosupervisors = request.cosupervisors.map(t => ({
+                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
+            }));
+
+            setThesisData({
+                "Supervisor_Id": request.Supervisor_Id,
+                "Title": request.Title,
+                "Description": request.Description,
+                "cosupervisors": cosupervisors,
+            });
+
+            setSelectedSupervisor({
+                ...request.Supervisor, value: request.Supervisor.Id, label: request.Supervisor.Name + " " + request.Supervisor.Surname + " (" + request.Supervisor.Email + ")"
+            });
+        };
+
+        user.role === "Student" ? fetchStudentData() : fetchTeacherData();
+    }, []);
+
+    const changeThesisData = function (property, newValue) {
+        setThesisData((old) => {
+            const updatedData = { ...old };
+            updatedData[property] = newValue;
+            return updatedData;
+        });
+    }
+
     const insertRequest = async () => {
         if (thesisData.Title === '' || thesisData.Supervisor_Id === '' || thesisData.Description === '') {
-            toast.error('Please, insert the required details!', {
+            toast.error('Please insert the required details!', {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -46,7 +93,7 @@ function RequestForm({ request }) {
 
         ThesisAPI.addOrUpdateThesisRequest(thesisData).then((response) => {
             if (response.status === 200) {
-                toast.success('Request sent', {
+                toast.success('Request Sent', {
                     position: "top-center",
                     autoClose: 2000,
                     hideProgressBar: true,
@@ -57,6 +104,17 @@ function RequestForm({ request }) {
                     transition: Slide,
                 });
                 navigate("/student-applications");
+            } else if (response.status === 400) {
+                toast.error('Already has a thesis request', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Slide,
+                });
             } else {
                 toast.error('Request Couldn\'t be sent', {
                     position: "top-center",
@@ -70,80 +128,39 @@ function RequestForm({ request }) {
                 });
             }
         }).catch((error) => {
-            console.log(error);
+            toast.error('Something went wrong', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+                transition: Slide,
+            });
         });
     };
 
-    function setCosupervisorsForSelect(supervisor) {
-        if (supervisor) {
-            setCosupervisorsData(teachersData.filter(t => t.Id !== supervisor.Id).map(t => ({
-                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            })));
-            changeThesisData('cosupervisors', thesisData.cosupervisors.filter(t => t.Id !== supervisor.Id));
-        }
-    }
 
     useEffect(() => {
-        const fetchStudentData = async () => {
-            let studentApplications = await ApplicationsAPI.getMyApplications();
-            const foundAcceptedApplication = studentApplications.find(application => application.Status === "Accepted");
+        console.log(copiedData);
+        if (!copiedData || !copiedData.Supervisor_Id) return;
 
-            if (foundAcceptedApplication) {
-                foundAcceptedApplication.Proposal.cosupervisors = foundAcceptedApplication.Proposal.cosupervisors.map(t => ({
-                    ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-                }));
-                foundAcceptedApplication.Proposal.Supervisor = {
-                    ...foundAcceptedApplication.Proposal.Supervisor, value: foundAcceptedApplication.Proposal.Supervisor.Id, label: foundAcceptedApplication.Proposal.Supervisor.Name + " " + foundAcceptedApplication.Proposal.Supervisor.Surname + " (" + foundAcceptedApplication.Proposal.Supervisor.Email + ")"
-                };
-
-                setAcceptedApplication(foundAcceptedApplication);
-            }
-            const teachersResponse = (await UtilitiesAPI.getListTeacher()) || [];
-
-            setTeachersData(teachersResponse);
-            setTeachers(teachersResponse.map(t => ({
+        let cosupervisors = copiedData.cosupervisors.length > 0 ?
+            copiedData.cosupervisors.map(t => ({
                 ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            })));
-        };
+            })) : thesisData.cosupervisors;
 
-        const fetchTeacherData = async () => {
-            let supervisors = request.cosupervisors.map(t => ({
-                ...t, value: t.Id, label: t.Name + " " + t.Surname + " (" + t.Email + ")"
-            }));
-
-            setThesisData({
-                "Supervisor_Id": request.Supervisor_Id,
-                "Title": request.Title,
-                "Description": request.Description,
-                "cosupervisors": supervisors,
-            });
-
-            setSelectedSupervisor({
-                ...request.Supervisor, value: request.Supervisor.Id, label: request.Supervisor.Name + " " + request.Supervisor.Surname + " (" + request.Supervisor.Email + ")"
-            });
-
-            console.log(request)
-        };
-
-        user.role === "Student" ? fetchStudentData() : fetchTeacherData();
-    }, []);
-
-    const changeThesisData = function (property, newValue) {
-        setThesisData((old) => {
-            const updatedData = { ...old };
-            updatedData[property] = newValue;
-            return updatedData;
+        setThesisData({
+            "Supervisor_Id": copiedData.Supervisor_Id,
+            "Title": copiedData.Title,
+            "Description": copiedData.Description,
+            "cosupervisors": cosupervisors,
         });
-    }
 
-    const copyApplicationData = function () {
-        changeThesisData('Supervisor_Id', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor].Id);
-        setSelectedSupervisor(acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor]);
-        setCosupervisorsForSelect(acceptedApplication[ApplicationFields.Proposal][ProposalFields.Supervisor]);
-        changeThesisData('Title', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Title]);
-        changeThesisData('Description', acceptedApplication[ApplicationFields.Proposal][ProposalFields.Description]);
-        changeThesisData('cosupervisors', acceptedApplication[ApplicationFields.Proposal][ProposalFields.cosupervisors]);
-    }
+        setSelectedSupervisor(() => { let prof = teachersData.filter(t => t.Id === copiedData.Supervisor_Id)[0]; return { ...prof, value: prof.Id, label: prof.Name + " " + prof.Surname + " (" + prof.Email + ")" } });
+
+    }, [copiedData]);
 
     return (
         <Container className="form-container" fluid>
@@ -264,6 +281,9 @@ function RequestForm({ request }) {
                     </div>
                 </Col>
             </Row>
+            {user.role === "Student" &&
+                <Button className="action-allowed-button" onClick={() => insertRequest()}>Send Request</Button>
+            }
         </Container>
 
     );
