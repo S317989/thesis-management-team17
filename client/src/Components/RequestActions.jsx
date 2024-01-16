@@ -153,21 +153,28 @@ export const RejectRequest = ({ requestId, OnComplete }) => {
 
 export const RequestChange = ({ requestId, OnComplete }) => {
 
-  const RequestChange = () => {
+  const RequestChange = (isDangerMode = false) => {
     sweetalert({
       title: "Are you sure you want to request change this request?",
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
+      dangerMode: true, // Usa il parametro per attivare la modalità pericolo
+      buttons: {
+        cancel: true,
+        confirm: {
+          closeModal: false // Impedisce la chiusura del modal al click su OK
+        }
+      },
       content: {
         element: "input",
         attributes: {
-          placeholder: "Type your reason here",
+          placeholder: "Type your reason here (Required)", // Indica che il campo è obbligatorio
           type: "text",
+          id: "reason-input" // Aggiungi un ID all'elemento di input
         },
       }
     }).then(reason => {
-      if (reason)
+      if (reason.trim() !== '') {
+        sweetalert.close(); // Chiude il modal solo se la richiesta è andata a buon fine
         ThesisAPI.setThesisRequestStatus(requestId, 'ChangeRequested', reason).then((result) => {
           if (result.status === 200) {
             toast.success('Change request sent', {
@@ -195,6 +202,25 @@ export const RequestChange = ({ requestId, OnComplete }) => {
             });
           }
         })
+      } else {
+        toast.error('Please insert a reason', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          transition: Slide,
+        });
+        RequestChange(true); // Richiama la funzione con il parametro pericolo attivo
+        setTimeout(() => {
+          const inputElement = document.getElementById('reason-input');
+          if (inputElement) {
+            inputElement.style.borderColor = 'red'; // Cambia il colore del bordo in rosso
+          }
+        }, 0);
+      }
     });
   };
 
