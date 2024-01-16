@@ -96,11 +96,11 @@ export const ProfApprove = ({ requestId, OnComplete }) => {
     });
   };
 
-  return (
+  return <>
     <Button variant="success" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleProfApprove()}>
       Approve
-    </Button>
-  );
+    </Button>{' '}
+    </>
 };
 
 export const RejectRequest = ({ requestId, OnComplete }) => {
@@ -144,11 +144,11 @@ export const RejectRequest = ({ requestId, OnComplete }) => {
     });
   };
 
-  return (
+  return <>
     <Button variant="danger" size='sm' style={{ borderRadius: '30px' }} onClick={() => handleReject()}>
       Reject
-    </Button>
-  );
+    </Button>{' '}
+    </>
 };
 
 export const RequestChange = ({ requestId, OnComplete }) => {
@@ -224,11 +224,11 @@ export const RequestChange = ({ requestId, OnComplete }) => {
     });
   };
 
-  return (
+  return <>
     <Button variant="warning" size='sm' style={{ borderRadius: '30px' }} onClick={() => RequestChange()}>
       Request Change
-    </Button>
-  );
+    </Button>{' '}
+    </>
 };
 
 export const ShowRequestForm = ({ request, OnComplete }) => {
