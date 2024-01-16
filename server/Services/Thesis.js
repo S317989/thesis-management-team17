@@ -124,7 +124,7 @@ module.exports = {
     },
 
     getThesisBySupervisor: async function (supervisorId) {
-        let results = await db.getData(`SELECT * FROM Thesis WHERE Supervisor_Id=?`, [supervisorId]);
+        let results = await db.getData(`SELECT * FROM Thesis WHERE Supervisor_Id=? AND Status IN ('Accepted', 'ChangeRequested', 'SecretaryAccepted')`, [supervisorId]);
         if (!results) throw new Error('Data Not Found');
         return await this.getThesesLinkedData(results);
     },
