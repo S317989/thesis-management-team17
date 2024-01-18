@@ -20,7 +20,7 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
     const currentProposals = filteredProposals.slice(indexOfFirstProposal, indexOfLastProposal);
 
     const fetchData = async () => {
-        const ap = [
+        let ap = [
             ...proposals.map(p => {
                 const sf =
                     p.Title + ' ' +
@@ -55,10 +55,46 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
             let value = newValue.value.toLowerCase();
 
             let filteredProposals = availableProposals.filter((proposal) => {
-                return proposal[field].toLowerCase().includes(value);
+                let lowerCaseProposal = {};
+                for (let key in proposal) {
+                    if (Array.isArray(proposal[key])) {
+                        lowerCaseProposal[key.toLowerCase()] = proposal[key].map(item => {
+                            if (typeof item === 'object') {
+                                let lowerCaseItem = {};
+                                for (let itemKey in item) {
+                                    if (typeof item[itemKey] === 'string') {
+                                        lowerCaseItem[itemKey.toLowerCase()] = item[itemKey].toLowerCase();
+                                    } else {
+                                        lowerCaseItem[itemKey.toLowerCase()] = item[itemKey];
+                                    }
+                                }
+                                return lowerCaseItem;
+                            } else {
+                                return item.toString().toLowerCase();
+                            }
+                        });
+                    } else if (typeof proposal[key] === 'string') {
+                        lowerCaseProposal[key.toLowerCase()] = proposal[key].toLowerCase();
+                    } else {
+                        lowerCaseProposal[key.toLowerCase()] = proposal[key];
+                    }
+                }
+                if (Array.isArray(lowerCaseProposal[field.toLowerCase()]))
+                    return lowerCaseProposal[field.toLowerCase()].some(item => {
+                        console.log(item['name'], value)
+                        if (field === "Keywords" || field === "Groups")
+                            return item['name'].includes(value);
+                        else if (field === "Degree")
+                            return item['title_degree'].includes(value);
+                        else if (field === "Cosupervisors" || field === "ExternalCosupervisors")
+                            return value.includes(item['name'].toLowerCase()) || value.includes(item['surname'].toLowerCase());
+                    });
+                else
+                    return lowerCaseProposal[field.toLowerCase()].includes(value.toLowerCase());
             });
 
             setFilteredProposals(filteredProposals);
+
         }
     };
 
@@ -174,3 +210,4 @@ const CardManager = ({ page, proposals, EnableEditing, EnableArchiving, EnableDe
 }
 
 export default CardManager;
+
