@@ -101,63 +101,67 @@ const Notify = () => {
         />
       </Popover.Header>
       <Popover.Body className={selectedNotification === null ? `animated-leave` : `animated`}>
-        {selectedNotification === null ?
-          (
-            <div>
-              {notifications.slice(0, visibleNotifications).map((notification, index) => (
-                <div role="button" tabIndex={0} key={notification.Id} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
-                  <p>
-                    {
-                      notification.Read ?
-                        <span>{notification.Title}</span>
-                        : <strong>{notification.Title}</strong>
-                    }
-                    <br />
-                    <small>{notification.Date}</small>
-                  </p>
-                  {<hr />}
+        {
+          notifications.length === 0 ?
+            <p style={{ textAlign: 'center' }}>No notifications yet</p>
+            :
+            selectedNotification === null ?
+              (
+                <div>
+                  {notifications.slice(0, visibleNotifications).map((notification, index) => (
+                    <div role="button" tabIndex={0} key={notification.Id} onKeyDown={(event) => handleKeyDownEvent(event, 'clickable-field', index)} onClick={() => handleNotificationClick(index)} style={{ cursor: 'pointer' }}>
+                      <p>
+                        {
+                          notification.Read ?
+                            <span>{notification.Title}</span>
+                            : <strong>{notification.Title}</strong>
+                        }
+                        <br />
+                        <small>{notification.Date}</small>
+                      </p>
+                      {<hr />}
+                    </div>
+                  ))}
+                  {notifications.length > visibleNotifications ? (
+                    <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
+                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-more')} onClick={showMoreNotifications}>
+                        View More
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
+                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-less')} onClick={() => setVisibleNotifications(3)}>
+                        View Less
+                      </button>
+                    </div>
+                  )}
                 </div>
-              ))}
-              {notifications.length > visibleNotifications ? (
-                <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-more')} onClick={showMoreNotifications}>
-                    View More
-                  </button>
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center', fontSize: '0.7rem' }}>
-                  <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgb(252, 122, 8)' }} onKeyDown={(event) => handleKeyDownEvent(event, 'view-less')} onClick={() => setVisibleNotifications(3)}>
-                    View Less
-                  </button>
-                </div>
-              )}
-            </div>
-          )
-          : (
-            <Row className="animated">
-              <Col md={1} style={{ display: 'flex', justifyContent: 'center' }}>
-                <ArrowLeftCircle id='arrowLeftCircle-icon-button' color="black" bg="info" size={20} onClick={() => handleBackNotification()} />
-              </Col>
-              <Col md={11} style={{ paddingLeft: '5px' }}>
-                <p style={{ margin: 0 }}>
-                  <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Title:</span>
-                  {notifications[selectedNotification].Title}
-                </p>
-                <p style={{ margin: 0 }}>
-                  <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Date:</span>
-                  {notifications[selectedNotification].Date.split(' ')[0]}
-                </p>
-                <p >
-                  <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Time:</span>
-                  {notifications[selectedNotification].Date.split(' ')[1]}
-                </p>
-                <p>
-                  <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Message:</span>
-                  {notifications[selectedNotification].Message}
-                </p>
-              </Col>
-            </Row>
-          )
+              )
+              : (
+                <Row className="animated">
+                  <Col md={1} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <ArrowLeftCircle id='arrowLeftCircle-icon-button' color="black" bg="info" size={20} onClick={() => handleBackNotification()} />
+                  </Col>
+                  <Col md={11} style={{ paddingLeft: '5px' }}>
+                    <p style={{ margin: 0 }}>
+                      <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Title:</span>
+                      {notifications[selectedNotification].Title}
+                    </p>
+                    <p style={{ margin: 0 }}>
+                      <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Date:</span>
+                      {notifications[selectedNotification].Date.split(' ')[0]}
+                    </p>
+                    <p >
+                      <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Time:</span>
+                      {notifications[selectedNotification].Date.split(' ')[1]}
+                    </p>
+                    <p>
+                      <span style={{ fontWeight: 'bold', marginRight: '5px' }}>Message:</span>
+                      {notifications[selectedNotification].Message}
+                    </p>
+                  </Col>
+                </Row>
+              )
         }
       </Popover.Body>
     </Popover >
