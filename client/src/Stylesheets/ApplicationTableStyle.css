@@ -1,12 +1,46 @@
-@media (max-width: 768px) {
-    .table-responsive {
-        overflow-x: auto;
-    }
-}
-
 .table-responsive {
-    width: 100%;
     display: flex;
     justify-content: center;
-    text-align: center;
+    align-items: center;
+}
+
+/* Media query per dispositivi con larghezza schermo inferiore a 768px */
+@media (max-width: 768px) {
+    #applications-table {
+        display: block;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        /* Nascondi la barra di scorrimento orizzontale */
+    }
+
+    /* Nascondi le intestazioni della tabella per dispositivi mobili */
+    #applications-table thead {
+        display: none;
+    }
+
+    /* Rendi le righe della tabella blocchi di display flessibili */
+    #applications-table tbody tr {
+        display: block;
+        margin-bottom: 0.625rem;
+        /* Aggiungi un margine inferiore per separare le righe */
+        text-align: center;
+        /* Centro il testo delle righe */
+    }
+
+    /* Rendi le celle della tabella larghe al 100% */
+    #applications-table tbody td {
+        display: block;
+        text-align: center;
+        /* Centro il testo delle celle */
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    /* Stile aggiuntivo per le celle della colonna "Actions" */
+    #applications-table tbody td:last-child {
+        text-align: center;
+    }
 }

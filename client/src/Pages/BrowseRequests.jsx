@@ -44,7 +44,7 @@ const BrowseRequests = () => {
     }, [user]);
 
     return (
-        <Container className="mt-4 mb-4" style={{ overflow: 'auto' }}>
+        <Container className="mt-4 mb-4">
             <Col>
                 <Row className="mt-4 mb-4">
                     <h3>Student Requests</h3>
