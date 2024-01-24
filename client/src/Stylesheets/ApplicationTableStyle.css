@@ -7,8 +7,12 @@
 @media (min-width: 768px) {
     #buttons-div {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
+    }
+
+    #buttons-div>button {
+        margin-right: 5px;
     }
 }
 
@@ -34,7 +38,7 @@
 
     #applications-table tbody td {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
         text-align: center;
         box-sizing: border-box;
         overflow: hidden;
@@ -43,7 +47,14 @@
     }
 
     #buttons-div {
-        width: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100% !important;
+    }
+
+    #buttons-div>button {
+        margin-right: 8px;
     }
 
     #applications-table tbody td:last-child {
