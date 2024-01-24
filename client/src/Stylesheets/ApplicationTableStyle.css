@@ -4,42 +4,48 @@
     align-items: center;
 }
 
-/* Media query per dispositivi con larghezza schermo inferiore a 768px */
+@media (min-width: 768px) {
+    #buttons-div {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+}
+
+
 @media (max-width: 768px) {
-    #applications-table {
-        display: block;
-        flex-direction: column;
+    .table-responsive {
+        display: flex;
+        justify-content: center;
         align-items: center;
         width: 90%;
-        /* Nascondi la barra di scorrimento orizzontale */
+        margin: 0 auto;
     }
 
-    /* Nascondi le intestazioni della tabella per dispositivi mobili */
     #applications-table thead {
         display: none;
     }
 
-    /* Rendi le righe della tabella blocchi di display flessibili */
     #applications-table tbody tr {
         display: block;
         margin-bottom: 0.625rem;
-        /* Aggiungi un margine inferiore per separare le righe */
         text-align: center;
-        /* Centro il testo delle righe */
     }
 
-    /* Rendi le celle della tabella larghe al 100% */
     #applications-table tbody td {
-        display: block;
+        display: flex;
+        justify-content: space-evenly;
         text-align: center;
-        /* Centro il testo delle celle */
         box-sizing: border-box;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
 
-    /* Stile aggiuntivo per le celle della colonna "Actions" */
+    #buttons-div {
+        width: 70%;
+    }
+
     #applications-table tbody td:last-child {
         text-align: center;
     }

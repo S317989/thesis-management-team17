@@ -5,6 +5,7 @@ import { UserContext } from "../Contexts";
 import { ShowProposalsForm, Delete, Archive } from './ProposalsActions';
 import { ProposalFields } from './ProposalsForm';
 import { Accept, Reject, ViewCV } from './ApplicationsActions'
+import "../Stylesheets/ApplicationTableStyle.css";
 
 // enums
 export const ApplicationStatus = {
@@ -85,13 +86,17 @@ const ApplicationsTable = ({ applications, EnableAccept, EnableReject, requestRe
                     }
                   })()
                 )}</td>
-                <td><ViewCV cvFileName={application.Cv} studentId={application[ApplicationFields.Student_Id]} /></td>
                 <td>
-                  <ShowProposalsForm proposal={proposal} />
-                  {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
-                    <Accept applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
-                  {EnableReject && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
-                    <Reject applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
+                  <ViewCV cvFileName={application.Cv} studentId={application[ApplicationFields.Student_Id]} />
+                </td>
+                <td className='actions-td'>
+                  <div id='buttons-div'>
+                    <ShowProposalsForm proposal={proposal} />
+                    {EnableAccept && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
+                      <Accept applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
+                    {EnableReject && application[ApplicationFields.Status] === ApplicationStatus.Pending ?
+                      <Reject applicationId={application[ApplicationFields.Application_Id]} OnComplete={requestRefresh} /> : <></>}
+                  </div>
                 </td>
               </tr>
             })}

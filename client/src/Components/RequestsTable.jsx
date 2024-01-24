@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Table, Badge } from 'react-bootstrap';
 import { UserContext } from "../Contexts";
 import { ShowRequestForm, ProfApprove, SecApprove, RejectRequest, RequestChange } from './RequestActions';
+import "../Stylesheets/ApplicationTableStyle.css";
 
 // enums
 export const RequestStatus = {
@@ -78,23 +79,25 @@ const RequestsTable = ({ requests, requestRefresh }) => {
                     }
                   })()
                 )}</td>
-                <td style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <ShowRequestForm request={request} />
+                <td className='actions-id'>
+                  <div id='buttons-div'>
+                    <ShowRequestForm request={request} />
 
-                  {(user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted) &&
-                    <>
-                      <ProfApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
-                      <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
-                      <RequestChange requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
-                    </>
-                  }
+                    {(user.role === 'Teacher' && request[RequestFields.Status] === RequestStatus.SecretaryAccepted) &&
+                      <>
+                        <ProfApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
+                        <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
+                        <RequestChange requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
+                      </>
+                    }
 
-                  {(user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending) &&
-                    <>
-                      <SecApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
-                      <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
-                    </>
-                  }
+                    {(user.role === 'Secretary' && request[RequestFields.Status] === RequestStatus.Pending) &&
+                      <>
+                        <SecApprove requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
+                        <RejectRequest requestId={request[RequestFields.Id]} requestStatus={request[RequestFields.Status]} OnComplete={requestRefresh} />
+                      </>
+                    }
+                  </div>
                 </td>
 
               </tr>

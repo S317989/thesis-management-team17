@@ -157,7 +157,7 @@ const FilterComponent = ({ proposalFields, onAddFilter, filters, onRemoveFilter 
         <Container fluid className={`filter-container`}>
             <Row>
                 <Col>
-                    <div className="mb-2">
+                    <div className="mb-2 d-flex justify-content-center">
                         {filters.length > 1 &&
                             <Badge className="filter-badge-all" onClick={() => {
                                 filters.forEach((filter) => {
